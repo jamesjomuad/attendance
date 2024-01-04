@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
+
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -15,11 +17,17 @@
 
 $router->get('/', function () use ($router) {
     // return $router->app->version();
-
+    return view('app');
 });
 
 // API
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('users',  'UserController@index');
     $router->get('user/{id}', 'UserController@show');
+});
+
+$router->get('/test', function () use ($router) {
+    dd(
+        Hash::make('123456')
+    );
 });

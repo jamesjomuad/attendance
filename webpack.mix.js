@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-const baseUrl = "water-consumption.test"
+const baseUrl = "attendance.test"
 
 /*
  |--------------------------------------------------------------------------
@@ -45,8 +45,3 @@ mix.browserSync({
     port: 442,
     open: 'external'
 });
-
-
-// mix
-// .copy('quasar-barwasa/dist/spa/index.html', 'resources/views/app.blade.php')
-// .copyDirectory('quasar-barwasa/dist/spa', 'public');
