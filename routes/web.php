@@ -20,6 +20,6 @@ $router->get('/', function () use ($router) {
 
 // API
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('users',  'UserController@get');
+    $router->get('users',  'UserController@index');
     $router->get('user/{id}', 'UserController@show');
 });

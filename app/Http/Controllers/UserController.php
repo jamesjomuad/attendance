@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Retrieve the user for the given ID.
-     *
-     * @param  int  $id
-     * @return Response
-     */
+    public function index(Request $request)
+    {
+        return response()->json(User::all());
+    }
+
     public function show($id)
     {
         return User::findOrFail($id);
