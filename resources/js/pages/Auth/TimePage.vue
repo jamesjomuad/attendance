@@ -1,14 +1,44 @@
 <template>
-    <q-page class="flex flex-center bg-dark"  @keydown="handleKeyPress">
+    <q-page class="flex flex-center bg-dark">
         <div id="clock" class="column">
             <p class="col date">{{ ui.date }}</p>
             <p class="col time">{{ ui.time }}</p>
+
             <div class="row">
                 <div class="col">
-                    <q-btn color="primary" icon="login" label="Time In" @click="onTimeIn" @keydown.i="onTimeIn"/>
+                    <q-input
+                        dense
+                        outlined
+                        rounded
+                        dark
+                        label="Employee #"
+                        v-model="employeeCode"
+                        :rules="[ val => val && val.length > 0 || 'Please type something']"
+                    >
+                        <template v-slot:prepend>
+                            <q-icon name="account_circle" />
+                        </template>
+                    </q-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <q-btn
+                        color="primary"
+                        size="lg"
+                        icon="login"
+                        label="Time In"
+                        @click="onTimeIn"
+                    />
                 </div>
                 <div class="col">
-                    <q-btn color="secondary" icon-right="logout" label="Time Out" @click="onTimeOut"/>
+                    <q-btn
+                        color="secondary"
+                        size="lg"
+                        icon-right="logout"
+                        label="Time Out"
+                        @click="onTimeOut"
+                    />
                 </div>
             </div>
         </div>
@@ -28,16 +58,19 @@ const ui = reactive({
     loading: false,
     date: null,
     time: null,
-    timerID: null
+    timerID: null,
+    inLoading: false,
+    outLoading: false,
 })
+const employeeCode = ref()
 
 onMounted(()=>{
     ui.timerID = setInterval(updateTime, 1000);
     updateTime();
     document.addEventListener('keyup', function (evt) {
-        if (evt.code === 'KeyI') {
+        if (evt.code === 'KeyI' && evt.ctrlKey) {
             onTimeIn()
-        }else if(evt.code === 'KeyO'){
+        }else if(evt.code === 'KeyO' && evt.ctrlKey){
             onTimeOut()
         }
     });
@@ -49,7 +82,7 @@ onMounted(()=>{
 function updateTime() {
     var cd = new Date();
     ui.time = date.formatDate(cd, 'hh:mm:ss A')
-    ui.date = date.formatDate(cd, 'MMMM MM, YYYY (dddd)')
+    ui.date = date.formatDate(cd, 'MMMM D, YYYY (dddd)')
 };
 
 function zeroPadding(num, digit) {
@@ -60,11 +93,18 @@ function zeroPadding(num, digit) {
     return (zero + num).slice(-digit);
 }
 
-function onTimeIn(){ console.log('onTimeIn') }
-function onTimeOut(){ console.log('onTimeOut') }
+async function onTimeIn(){
+    try{
+        const { data } = axios.post(`/api/attendance/login`, { code: employeeCode.value })
+        console.log( data )
+    }catch(e){
+        console.log(e)
+    }
+    console.log('onTimeIn:', employeeCode.value)
+}
 
-function handleKeyPress(event) {
-    console.log(event.key)
+function onTimeOut(){
+    console.log('onTimeOut:', employeeCode.value)
 }
 </script>
 
@@ -87,7 +127,7 @@ function handleKeyPress(event) {
         }
         .date {
             letter-spacing: 0.1em;
-            font-size: 24px;
+            font-size: 30px;
         }
         .text {
             letter-spacing: 0.1em;

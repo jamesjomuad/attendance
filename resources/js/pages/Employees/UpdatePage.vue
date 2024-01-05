@@ -11,7 +11,7 @@
                                 v-model="$form.code"
                                 dense
                                 outlined
-                                label="Code"
+                                label="Employee #"
                                 class="col-12"
                                 readonly
                             ></q-input>

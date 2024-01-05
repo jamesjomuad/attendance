@@ -36,9 +36,10 @@ class Attendance extends Model
     }
 
 
-    #   Relation: user
-    public function user()
+    #   Relation: employee
+    public function employee()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Employee::class);
     }
+
 }

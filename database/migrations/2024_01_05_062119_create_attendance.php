@@ -16,12 +16,12 @@ class CreateAttendance extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id');
-            $table->time('in_am');
-            $table->time('out_am');
-            $table->time('in_pm');
-            $table->time('out_pm');
-            $table->boolean('status');
-            $table->double('hours');
+            $table->time('in_am')->nullable();
+            $table->time('out_am')->nullable();
+            $table->time('in_pm')->nullable();
+            $table->time('out_pm')->nullable();
+            $table->boolean('status')->nullable();
+            $table->double('hours')->nullable();
             $table->timestamps();
         });
     }

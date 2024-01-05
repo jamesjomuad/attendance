@@ -27,6 +27,7 @@
         "@quasar/extras": "^1.16.4",
         "apexcharts": "^3.44.0",
         "axios": "^1.2.1",
+        "jsqr": "^1.4.0",
         "moment": "^2.29.4",
         "quasar": "^2.6.0",
         "vue": "^3.3.4",

@@ -55,7 +55,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/attendances', 'AttendanceController@store'); // Create a new item
     $router->put('/attendances/{id}', 'AttendanceController@update'); // Update an item
     $router->delete('/attendances/{id}', 'AttendanceController@destroy'); // Delete an item
-
+    $router->post('/attendance/login', 'AttendanceController@login');
+    $router->post('/attendance/logout', 'AttendanceController@logout');
 });
 
 

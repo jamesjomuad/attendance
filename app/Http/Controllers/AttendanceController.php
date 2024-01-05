@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Attendance;
+use App\Models\Employee;
 
 class AttendanceController extends Controller
 {
@@ -94,6 +95,21 @@ class AttendanceController extends Controller
     public function destroy($id)
     {
         return Attendance::findOrFail($id)->delete();
+    }
+
+    public function login(Request $request)
+    {
+        $employee = Employee::where('code', $request->input('code'))->first();
+
+        $attendance = new Attendance;
+
+        $attendance->employee()->associate($employee);
+
+        $attendance->in_am = Carbon::now();
+
+        dd(
+            $attendance->save()
+        );
     }
 
 }

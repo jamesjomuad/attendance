@@ -43,10 +43,15 @@ class Employee extends Model
         return $this->user->email;
     }
 
-
     #   Relation: user
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    #   Relation: user
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class);
     }
 }
