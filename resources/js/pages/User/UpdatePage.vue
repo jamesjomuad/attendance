@@ -13,11 +13,11 @@
                     <q-card-section>
                         <div class="row q-col-gutter-md">
                             <q-input
-                                v-model="$form.name"
+                                v-model="$form.username"
                                 dense
                                 outlined
                                 label="Username"
-                                name="name"
+                                name="username"
                                 class="col-12"
                             >
                                 <template v-slot:prepend>
@@ -258,10 +258,17 @@ function onChangePassword(){
             }
         }
         catch(e){
-            $q.notify({
-                message: 'Error changing password',
-                color: 'negative'
-            })
+            if(e.response.data?.error){
+                $q.notify({
+                    message: e.response.data?.error,
+                    color: 'negative'
+                })
+            }else{
+                $q.notify({
+                    message: 'Error changing password',
+                    color: 'negative'
+                })
+            }
         }
         ui.loading = false
         ui.resetting = false

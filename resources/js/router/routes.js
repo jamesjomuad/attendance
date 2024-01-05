@@ -10,11 +10,6 @@ const routes = [
                 name: "Time In/Out",
                 path: "",
                 component: () => import("../pages/Auth/TimePage.vue"),
-                beforeEnter: (to, from) => {
-                    if (store.getters['auth/isAuthenticated']) {
-                        return false;
-                    }
-                }
             }
         ]
     },
@@ -38,6 +33,54 @@ const routes = [
                     }
                 }
             }
+        ]
+    },
+
+    // MainLayout
+    {
+        path: "/dashboard",
+        component: route => import('../layouts/MainLayout.vue'),
+        children: [
+            // Dashboard
+            {
+                path: "",
+                component: () => import("../pages/Dashboard/IndexPage.vue"),
+                meta: {
+                    title: "Dashboard",
+                    requiresAuth: true
+                }
+            },
+
+            // Users
+            {
+                path: "/system/users",
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../pages/User/IndexPage.vue"),
+                        meta: {
+                            title: "Users",
+                            requiresAuth: true
+                        },
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/User/CreatePage.vue"),
+                        meta: {
+                            title: "Create User",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/User/UpdatePage.vue"),
+                        meta: {
+                            title: "Update User",
+                            requiresAuth: true
+                        }
+                    }
+                ]
+            },
         ]
     },
 

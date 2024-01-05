@@ -1,36 +1,25 @@
 <template>
-    <q-page
-    class="bg-secondary flex flex-center"
-    :class="{'xs':$q.screen.xs}"
-    :style="{ background: ui.bg }"
-    >
-        <transition v-show="ui.showForm" appear enter-active-class="animate__animated animate__zoomIn animate__delay-2s">
+    <q-page class="flex flex-center bg-dark" :class="{'xs':$q.screen.xs}">
+        <transition v-show="ui.showForm" appear enter-active-class="animate__animated animate__zoomIn animate__delay-1s">
             <form @submit.prevent="onLogin" class="shadow-10">
                 <q-card
-                    bordered
+                    flat
                     class="q-pa-lg shadow-1 animate__animated"
                     :class="{'animate__shakeX':ui.isInvalid}"
                     style="min-width: 450px"
                 >
-                    <q-card-section>
-                    <img
-                        alt="Quasar logo"
-                        src="/images/logo.png"
-                        style=" width: 150px; margin: 0 auto; display: block; margin-top: -100px; "
-                        class="logo"
-                    />
-                    </q-card-section>
                     <q-card-section class="q-gutter-md">
+                        <!-- Username -->
                         <q-input
-                        square
-                        filled
-                        clearable
-                        v-model="$user.email"
-                        label="Email"
-                        :rules="[(val) => !!val || 'Field is required']"
+                            filled
+                            clearable
+                            class="bg-light"
+                            v-model="$user.username"
+                            label="Username"
+                            :rules="[(val) => !!val || 'Field is required']"
                         />
+                        <!-- Password -->
                         <q-input
-                        square
                         filled
                         v-model="$user.password"
                         label="Password"
@@ -43,23 +32,17 @@
                             @click="isPwd = !isPwd"
                             /> </template
                         ></q-input>
-                    </q-card-section>
-                    <q-card-actions class="q-px-md">
-                    <q-btn
-                        unelevated
-                        color="accent"
-                        size="lg"
-                        class="full-width q-mb-md"
-                        label="Login"
-                        type="submit"
-                        :loading="ui.btnLoginLoading"
-                        :disable="ui.btnLoginLoading"
-                    />
-                    </q-card-actions>
-                    <q-card-section class="text-center q-pa-none">
-                    <p class="text-grey-6">
-                        Not registered? <a href="#/register">Create Account</a>
-                    </p>
+                        <div class="col">
+                            <q-btn
+                                unelevated
+                                color="accent"
+                                class="full-width q-mb-md"
+                                label="Login"
+                                type="submit"
+                                :loading="ui.btnLoginLoading"
+                                :disable="ui.btnLoginLoading"
+                            />
+                        </div>
                     </q-card-section>
                 </q-card>
             </form>
@@ -77,7 +60,7 @@ import { useQuasar } from 'quasar'
 const $q = useQuasar()
 const $store = useStore();
 const $router = useRouter();
-const $user = reactive({ email: null, password: null });
+const $user = reactive({ username: null, password: null });
 const isPwd = ref(true);
 const ui = reactive({
     bg: "url('/images/home-bg.jpg') 0% 100% / cover !important",
@@ -98,10 +81,9 @@ async function onLogin(params) {
     try {
         const { data } = await axios.post( "/api/auth/login", $user );
         if(data.status){
-            let response = await axios.get( "/api/user", { headers: {"Authorization" : `Bearer ${data.token}`} });
             $store.commit('auth/setToken', data.token)
-            $store.commit('auth/setUser', response.data)
-            $router.push(`/`)
+            $store.commit('auth/setUser', data.data)
+            $router.push(`/dashboard`)
         }
     }
     catch (error) {

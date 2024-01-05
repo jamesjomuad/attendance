@@ -22,12 +22,21 @@ $router->get('/', function () use ($router) {
 
 // API
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('users',  'UserController@index');
-    $router->get('user/{id}', 'UserController@show');
+    $router->group(['prefix' => 'auth'], function () use ($router) {
+        $router->post('login',  'AuthController@login');
+    });
+
+
+    // User
+    $router->get('/users', 'UserController@index'); // Show all items
+    $router->get('/users/{id}', 'UserController@show'); // Show a specific item
+    $router->post('/users', 'UserController@store'); // Create a new item
+    $router->put('/users/{id}', 'UserController@update'); // Update an item
+    $router->delete('/users/{id}', 'UserController@destroy'); // Delete an item
+
 });
 
-$router->get('/test', function () use ($router) {
-    dd(
-        Hash::make('123456')
-    );
+
+$router->get('/{any:.*}', function () use ($router) {
+    return view('errors.404');
 });

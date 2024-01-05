@@ -4,20 +4,15 @@
         <q-form class="q-pa-md row q-col-gutter-md" @submit="onCreate">
             <div class="col-md-12">
                 <q-card>
-                    <!-- Title -->
-                    <q-card-section class="q-py-sm">
-                        <div class="text-h6"> Account </div>
-                    </q-card-section>
-
                     <!-- Fields -->
                     <q-card-section>
                         <div class="row q-col-gutter-md">
                             <q-input
-                                v-model="$form.name"
+                                v-model="$form.username"
                                 dense
                                 outlined
                                 label="Username"
-                                name="name"
+                                name="username"
                                 class="col-6"
                             >
                                 <template v-slot:prepend>
@@ -83,19 +78,6 @@
                             </q-input>
 
                             <q-input
-                                v-model="$form.phone_2"
-                                dense
-                                outlined
-                                label="Work Phone"
-                                lazy-rules
-                                class="col-6"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="phone" />
-                                </template>
-                            </q-input>
-
-                            <q-input
                                 v-model="$form.email"
                                 dense
                                 outlined
@@ -107,44 +89,12 @@
                                 <q-icon name="email" />
                                 </template>
                             </q-input>
-
-                            <q-input
-                                v-model="$form.dob"
-                                dense
-                                outlined
-                                label="Date of Birth"
-                                lazy-rules
-                                class="col-6"
-                                readonly
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="calendar_month" />
-                                </template>
-                                <template v-slot:after>
-                                    <q-btn icon="event" round color="primary">
-                                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                            <q-date v-model="$form.dob">
-                                            <div class="row items-center justify-end q-gutter-sm">
-                                                <q-btn label="Cancel" color="primary" flat v-close-popup />
-                                                <q-btn label="OK" color="primary" flat v-close-popup />
-                                            </div>
-                                            </q-date>
-                                        </q-popup-proxy>
-                                    </q-btn>
-                                </template>
-                            </q-input>
                         </div>
                     </q-card-section>
-                    <q-separator />
-                    <q-card-actions align="right">
-                        <q-btn
-                            color="negative"
-                            label="Remove"
-                            class="q-mr-auto"
-                            @click="onRemove"
-                            :disable="ui.loading"
-                            :loading="ui.loading"
-                        />
+                </q-card>
+
+                <div class="row justify-end q-mt-md">
+                    <div class="col-auto">
                         <q-btn
                             color="primary"
                             type="submit"
@@ -152,8 +102,8 @@
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
-                    </q-card-actions>
-                </q-card>
+                    </div>
+                </div>
             </div>
         </q-form>
     </q-page>
@@ -177,14 +127,12 @@ const ui = reactive({
     isPwd: true
 })
 const $form = ref({
-    name: "",
+    username: "",
     password: null,
     first_name: "",
     last_name: "",
     email: "",
-    billing_address: "",
     phone: "",
-    phone_2: "",
 });
 
 

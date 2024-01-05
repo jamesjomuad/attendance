@@ -14,18 +14,21 @@
         color="white"
         text-color="blue"
         unelevated
-        to="/"
         label="Go Home"
         no-caps
+        @click="goBack"
       />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
-export default defineComponent({
-  name: 'ErrorNotFound'
-})
+const $router = useRouter();
+
+function goBack(){
+    $router.go(-1)
+}
 </script>

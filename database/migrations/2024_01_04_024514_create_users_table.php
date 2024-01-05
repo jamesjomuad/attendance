@@ -34,6 +34,8 @@ class CreateUsersTable extends Migration
             'email'      => 'admin@gmail.com',
             'first_name' => 'Jose',
             'last_name'  => 'Rizal',
+            'created_at'  => Carbon\Carbon::now(),
+            'updated_at'  => Carbon\Carbon::now(),
         ]);
     }
 

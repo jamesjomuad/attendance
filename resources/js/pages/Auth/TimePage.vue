@@ -1,11 +1,11 @@
 <template>
-    <q-page class="flex flex-center bg-dark">
+    <q-page class="flex flex-center bg-dark"  @keydown="handleKeyPress">
         <div id="clock" class="column">
             <p class="col date">{{ ui.date }}</p>
             <p class="col time">{{ ui.time }}</p>
             <div class="row">
                 <div class="col">
-                    <q-btn color="primary" icon="login" label="Time In" @click="onTimeIn"/>
+                    <q-btn color="primary" icon="login" label="Time In" @click="onTimeIn" @keydown.i="onTimeIn"/>
                 </div>
                 <div class="col">
                     <q-btn color="secondary" icon-right="logout" label="Time Out" @click="onTimeOut"/>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useQuasar, date } from "quasar";
 import { useRouter } from "vue-router";
 
@@ -24,17 +24,26 @@ import { useRouter } from "vue-router";
 
 const $q = useQuasar();
 const $router = useRouter();
-const isPwd = ref(true);
 const ui = reactive({
     loading: false,
     date: null,
-    time: null
+    time: null,
+    timerID: null
 })
 
 onMounted(()=>{
-    var timerID = setInterval(updateTime, 1000);
+    ui.timerID = setInterval(updateTime, 1000);
     updateTime();
+    document.addEventListener('keyup', function (evt) {
+        if (evt.code === 'KeyI') {
+            onTimeIn()
+        }else if(evt.code === 'KeyO'){
+            onTimeOut()
+        }
+    });
 })
+
+
 
 
 function updateTime() {
@@ -51,9 +60,12 @@ function zeroPadding(num, digit) {
     return (zero + num).slice(-digit);
 }
 
-function onTimeIn(){}
-function onTimeOut(){}
+function onTimeIn(){ console.log('onTimeIn') }
+function onTimeOut(){ console.log('onTimeOut') }
 
+function handleKeyPress(event) {
+    console.log(event.key)
+}
 </script>
 
 

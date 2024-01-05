@@ -19,7 +19,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'password',
     ];
 
     /**
@@ -30,4 +34,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    protected $appends = [
+        'fullname',
+    ];
+
+
+    public function getFullnameAttribute()
+    {
+        return $this->first_name . " " . $this->last_name;
+    }
 }

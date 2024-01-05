@@ -33,7 +33,6 @@
                         </template>
                     </q-input>
                     <q-btn
-                        round
                         size="md"
                         color="primary"
                         class="q-ml-sm"
@@ -41,9 +40,8 @@
                         to="/system/users/create">
                     </q-btn>
                     <q-btn
-                        round
                         size="md"
-                        color="info"
+                        color="secondary"
                         class="q-ml-sm"
                         icon="refresh"
                         @click="onRefresh">
