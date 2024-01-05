@@ -106,8 +106,8 @@ class AuthController extends Controller
             }else{
                 return response()->json([
                     'status'  => false,
-                    'message' => 'User Logged In Unsuccessfull',
-                ], 200);
+                    'message' => 'Check your username & password!',
+                ], 500);
             }
         } catch (\Throwable $th) {
             return response()->json([

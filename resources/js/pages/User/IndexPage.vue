@@ -141,8 +141,8 @@ const table = reactive({
         },
         {
             label: "Username",
-            name: "name",
-            field: "name",
+            name: "username",
+            field: "username",
             sortable: true,
             align: 'left'
         },
