@@ -3,12 +3,6 @@
         <q-form class="row q-col-gutter-md" @submit="onCreate">
             <div class="col-md-12">
                 <q-card>
-                    <!-- Title -->
-                    <q-card-section class="q-py-sm">
-                        <div class="text-h6">
-                        Account
-                        </div>
-                    </q-card-section>
                     <!-- Fields -->
                     <q-card-section>
                         <div class="row q-col-gutter-md">
@@ -17,9 +11,11 @@
                                 outlined
                                 class="col-6"
                                 label="Position"
-                                v-model="$form.type"
+                                v-model="$form.position"
                                 :color="ui.typeBg"
                                 :options="ui.positions"
+                                emit-value
+                                map-options
                             >
                                 <template v-slot:prepend>
                                     <q-icon name="info" />
@@ -31,7 +27,7 @@
                                 outlined
                                 class="col-6"
                                 label="Department"
-                                v-model="$form.type"
+                                v-model="$form.department"
                                 :color="ui.typeBg"
                                 :options="ui.departments"
                             >
@@ -141,9 +137,10 @@
 
 
 <script setup>
-import { ref, reactive, } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import _ from 'lodash'
 
 
 const $route = useRoute()
@@ -152,16 +149,8 @@ const $q = useQuasar()
 const ui = reactive({
     loading: false,
     isPwd: true,
-    positions: ['Web Dev', 'Full Stack', 'CEO', 'HR'],
-    departments: [
-        'Human Resources',
-        'Accounting',
-        'Information Technology',
-        'Marketing',
-        'Sales',
-        'Customer Service/Support',
-        'Operations',
-    ],
+    positions: [],
+    departments: [],
 })
 const $form = reactive({
     username: "",
@@ -174,16 +163,36 @@ const $form = reactive({
 },);
 
 
+onMounted(async ()=>{
+    getPositions()
+})
+
+async function getPositions(){
+    try {
+        const { data } = await axios.get(`/api/positions`)
+        ui.positions = _.map(data.data, function(v){
+            return {
+                label: v.title,
+                value: v.id,
+            }
+        })
+    } catch (e) {
+        console.log( e )
+    }
+}
+
+
 async function onCreate(){
     ui.loading = true
+    console.log($form)
     try{
         $form.username = `${$form.first_name}.${$form.last_name}`
-        const { data } = await axios.post(`/api/consumers`, $form)
+        const { data } = await axios.post(`/api/employees`, $form)
         $q.notify({
             type: 'positive',
             message: `${data.data.first_name} ${data.data.last_name} created successfully!`
         })
-        $router.push('/consumers')
+        $router.push('/employees')
     }catch(error){
         console.log(error)
         $q.notify({

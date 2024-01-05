@@ -66,19 +66,6 @@
                             </q-input>
 
                             <q-input
-                                v-model="$form.phone_2"
-                                dense
-                                outlined
-                                label="Work Phone"
-                                lazy-rules
-                                class="col-6"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="phone" />
-                                </template>
-                            </q-input>
-
-                            <q-input
                                 v-model="$form.email"
                                 dense
                                 outlined
@@ -88,32 +75,6 @@
                             >
                                 <template v-slot:prepend>
                                 <q-icon name="email" />
-                                </template>
-                            </q-input>
-
-                            <q-input
-                                v-model="$form.dob"
-                                dense
-                                outlined
-                                label="Date of Birth"
-                                lazy-rules
-                                class="col-6"
-                                readonly
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="calendar_month" />
-                                </template>
-                                <template v-slot:after>
-                                    <q-btn icon="event" round color="primary">
-                                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                            <q-date v-model="$form.dob">
-                                            <div class="row items-center justify-end q-gutter-sm">
-                                                <q-btn label="Cancel" color="primary" flat v-close-popup />
-                                                <q-btn label="OK" color="primary" flat v-close-popup />
-                                            </div>
-                                            </q-date>
-                                        </q-popup-proxy>
-                                    </q-btn>
                                 </template>
                             </q-input>
                         </div>

@@ -25,9 +25,8 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => ['required', 'string', 'max:80', 'unique:users'],
+            'username' => ['required', 'string', 'max:80', 'unique:users'],
             "last_name" => ["required"],
-            "password" => ["required","min:6"],
         ]);
 
         // Validator

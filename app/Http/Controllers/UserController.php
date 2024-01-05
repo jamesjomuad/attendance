@@ -25,7 +25,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => ['required', 'string', 'max:80', 'unique:users'],
+            'username' => ['required', 'string', 'max:80', 'unique:users'],
             "last_name" => ["required"],
             "password" => ["required","min:6"],
         ]);
@@ -53,22 +53,21 @@ class UserController extends Controller
     {
         $model = User::findOrFail($id);
 
-        $validator = Validator::make($request->all(), [
-            'first_name' => ['required', 'string', 'max:80'],
-            "last_name"  => ["required"],
-            "password"   => ["required","min:6"],
-        ]);
-
-        // Validator
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'error' => $validator->errors()->first(),
-            ], 500);
-        }
-
-
         if( $request->filled('password') ){
+            $validator = Validator::make($request->all(), [
+                'first_name' => ['required', 'string', 'max:80'],
+                "last_name"  => ["required"],
+                "password"   => ["required","min:6"],
+            ]);
+
+            // Validator
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'error' => $validator->errors()->first(),
+                ], 500);
+            }
+
             $model->password = Hash::make($request->password);
             return response()->json([
                 'status' => $model->save()

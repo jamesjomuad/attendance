@@ -20,4 +20,11 @@ class Employee extends Model
     {
         return $this->first_name . " " . $this->last_name;
     }
+
+
+    #   Relation: user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
