@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="lHh Lpr lff" :class="{'bg-dark':$q.dark.isActive,'bg-light':!$q.dark.isActive}">
+    <q-layout view="hHh Lpr fFf" :class="{'bg-dark':$q.dark.isActive,'bg-light':!$q.dark.isActive}">
         <!-- Top Bar -->
         <q-header class="text-white bg-grey-9">
             <q-toolbar>
