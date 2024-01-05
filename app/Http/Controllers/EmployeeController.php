@@ -14,9 +14,27 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json([
-            'data' => Employee::all()
-        ]);
+        $per_page = $request->get('per_page') ? : 50;
+
+        $query = Employee::with('user');
+
+        //  Sort & Order
+        $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
+            $sortBy  = $request->get('sortBy');
+            $orderBy = $request->get('orderBy');
+            return $q->orderBy( $sortBy, $orderBy );
+        });
+
+        //  Filter/Search
+        $query->when($request->get('filter'), function($q) use ($request) {
+            $filter = $request->get('filter');
+            $q->where( 'first_name', 'LIKE', "%$filter%" );
+            $q->orWhere( 'last_name', 'LIKE', "%$filter%" );
+            $q->orWhere( 'email', 'LIKE', "%$filter%" );
+            return $q;
+        });
+
+        return response()->json($query->paginate($per_page));
     }
 
     public function show($id)
@@ -54,6 +72,7 @@ class EmployeeController extends Controller
             'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
             'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
             'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
+            'gender'       => $request->gender,
             'rate'         => $request->rate,
             'address'      => $request->address,
             'phone'        => $request->phone,

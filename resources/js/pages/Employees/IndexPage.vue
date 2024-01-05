@@ -57,11 +57,6 @@
                         <q-tooltip>Toggle Fullscreen</q-tooltip>
                     </q-btn>
                 </template>
-                <template #body-cell-status="props">
-                    <q-td :props="props">
-                        <q-badge rounded :color="!!props.row.employee.is_active ? 'green' : 'red' " />
-                    </q-td>
-                </template>
                 <template #body-cell-invoice="props">
                     <q-td :props="props">
                         <div class="q-gutter-md" style="font-size: 2em">
@@ -143,15 +138,9 @@ const table = reactive({
             sortable: true,
         },
         {
-            label: "First name",
-            name: "first_name",
-            field: "first_name",
-            sortable: true,
-        },
-        {
-            label: "Last Name",
-            name: "last_name",
-            field: "last_name",
+            label: "Name",
+            name: "fullname",
+            field: "fullname",
             sortable: true,
         },
         {
@@ -165,15 +154,6 @@ const table = reactive({
             name: "phone",
             field: "phone",
             sortable: true,
-        },
-        {
-            label: "Active",
-            name: "status",
-            field: "employee",
-            sortable: true,
-            format: (val, row) => {
-                return val
-            },
         },
         {
             label: 'Created',

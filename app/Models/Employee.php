@@ -29,12 +29,18 @@ class Employee extends Model
 
     protected $appends = [
         'fullname',
+        'email',
     ];
 
 
     public function getFullnameAttribute()
     {
-        return $this->first_name . " " . $this->last_name;
+        return $this->user->first_name . " " . $this->user->last_name;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->user->email;
     }
 
 

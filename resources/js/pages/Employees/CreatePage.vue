@@ -119,6 +119,7 @@
                                 label="Rate"
                                 lazy-rules
                                 class="col-6"
+                                name="rate"
                             >
                                 <template v-slot:prepend>
                                     <q-icon name="paid" />
@@ -205,6 +206,8 @@ const $form = reactive({
     email: "",
     address: "",
     phone: "",
+    schedule_in: "8:00 AM",
+    schedule_out: "5:00 APM",
 },);
 
 
