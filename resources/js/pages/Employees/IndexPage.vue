@@ -15,7 +15,6 @@
                 :filter="table.filter"
                 :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
                 @request="onRequest"
-                @row-click="onRow"
             >
                 <template v-slot:top-right="props">
                     <q-input
@@ -56,6 +55,13 @@
                     >
                         <q-tooltip>Toggle Fullscreen</q-tooltip>
                     </q-btn>
+                </template>
+                <template #body-cell-action="props">
+                    <q-td :props="props">
+                        <div class="row justify-end q-gutter-sm">
+                            <q-btn round size="sm" color="primary" icon="edit" @click="onRow(props.row)"/>
+                        </div>
+                    </q-td>
                 </template>
                 <template v-slot:loading>
                     <q-inner-loading showing color="primary" />
@@ -132,7 +138,14 @@ const table = reactive({
             format: (val, row) => {
                 return moment(val).format("YYYY-MM-DD");
             }
-        }
+        },
+        {
+            label: "Action",
+            name: "action",
+            field: "action",
+            align: 'left',
+            sortable: true,
+        },
     ],
     pagination: {
         sortBy: "id",
@@ -198,7 +211,7 @@ async function onRequest(props) {
     table.loading = false;
 }
 
-function onRow(evt, row, index){
+function onRow(row){
     $router.push(`/employees/${row.id}`)
 }
 

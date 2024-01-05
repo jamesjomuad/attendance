@@ -59,7 +59,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/attendance/logout', 'AttendanceController@logout');
 });
 
-
 $router->get('/{any:.*}', function () use ($router) {
     return view('errors.404');
 });

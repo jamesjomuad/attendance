@@ -94,13 +94,26 @@ function zeroPadding(num, digit) {
 }
 
 async function onTimeIn(){
-    try{
-        const { data } = axios.post(`/api/attendance/login`, { code: employeeCode.value })
-        console.log( data )
-    }catch(e){
-        console.log(e)
-    }
     console.log('onTimeIn:', employeeCode.value)
+    try{
+        const { data } = await axios.post(`/api/attendance/login`, { code: employeeCode.value })
+        $q.notify({
+            message: `${data.employee.fullname} logging IN!`,
+            type: 'positive',
+        })
+    }catch(e){
+        if(e.response.data?.error){
+            $q.notify({
+                message: e.response.data?.error,
+                type: 'negative',
+            })
+        }else{
+            $q.notify({
+                message: `Error loggin In`,
+                type: 'negative',
+            })
+        }
+    }
 }
 
 function onTimeOut(){

@@ -101,15 +101,31 @@ class AttendanceController extends Controller
     {
         $employee = Employee::where('code', $request->input('code'))->first();
 
-        $attendance = new Attendance;
+        if( $employee===null ){
+            return response()->json([
+                'error' => 'Employee not found!'
+            ], 500);
+        }
 
-        $attendance->employee()->associate($employee);
+        $today_attendances = $employee->attendance()
+        ->whereDate('created_at', Carbon::today())
+        ->get();
 
-        $attendance->in_am = Carbon::now();
+        // Check employee if no login today
+        if( $today_attendances->isEmpty() ){
+            $attendance = new Attendance;
 
-        dd(
-            $attendance->save()
-        );
+            $attendance->employee()->associate($employee);
+
+            $attendance->in_am = Carbon::now();
+
+            return response()->json([
+                'status'   => $attendance->save(),
+                'action'   => 'in_am',
+                'employee' => $employee
+            ]);
+        }
+
     }
 
 }
