@@ -6,36 +6,6 @@
                     <!-- Fields -->
                     <q-card-section>
                         <div class="row q-col-gutter-md">
-                            <q-select
-                                dense
-                                outlined
-                                class="col-6"
-                                label="Position"
-                                v-model="$form.position"
-                                :color="ui.typeBg"
-                                :options="ui.positions"
-                                emit-value
-                                map-options
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="info" />
-                                </template>
-                            </q-select>
-
-                            <q-select
-                                dense
-                                outlined
-                                class="col-6"
-                                label="Department"
-                                v-model="$form.department"
-                                :color="ui.typeBg"
-                                :options="ui.departments"
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="info" />
-                                </template>
-                            </q-select>
-
                             <q-input
                                 v-model="$form.first_name"
                                 dense
@@ -66,32 +36,6 @@
                             </q-input>
 
                             <q-input
-                                v-model="$form.phone"
-                                dense
-                                outlined
-                                label="Phone"
-                                lazy-rules
-                                class="col-6"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="phone" />
-                                </template>
-                            </q-input>
-
-                            <q-input
-                                v-model="$form.phone_2"
-                                dense
-                                outlined
-                                label="Work Phone"
-                                lazy-rules
-                                class="col-6"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="phone" />
-                                </template>
-                            </q-input>
-
-                            <q-input
                                 v-model="$form.email"
                                 dense
                                 outlined
@@ -105,6 +49,33 @@
                             </q-input>
 
                             <q-input
+                                v-model="$form.phone"
+                                dense
+                                outlined
+                                label="Phone"
+                                lazy-rules
+                                class="col-6"
+                            >
+                                <template v-slot:prepend>
+                                <q-icon name="phone" />
+                                </template>
+                            </q-input>
+
+                            <q-select
+                                dense
+                                outlined
+                                class="col-6"
+                                label="Gender"
+                                v-model="$form.gender"
+                                :color="ui.typeBg"
+                                :options="['Male', 'Female']"
+                            >
+                                <template v-slot:prepend>
+                                    <q-icon name="info" />
+                                </template>
+                            </q-select>
+
+                            <q-input
                                 v-model="$form.address"
                                 dense
                                 outlined
@@ -114,6 +85,81 @@
                             >
                                 <template v-slot:prepend>
                                     <q-icon name="home" />
+                                </template>
+                            </q-input>
+                        </div>
+                    </q-card-section>
+                </q-card>
+
+                <!-- Work Details -->
+                <q-card class="q-mt-md">
+                    <q-card-section>
+                        <div class="row q-col-gutter-md">
+                            <!-- Position -->
+                            <q-select
+                                dense
+                                outlined
+                                class="col-6"
+                                label="Position"
+                                v-model="$form.position"
+                                :color="ui.typeBg"
+                                :options="ui.positions"
+                                emit-value
+                                map-options
+                            >
+                                <template v-slot:prepend>
+                                    <q-icon name="info" />
+                                </template>
+                            </q-select>
+                            <!-- Rate -->
+                            <q-input
+                                v-model="$form.rate"
+                                dense
+                                outlined
+                                label="Rate"
+                                lazy-rules
+                                class="col-6"
+                            >
+                                <template v-slot:prepend>
+                                    <q-icon name="paid" />
+                                </template>
+                            </q-input>
+                            <!-- Schedule In -->
+                            <q-input
+                                dense
+                                outlined
+                                label="Schedule In"
+                                class="col-6"
+                                v-model="$form.schedule_in">
+                                <template v-slot:append>
+                                <q-icon name="access_time" class="cursor-pointer">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-time v-model="$form.schedule_in" mask="hh:mm A">
+                                        <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-time>
+                                    </q-popup-proxy>
+                                </q-icon>
+                                </template>
+                            </q-input>
+                            <!-- Schedule Out -->
+                            <q-input
+                                dense
+                                outlined
+                                label="Schedule Out"
+                                class="col-6"
+                                v-model="$form.schedule_out">
+                                <template v-slot:append>
+                                <q-icon name="access_time" class="cursor-pointer">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-time v-model="$form.schedule_out" mask="hh:mm A">
+                                        <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-time>
+                                    </q-popup-proxy>
+                                </q-icon>
                                 </template>
                             </q-input>
                         </div>
@@ -159,7 +205,6 @@ const $form = reactive({
     email: "",
     address: "",
     phone: "",
-    phone_2: "",
 },);
 
 

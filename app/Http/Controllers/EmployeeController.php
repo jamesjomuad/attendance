@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Employee;
 
 class EmployeeController extends Controller
@@ -37,14 +39,29 @@ class EmployeeController extends Controller
             ], 500);
         }
 
-        $data = $request->all();
+        $user = User::create([
+            'username'   => $request->username,
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'email'      => $request->email,
+            'password'   => Hash::make($request->username)
+        ]);
 
-        $consumer = User::create($data);
+        $user->employee()->create([
+            'position'     => $request->position,
+            'department'   => 0,
+            'type'         => 0,
+            'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
+            'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
+            'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
+            'rate'         => $request->rate,
+            'address'      => $request->address,
+            'phone'        => $request->phone,
+        ]);
 
         return response()->json([
-            'message' => 'User created successfully!',
-            'data'    => $consumer,
-            'status'  => true,
+            'message' => 'Employee created successfully',
+            'data'    => $user
         ], 201);
     }
 

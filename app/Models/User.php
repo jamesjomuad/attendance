@@ -40,9 +40,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'fullname',
     ];
 
+    #   Relation: user
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
+    }
 
     public function getFullnameAttribute()
     {
         return $this->first_name . " " . $this->last_name;
     }
+
 }

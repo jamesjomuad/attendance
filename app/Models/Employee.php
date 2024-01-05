@@ -11,6 +11,22 @@ use Laravel\Lumen\Auth\Authorizable;
 
 class Employee extends Model
 {
+
+    protected $fillable = [
+        'position',
+        'department',
+        'code',
+        'type',
+        'schedule_in',
+        'schedule_out',
+        'rate',
+        'address',
+        'phone',
+        'dob',
+        'is_active',
+        'thumbnail',
+    ];
+
     protected $appends = [
         'fullname',
     ];
