@@ -25,6 +25,7 @@ class Employee extends Model
         'dob',
         'is_active',
         'thumbnail',
+        'gender',
     ];
 
     protected $appends = [
@@ -35,11 +36,15 @@ class Employee extends Model
 
     public function getFullnameAttribute()
     {
+        if(!isset($this->user))
+        return null;
         return $this->user->first_name . " " . $this->user->last_name;
     }
 
     public function getEmailAttribute()
     {
+        if(!isset($this->user))
+        return null;
         return $this->user->email;
     }
 

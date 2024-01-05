@@ -1,7 +1,7 @@
 <!-- eslint-disable brace-style -->
 <template>
     <q-page padding>
-        <q-form class="row q-col-gutter-md" @submit="onCreate">
+        <q-form class="row q-col-gutter-md" @submit="onUpdate">
             <div class="col-md-12">
                 <q-card>
                     <!-- Fields -->
@@ -167,12 +167,22 @@
                         </div>
                     </q-card-section>
                 </q-card>
+
+                <!-- Action -->
                 <div class="row justify-end q-mt-md">
                     <div class="col-auto">
+                        <q-btn
+                            color="negative"
+                            label="Remove"
+                            :disable="ui.removing"
+                            :loading="ui.removing"
+                            @click="onRemove"
+                        />
                         <q-btn
                             color="primary"
                             type="submit"
                             label="Save"
+                            class="q-ml-md"
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
@@ -187,7 +197,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { useQuasar, date } from 'quasar'
 import _ from 'lodash'
 
 
@@ -198,7 +208,9 @@ const ui = reactive({
     loading: false,
     updating: false,
     resetting: false,
-    removing: false
+    removing: false,
+    positions: [],
+    departments: [],
 })
 const $form = ref({
     first_name: "",
@@ -211,19 +223,38 @@ onMounted(async ()=>{
     ui.loading = true
     const { data } = await axios.get(`/api/employees/${$route.params.id}`)
     $form.value = {...$form.value, ...data}
+    $form.value.first_name = data?.user.first_name
+    $form.value.last_name = data?.user.last_name
+    $form.value.schedule_in = date.formatDate($form.value.schedule_in, 'hh:mm A')
+    $form.value.schedule_out = date.formatDate($form.value.schedule_out, 'hh:mm A')
+    await getPositions()
     ui.loading = false
 })
+
+async function getPositions(){
+    try {
+        const { data } = await axios.get(`/api/positions`)
+        ui.positions = _.map(data.data, function(v){
+            return {
+                label: v.title,
+                value: v.id,
+            }
+        })
+    } catch (e) {
+        console.log( e )
+    }
+}
 
 
 async function onUpdate(){
     ui.loading = true
     ui.updating = true
     try{
-        const { data } = await axios.put(`/api/consumers/${$route.params.id}`, $form.value)
-        if(data.status){
+        const { data } = await axios.put(`/api/employees/${$route.params.id}`, $form.value)
+        if(data.message){
             $q.notify({
                 type: 'positive',
-                message: `Updated successfully!`
+                message: data.message
             })
         }
     }
@@ -248,11 +279,11 @@ function onRemove(){
         ui.loading = true
         ui.removing = true
         try{
-            const { data } = await axios.post(`/api/consumers/${$route.params.id}`, {
+            const { data } = await axios.post(`/api/employees/${$route.params.id}`, {
                 _method: 'delete'
             })
             if(data){
-                $router.push('/consumers')
+                $router.push('/employees')
                 $q.notify({
                     type: 'positive',
                     message: `${$form.value.first_name} ${$form.value.last_name} remove successfully!`
@@ -286,7 +317,7 @@ async function onResetPassword(){
         ui.loading = true
         ui.resetting = true
         try{
-            const { data } = await axios.put(`/api/consumers/${$route.params.id}`, {
+            const { data } = await axios.put(`/api/employees/${$route.params.id}`, {
                 ...$form.value,
                 password: password
             })

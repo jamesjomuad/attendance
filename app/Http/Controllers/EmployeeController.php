@@ -45,8 +45,9 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => ['required', 'string', 'max:80', 'unique:users'],
+            'username'  => ['required', 'string', 'max:80', 'unique:users'],
             "last_name" => ["required"],
+            "rate"      => ["required"],
         ]);
 
         // Validator
@@ -91,7 +92,7 @@ class EmployeeController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => ['required', 'string', 'max:80'],
             "last_name"  => ["required"],
-            "password"   => ["required","min:6"],
+            "rate"       => ["required"],
         ]);
 
         // Validator
@@ -110,15 +111,28 @@ class EmployeeController extends Controller
             ]);
         }
 
-        return [
-            'status' => $model->update($request->all()),
-            'data'   => $model
-        ];
+        $model->employee()->update([
+            'position'     => $request->position,
+            'department'   => 0,
+            'type'         => 0,
+            'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
+            'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
+            'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
+            'gender'       => $request->gender,
+            'rate'         => $request->rate,
+            'address'      => $request->address,
+            'phone'        => $request->phone,
+        ]);
+
+        return response()->json([
+            'message' => 'Employee updated successfully',
+            'data'    => $model
+        ], 201);
     }
 
     public function destroy($id)
     {
-        return User::findOrFail($id)->delete();
+        return Employee::findOrFail($id)->delete();
     }
 
 }

@@ -207,7 +207,7 @@ const $form = reactive({
     address: "",
     phone: "",
     schedule_in: "8:00 AM",
-    schedule_out: "5:00 APM",
+    schedule_out: "5:00 PM",
 },);
 
 
@@ -232,7 +232,6 @@ async function getPositions(){
 
 async function onCreate(){
     ui.loading = true
-    console.log($form)
     try{
         $form.username = `${$form.first_name}.${$form.last_name}`
         const { data } = await axios.post(`/api/employees`, $form)
@@ -242,11 +241,17 @@ async function onCreate(){
         })
         $router.push('/employees')
     }catch(error){
-        console.log(error)
-        $q.notify({
-            type: 'negative',
-            message: "Error!"
-        })
+        if(error.response?.data?.error){
+            $q.notify({
+                type: 'negative',
+                message: error.response?.data?.error
+            })
+        }else{
+            $q.notify({
+                type: 'negative',
+                message: "Error!"
+            })
+        }
     }
     ui.loading = false
 }
