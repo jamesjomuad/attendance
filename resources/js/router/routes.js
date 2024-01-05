@@ -111,20 +111,20 @@ const routes = [
                 ]
             },
 
-            // Departments
+            // Attendance
             {
-                path: "/departments",
+                path: "/attendance",
                 children: [{
                         path: "",
-                        component: () => import("../pages/Departments/IndexPage.vue"),
+                        component: () => import("../pages/Attendance/IndexPage.vue"),
                         meta: {
-                            title: "Departments",
+                            title: "Attendance",
                             requiresAuth: true
                         }
                     },
                     {
                         path: "create",
-                        component: () => import("../pages/Departments/CreatePage.vue"),
+                        component: () => import("../pages/Attendance/CreatePage.vue"),
                         meta: {
                             title: "New Position",
                             requiresAuth: true
@@ -132,7 +132,7 @@ const routes = [
                     },
                     {
                         path: ":id",
-                        component: () => import("../pages/Departments/UpdatePage.vue"),
+                        component: () => import("../pages/Attendance/UpdatePage.vue"),
                         meta: {
                             title: "Update Position",
                             requiresAuth: true

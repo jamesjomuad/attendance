@@ -18,26 +18,6 @@
                 @row-click="onRow"
             >
                 <template v-slot:top-right="props">
-                    <q-input
-                        outlined
-                        dense
-                        ref="search"
-                        debounce="300"
-                        v-model="table.filter"
-                        placeholder="Search"
-                        class="q-ma-xs"
-                    >
-                        <template v-slot:append>
-                            <q-icon name="search" />
-                        </template>
-                    </q-input>
-                    <q-btn
-                        size="md"
-                        color="primary"
-                        class="q-ml-sm"
-                        icon="add"
-                        to="/employees/create">
-                    </q-btn>
                     <q-btn
                         size="md"
                         color="secondary"
@@ -56,27 +36,6 @@
                     >
                         <q-tooltip>Toggle Fullscreen</q-tooltip>
                     </q-btn>
-                </template>
-                <template #body-cell-status="props">
-                    <q-td :props="props">
-                        <q-badge rounded :color="!!props.row.employee.is_active ? 'green' : 'red' " />
-                    </q-td>
-                </template>
-                <template #body-cell-invoice="props">
-                    <q-td :props="props">
-                        <div class="q-gutter-md" style="font-size: 2em">
-                            <q-icon v-if="props.row.xero_invoice_id" name="check_circle" color="positive"/>
-                            <q-icon v-else name="warning" color="negative"/>
-                        </div>
-                    </q-td>
-                </template>
-                <template #body-cell-payment="props">
-                    <q-td :props="props">
-                        <div class="q-gutter-md" style="font-size: 2em">
-                            <q-icon v-if="props.row.payment" name="check_circle" color="positive"/>
-                            <q-icon v-else name="warning" color="negative"/>
-                        </div>
-                    </q-td>
                 </template>
                 <template #body-cell-action="props">
                     <q-td :props="props">
@@ -143,56 +102,54 @@ const table = reactive({
             sortable: true,
         },
         {
-            label: "First name",
-            name: "first_name",
-            field: "first_name",
-            sortable: true,
+            label: "Employee ID",
+            name: "code",
+            field: "code",
+            sortable: false,
         },
         {
-            label: "Last Name",
-            name: "last_name",
-            field: "last_name",
-            sortable: true,
+            label: "Name",
+            name: "fullname",
+            field: "fullname",
+            sortable: false,
         },
         {
-            label: "Email",
-            name: "email",
-            field: "email",
-            sortable: true,
+            label: "Time In AM",
+            name: "in_am",
+            field: "in_am",
+            sortable: false,
         },
         {
-            label: "Phone",
-            name: "phone",
-            field: "phone",
-            sortable: true,
+            label: "Time Out AM",
+            name: "out_am",
+            field: "out_am",
+            sortable: false,
         },
         {
-            label: "Active",
-            name: "status",
-            field: "employee",
-            sortable: true,
-            format: (val, row) => {
-                return val
-            },
+            label: "Time In PM",
+            name: "in_pm",
+            field: "in_pm",
+            sortable: false,
         },
         {
-            label: 'Created',
+            label: "Time Out PM",
+            name: "out_pm",
+            field: "out_pm",
+            sortable: false,
+        },
+        {
+            label: 'Date',
             field: 'created_at',
             sortable: true,
             align: 'left',
             format: (val, row) => {
-                // return moment(val).format("MMMM DD, YYYY (h:mm a)");
                 return moment(val).format("YYYY-MM-DD");
             },
         },
         {
-            label: 'Updated',
-            field: 'updated_at',
-            sortable: true,
+            label: 'Action',
+            sortable: false,
             align: 'left',
-            format: (val, row) => {
-                return moment(val).format("YYYY-MM-DD");
-            }
         }
     ],
     pagination: {
@@ -233,7 +190,7 @@ async function onRequest(props) {
     };
 
     try {
-        const { data } = await axios.get(`/api/employees`, {params})
+        const { data } = await axios.get(`/api/attendances`, {params})
 
         table.pagination.rowsNumber = data.total;
 

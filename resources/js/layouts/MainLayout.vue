@@ -49,7 +49,7 @@
 
                     <q-item-label v-if="hasAdminAccess" header>System</q-item-label>
                     <menu-item v-if="hasAdminAccess" label="Users" icon="people" to="/system/users"/>
-                    <menu-item v-if="hasAdminAccess" label="Settings" icon="settings" to="/system/settings"/>
+                    <!-- <menu-item v-if="hasAdminAccess" label="Settings" icon="settings" to="/system/settings"/> -->
                 </q-list>
             </q-scroll-area>
         </q-drawer>

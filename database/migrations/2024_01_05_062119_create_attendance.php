@@ -13,8 +13,15 @@ class CreateAttendance extends Migration
      */
     public function up()
     {
-        Schema::create('attendance', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employee_id');
+            $table->time('in_am');
+            $table->time('out_am');
+            $table->time('in_pm');
+            $table->time('out_pm');
+            $table->boolean('status');
+            $table->double('hours');
             $table->timestamps();
         });
     }
@@ -26,6 +33,6 @@ class CreateAttendance extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attendance');
+        Schema::dropIfExists('attendances');
     }
 }

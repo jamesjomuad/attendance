@@ -4,23 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Attendance extends Model
 {
-
     protected $fillable = [
-        'position',
-        'department',
-        'code',
-        'type',
-        'schedule_in',
-        'schedule_out',
-        'rate',
-        'address',
-        'phone',
-        'dob',
-        'is_active',
-        'thumbnail',
-        'gender',
+        'in_am',
+        'out_am',
+        'in_pm',
+        'out_pm',
+        'status',
+        'hours',
     ];
 
     protected $appends = [

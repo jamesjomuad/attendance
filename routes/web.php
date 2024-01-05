@@ -49,6 +49,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('/positions/{id}', 'PositionController@update'); // Update an item
     $router->delete('/positions/{id}', 'PositionController@destroy'); // Delete an item
 
+    // Attendance
+    $router->get('/attendances', 'AttendanceController@index'); // Show all items
+    $router->get('/attendances/{id}', 'AttendanceController@show'); // Show a specific item
+    $router->post('/attendances', 'AttendanceController@store'); // Create a new item
+    $router->put('/attendances/{id}', 'AttendanceController@update'); // Update an item
+    $router->delete('/attendances/{id}', 'AttendanceController@destroy'); // Delete an item
+
 });
 
 
