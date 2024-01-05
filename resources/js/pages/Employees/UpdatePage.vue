@@ -8,6 +8,15 @@
                     <q-card-section>
                         <div class="row q-col-gutter-md">
                             <q-input
+                                v-model="$form.code"
+                                dense
+                                outlined
+                                label="Code"
+                                class="col-12"
+                                readonly
+                            ></q-input>
+
+                            <q-input
                                 v-model="$form.first_name"
                                 dense
                                 outlined

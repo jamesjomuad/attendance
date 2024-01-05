@@ -87,8 +87,6 @@ class EmployeeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $model = User::findOrFail($id);
-
         $validator = Validator::make($request->all(), [
             'first_name' => ['required', 'string', 'max:80'],
             "last_name"  => ["required"],
@@ -103,31 +101,39 @@ class EmployeeController extends Controller
             ], 500);
         }
 
+        $user = User::findOrFail($id);
 
         if( $request->filled('password') ){
-            $model->password = Hash::make($request->password);
+            $user->password = Hash::make($request->password);
             return response()->json([
-                'status' => $model->save()
+                'status' => $user->save()
             ]);
         }
 
-        $model->employee()->update([
-            'position'     => $request->position,
-            'department'   => 0,
-            'type'         => 0,
-            'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
-            'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
-            'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
-            'gender'       => $request->gender,
-            'rate'         => $request->rate,
-            'address'      => $request->address,
-            'phone'        => $request->phone,
-        ]);
+        try{
+            $user->update([
+                'first_name' => $request->input('first_name'),
+                'last_name'  => $request->input('last_name'),
+            ]);
 
-        return response()->json([
-            'message' => 'Employee updated successfully',
-            'data'    => $model
-        ], 201);
+            $user->employee()->update([
+                'position'     => $request->position,
+                'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
+                'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
+                'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
+                'gender'       => $request->gender,
+                'rate'         => $request->rate,
+                'address'      => $request->address,
+                'phone'        => $request->phone,
+            ]);
+
+            return response()->json([
+                'message' => 'Employee updated successfully',
+                'data'    => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Transaction failed: ' . $e->getMessage()], 500);
+        }
     }
 
     public function destroy($id)
