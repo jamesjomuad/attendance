@@ -138,10 +138,16 @@ const table = reactive({
             sortable: true,
         },
         {
+            label: "Code",
+            name: "code",
+            field: "code",
+            sortable: false,
+        },
+        {
             label: "Name",
             name: "fullname",
             field: "fullname",
-            sortable: true,
+            sortable: false,
         },
         {
             label: "Email",

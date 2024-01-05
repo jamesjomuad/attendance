@@ -47,6 +47,7 @@ class EmployeeController extends Controller
         $validator = Validator::make($request->all(), [
             'username'  => ['required', 'string', 'max:80', 'unique:users'],
             "last_name" => ["required"],
+            "position"  => ["required"],
             "rate"      => ["required"],
         ]);
 
@@ -70,7 +71,7 @@ class EmployeeController extends Controller
             'position'     => $request->position,
             'department'   => 0,
             'type'         => 0,
-            'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
+            'code'         => Carbon::now()->timestamp . Str::random(4),
             'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
             'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
             'gender'       => $request->gender,
@@ -101,17 +102,17 @@ class EmployeeController extends Controller
             ], 500);
         }
 
-        $employee = Employee::findOrFail($id);
-
         try{
+            $employee = Employee::findOrFail($id);
+
             $employee->user()->update([
                 'first_name' => $request->input('first_name'),
                 'last_name'  => $request->input('last_name'),
+                'email'      => $request->input('email'),
             ]);
 
             $employee->update([
                 'position'     => $request->position,
-                'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
                 'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
                 'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
                 'gender'       => $request->gender,
