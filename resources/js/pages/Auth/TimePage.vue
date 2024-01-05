@@ -77,21 +77,11 @@ onMounted(()=>{
 })
 
 
-
-
 function updateTime() {
     var cd = new Date();
     ui.time = date.formatDate(cd, 'hh:mm:ss A')
     ui.date = date.formatDate(cd, 'MMMM D, YYYY (dddd)')
 };
-
-function zeroPadding(num, digit) {
-    var zero = '';
-    for(var i = 0; i < digit; i++) {
-        zero += '0';
-    }
-    return (zero + num).slice(-digit);
-}
 
 async function onTimeIn(){
     console.log('onTimeIn:', employeeCode.value)
