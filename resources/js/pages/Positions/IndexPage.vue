@@ -127,6 +127,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
+import _ from 'lodash'
 
 
 const $router = useRouter();
@@ -154,6 +155,9 @@ const table = reactive({
             name: "description",
             field: "description",
             align: 'left',
+            format(v){
+                return _.truncate(v, { length: 130 })
+            },
             sortable: true,
         },
     ],
