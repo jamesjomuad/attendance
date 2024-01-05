@@ -101,22 +101,15 @@ class EmployeeController extends Controller
             ], 500);
         }
 
-        $user = User::findOrFail($id);
-
-        if( $request->filled('password') ){
-            $user->password = Hash::make($request->password);
-            return response()->json([
-                'status' => $user->save()
-            ]);
-        }
+        $employee = Employee::findOrFail($id);
 
         try{
-            $user->update([
+            $employee->user()->update([
                 'first_name' => $request->input('first_name'),
                 'last_name'  => $request->input('last_name'),
             ]);
 
-            $user->employee()->update([
+            $employee->update([
                 'position'     => $request->position,
                 'code'         => $request->position . '-' . Carbon::now()->timestamp . Str::random(4),
                 'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
@@ -129,7 +122,7 @@ class EmployeeController extends Controller
 
             return response()->json([
                 'message' => 'Employee updated successfully',
-                'data'    => $user
+                'data'    => $employee
             ], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Transaction failed: ' . $e->getMessage()], 500);
