@@ -34,6 +34,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('/users/{id}', 'UserController@update'); // Update an item
     $router->delete('/users/{id}', 'UserController@destroy'); // Delete an item
 
+    // Employees
+    $router->get('/employees', 'EmployeeController@index'); // Show all items
+    $router->get('/employees/{id}', 'EmployeeController@show'); // Show a specific item
+    $router->post('/employees', 'EmployeeController@store'); // Create a new item
+    $router->put('/employees/{id}', 'EmployeeController@update'); // Update an item
+    $router->delete('/employees/{id}', 'EmployeeController@destroy'); // Delete an item
+
+
+    // Positions
+    $router->get('/positions', 'PositionController@index'); // Show all items
+    $router->get('/positions/{id}', 'PositionController@show'); // Show a specific item
+    $router->post('/positions', 'PositionController@store'); // Create a new item
+    $router->put('/positions/{id}', 'PositionController@update'); // Update an item
+    $router->delete('/positions/{id}', 'PositionController@destroy'); // Delete an item
+
 });
 
 

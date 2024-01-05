@@ -42,6 +42,7 @@
                     <q-item-label header>Manage</q-item-label>
                     <menu-item v-if="hasAdminAccess" label="Employees" icon="people" to="/employees"/>
                     <menu-item v-if="hasAdminAccess" label="Positions" icon="badge" to="/positions"/>
+                    <menu-item v-if="hasAdminAccess" label="Departments" icon="work_outline" to="/departments"/>
                     <menu-item v-if="hasAdminAccess" label="Attendance" icon="calendar_month" to="/attendance"/>
                     <menu-item v-if="hasAdminAccess" label="Payroll" icon="credit_card" to="/payroll"/>
                     <q-separator />

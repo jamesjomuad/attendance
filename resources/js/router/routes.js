@@ -51,6 +51,96 @@ const routes = [
                 }
             },
 
+            // Employees
+            {
+                path: "/employees",
+                children: [{
+                        path: "",
+                        component: () => import("../pages/Employees/IndexPage.vue"),
+                        meta: {
+                            title: "Employees",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Employees/CreatePage.vue"),
+                        meta: {
+                            title: "New Employee",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Employees/UpdatePage.vue"),
+                        meta: {
+                            title: "Update Employees",
+                            requiresAuth: true
+                        }
+                    },
+                ]
+            },
+
+            // Positions
+            {
+                path: "/positions",
+                children: [{
+                        path: "",
+                        component: () => import("../pages/Positions/IndexPage.vue"),
+                        meta: {
+                            title: "Positions",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Positions/CreatePage.vue"),
+                        meta: {
+                            title: "New Position",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Positions/UpdatePage.vue"),
+                        meta: {
+                            title: "Update Position",
+                            requiresAuth: true
+                        }
+                    },
+                ]
+            },
+
+            // Departments
+            {
+                path: "/departments",
+                children: [{
+                        path: "",
+                        component: () => import("../pages/Departments/IndexPage.vue"),
+                        meta: {
+                            title: "Departments",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Departments/CreatePage.vue"),
+                        meta: {
+                            title: "New Position",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Departments/UpdatePage.vue"),
+                        meta: {
+                            title: "Update Position",
+                            requiresAuth: true
+                        }
+                    },
+                ]
+            },
+
             // Users
             {
                 path: "/system/users",
