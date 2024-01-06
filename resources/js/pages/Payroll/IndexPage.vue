@@ -122,7 +122,7 @@ const table = reactive({
             sortable: false,
         },
         {
-            label: "Gross",
+            label: "Rate",
             field: "rate",
             align: 'left',
             sortable: false,

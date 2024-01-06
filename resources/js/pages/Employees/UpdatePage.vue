@@ -126,7 +126,7 @@
                                 v-model="$form.rate"
                                 dense
                                 outlined
-                                label="Rate"
+                                label="Hourly rate"
                                 lazy-rules
                                 class="col-6"
                                 name="rate"

@@ -56,7 +56,7 @@ class Payroll extends Employee
 
     public function getNetAttribute()
     {
-        return $this->rate;
+        return $this->hours * $this->rate;
     }
 
 }
