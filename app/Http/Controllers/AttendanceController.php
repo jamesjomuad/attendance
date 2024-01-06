@@ -129,7 +129,10 @@ class AttendanceController extends Controller
         $attendance = $today_attendances->first();
 
         // PM Login
-        $can_pm_login = !$today_attendances->isEmpty() && $attendance->out_am!=null;
+        $can_pm_login = $attendance->in_am != null
+            && $attendance->out_am != null
+            && $attendance->in_pm == null
+        ;
 
         if( $can_pm_login ){
             $attendance->in_pm = Carbon::now();
@@ -138,6 +141,10 @@ class AttendanceController extends Controller
                 'action'   => 'in_pm',
                 'employee' => $employee
             ]);
+        }else{
+            return response()->json([
+                'error' => 'Already login!'
+            ], 500);
         }
 
     }
