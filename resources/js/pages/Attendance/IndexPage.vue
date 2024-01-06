@@ -38,8 +38,8 @@
                 </template>
                 <template #body-cell-in_am="props">
                     <q-td :props="props">
-                        {{ props.row.in_am }}
                         <q-badge v-if="props.row.is_late" color="red">Late</q-badge>
+                        {{ props.row.in_am }}
                     </q-td>
                 </template>
                 <template #body-cell-action="props">
@@ -60,7 +60,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useQuasar } from 'quasar'
+import { useQuasar, useMeta } from 'quasar'
 import { useRouter } from 'vue-router'
 
 
@@ -142,6 +142,9 @@ const table = reactive({
     }
 })
 
+useMeta({
+    title: 'Attendance',
+})
 
 onMounted(() => {
     onRequest({

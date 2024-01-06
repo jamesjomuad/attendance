@@ -24,7 +24,7 @@ app.use(Quasar, {
         Notify,
         Dialog,
         LocalStorage,
-        SessionStorage
+        SessionStorage,
     },
     config: {
         loadingBar: {

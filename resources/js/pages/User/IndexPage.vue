@@ -122,9 +122,12 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useQuasar } from 'quasar'
+import { useQuasar, useMeta } from 'quasar'
 import { useRouter } from 'vue-router'
 
+useMeta({
+    title: 'Users',
+})
 
 const $router = useRouter();
 const $q = useQuasar()

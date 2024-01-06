@@ -74,7 +74,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useQuasar, date } from 'quasar'
+import { useQuasar, date, useMeta } from 'quasar'
 import { useRouter } from 'vue-router'
 
 
@@ -159,6 +159,10 @@ const table = reactive({
     }
 })
 
+
+useMeta({
+    title: 'Employees',
+})
 
 onMounted(() => {
     onRequest({

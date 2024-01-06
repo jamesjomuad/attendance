@@ -68,10 +68,13 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useQuasar } from 'quasar'
+import { useQuasar, useMeta } from 'quasar'
 import { useRouter } from 'vue-router'
 import _ from 'lodash'
 
+useMeta({
+    title: 'Positions',
+})
 
 const $router = useRouter();
 const $q = useQuasar()

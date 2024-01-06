@@ -66,6 +66,12 @@
 </template>
 
 <script setup>
-import store from '../../store'
-const userRole = store.getters['auth/isCustomer'] ? 'customer' : 'admin'
+// import store from '../../store'
+// const userRole = store.getters['auth/isCustomer'] ? 'customer' : 'admin'
+import { useMeta } from 'quasar'
+
+
+useMeta({
+    title: 'Dashboard',
+})
 </script>

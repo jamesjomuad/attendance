@@ -46,12 +46,7 @@ class Attendance extends Model
 
     public function getIsLateAttribute()
     {
-        dd([
-            'in' => $this->in_am,
-            'schedule' => $this->employee->schedule_in,
-            $this->in_am->gt($this->employee->schedule_in)
-        ]);
-        return $this->in_am->lte($this->employee->schedule_in);
+        return $this->in_am->gt($this->employee->schedule_in);
     }
 
 
