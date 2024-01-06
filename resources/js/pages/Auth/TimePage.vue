@@ -87,10 +87,17 @@ async function onTimeIn(){
     console.log('onTimeIn:', employeeCode.value)
     try{
         const { data } = await axios.post(`/api/attendance/login`, { code: employeeCode.value })
-        $q.notify({
-            message: `${data.employee.fullname} logging IN!`,
-            type: 'positive',
-        })
+        if( data?.action=='in_pm' ){
+            $q.notify({
+                message: `${data.employee.fullname} logging in for afternoon!`,
+                type: 'positive',
+            })
+        }else{
+            $q.notify({
+                message: `${data.employee.fullname} logging in!`,
+                type: 'positive',
+            })
+        }
     }catch(e){
         if(e.response.data?.error){
             $q.notify({
@@ -110,10 +117,17 @@ async function onTimeOut(){
     console.log('onTimeOut:', employeeCode.value)
     try{
         const { data } = await axios.post(`/api/attendance/logout`, { code: employeeCode.value })
-        $q.notify({
-            message: `${data.employee.fullname} logging IN!`,
-            type: 'positive',
-        })
+        if(data?.action=='am_out'){
+            $q.notify({
+                message: `${data.employee.fullname} logging out for lunch break!`,
+                type: 'positive',
+            })
+        }else{
+            $q.notify({
+                message: `${data.employee.fullname} logging out!`,
+                type: 'positive',
+            })
+        }
     }catch(e){
         if(e.response.data?.error){
             $q.notify({

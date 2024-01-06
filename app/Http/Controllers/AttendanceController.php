@@ -124,10 +124,20 @@ class AttendanceController extends Controller
                 'action'   => 'in_am',
                 'employee' => $employee
             ]);
-        }else{
+        }
+
+        $attendance = $today_attendances->first();
+
+        // PM Login
+        $can_pm_login = !$today_attendances->isEmpty() && $attendance->out_am!=null;
+
+        if( $can_pm_login ){
+            $attendance->in_pm = Carbon::now();
             return response()->json([
-                'error' => 'Already login!'
-            ], 500);
+                'status'   => $attendance->save(),
+                'action'   => 'in_pm',
+                'employee' => $employee
+            ]);
         }
 
     }
@@ -136,6 +146,7 @@ class AttendanceController extends Controller
     {
         $employee = Employee::where('code', $request->input('code'))->first();
 
+        // Employee not found
         if( $employee===null ){
             return response()->json([
                 'error' => 'Employee not found!'
@@ -146,17 +157,29 @@ class AttendanceController extends Controller
         ->whereDate('created_at', Carbon::today())
         ->get();
 
-        $has_am_login = !$today_attendances->isEmpty() && $today_attendances->first()->in_am!=NULL;
+        $attendance = $today_attendances->first();
 
-        dd(
-            $has_am_login
-        );
+        // Login not found
+        if($today_attendances->isEmpty()){
+            return response()->json([
+                'error' => 'No Time In found!'
+            ], 500);
+        }
+
+        $can_am_logout = $today_attendances->first()->in_am!=NULL && $today_attendances->first()->out_am==NULL;
 
         // AM logout
-        if( !$today_attendances->isEmpty() && $today_attendances->first()->out_am!=NULL){
-            dd(
-                $today_attendances->first()
-            );
+        if( $can_am_logout ){
+            $attendance->out_am = Carbon::now();
+            return response()->json([
+                'status'   => $attendance->save(),
+                'action'   => 'am_out',
+                'employee' => $employee
+            ]);
+        }else{
+            return response()->json([
+                'error' => 'You need to login for afternoon!'
+            ], 500);
         }
 
     }
