@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
 {
+
+    protected $casts = [
+        'in_am' => 'datetime:H:i',        // 'datetime:H:i A',
+        'out_am' => 'datetime:H:i',
+        'in_pm' => 'datetime:H:i',
+        'out_pm' => 'datetime:H:i',
+    ];
+
     protected $fillable = [
         'in_am',
         'out_am',
@@ -17,29 +25,33 @@ class Attendance extends Model
 
     protected $appends = [
         'fullname',
-        'email',
-    ];
-
-    protected $casts = [
-        'in_am' => 'datetime:H:i',        // 'datetime:H:i A',
-        'out_am' => 'datetime:H:i',
-        'in_pm' => 'datetime:H:i',
-        'out_pm' => 'datetime:H:i',
+        'employee_code',
+        'is_late',
     ];
 
 
     public function getFullnameAttribute()
     {
-        if(!isset($this->user))
+        if(!isset($this->employee))
         return null;
-        return $this->user->first_name . " " . $this->user->last_name;
+        return $this->employee->fullname;
     }
 
-    public function getEmailAttribute()
+    public function getEmployeeCodeAttribute()
     {
-        if(!isset($this->user))
+        if(!isset($this->employee))
         return null;
-        return $this->user->email;
+        return $this->employee->code;
+    }
+
+    public function getIsLateAttribute()
+    {
+        dd([
+            'in' => $this->in_am,
+            'schedule' => $this->employee->schedule_in,
+            $this->in_am->gt($this->employee->schedule_in)
+        ]);
+        return $this->in_am->lte($this->employee->schedule_in);
     }
 
 

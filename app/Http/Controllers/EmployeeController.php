@@ -16,7 +16,7 @@ class EmployeeController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Employee::with('user');
+        $query = Employee::with(['user','position']);
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {

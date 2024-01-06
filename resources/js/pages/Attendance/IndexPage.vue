@@ -36,6 +36,12 @@
                         <q-tooltip>Toggle Fullscreen</q-tooltip>
                     </q-btn>
                 </template>
+                <template #body-cell-in_am="props">
+                    <q-td :props="props">
+                        {{ props.row.in_am }}
+                        <q-badge v-if="props.row.is_late" color="red">Late</q-badge>
+                    </q-td>
+                </template>
                 <template #body-cell-action="props">
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
@@ -73,14 +79,16 @@ const table = reactive({
         },
         {
             label: "Employee ID",
-            name: "code",
-            field: "code",
+            name: "employee_code",
+            field: "employee_code",
+            align: 'left',
             sortable: false,
         },
         {
             label: "Name",
             name: "fullname",
             field: "fullname",
+            align: 'left',
             sortable: false,
         },
         {
@@ -93,6 +101,7 @@ const table = reactive({
             label: "Time Out AM",
             name: "out_am",
             field: "out_am",
+            align: 'left',
             sortable: false,
         },
         {
@@ -105,7 +114,14 @@ const table = reactive({
             label: "Time Out PM",
             name: "out_pm",
             field: "out_pm",
+            align: 'left',
             sortable: false,
+        },
+        {
+            label: 'Total Hours',
+            field: 'hours',
+            sortable: false,
+            align: 'left',
         },
         {
             label: 'Date',
@@ -115,12 +131,6 @@ const table = reactive({
             format: (val, row) => {
                 return moment(val).format("YYYY-MM-DD");
             },
-        },
-        {
-            label: 'Action',
-            name: 'action',
-            sortable: false,
-            align: 'left',
         }
     ],
     pagination: {

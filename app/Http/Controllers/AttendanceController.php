@@ -17,7 +17,7 @@ class AttendanceController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Attendance::query();
+        $query = Attendance::with('employee');
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {

@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
 
+    protected $casts = [
+        'schedule_in' => 'datetime',      // datetime:H:i A
+        'schedule_out' => 'datetime',
+    ];
+
     protected $fillable = [
         'position',
         'department',
@@ -43,6 +48,11 @@ class Employee extends Model
         return $this->user->email;
     }
 
+
+    #
+    #   Relations
+    #
+
     #   Relation: user
     public function user()
     {
@@ -53,5 +63,11 @@ class Employee extends Model
     public function attendance()
     {
         return $this->hasMany(Attendance::class);
+    }
+
+    #   Relation: position
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position');
     }
 }

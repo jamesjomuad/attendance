@@ -12,4 +12,9 @@ class Position extends Model
         'description',
     ];
 
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
 }

@@ -74,7 +74,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useQuasar } from 'quasar'
+import { useQuasar, date } from 'quasar'
 import { useRouter } from 'vue-router'
 
 
@@ -107,21 +107,24 @@ const table = reactive({
             sortable: false,
         },
         {
-            label: "Email",
-            name: "email",
-            field: "email",
+            label: "Position",
+            field: "position",
             align: 'left',
-            sortable: true,
+            sortable: false,
+            format: (v) => v.title
         },
         {
-            label: "Phone",
-            name: "phone",
-            field: "phone",
+            label: "Schedule",
+            name: "schedule",
+            field: "schedule",
             align: 'left',
-            sortable: true,
+            sortable: false,
+            format(v, row){
+                return `${date.formatDate(new Date(row.schedule_in), 'hh:mm A')} - ${date.formatDate(new Date(row.schedule_out), 'hh:mm A')}`
+            }
         },
         {
-            label: 'Created',
+            label: 'Member Since',
             field: 'created_at',
             sortable: true,
             align: 'left',
@@ -143,7 +146,7 @@ const table = reactive({
             label: "Action",
             name: "action",
             field: "action",
-            align: 'left',
+            align: 'right',
             sortable: true,
         },
     ],
