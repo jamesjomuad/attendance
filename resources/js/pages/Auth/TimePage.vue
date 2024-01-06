@@ -28,6 +28,7 @@
                         size="lg"
                         icon="login"
                         label="Time In"
+                        :loading="ui.inLoading"
                         @click="onTimeIn"
                     />
                 </div>
@@ -37,6 +38,7 @@
                         size="lg"
                         icon-right="logout"
                         label="Time Out"
+                        :loading="ui.outLoading"
                         @click="onTimeOut"
                     />
                 </div>
@@ -48,7 +50,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useQuasar, date } from "quasar";
-import { useRouter } from "vue-router";
+import { useLink, useRouter } from "vue-router";
 
 
 
@@ -115,11 +117,18 @@ async function onTimeIn(){
 
 async function onTimeOut(){
     console.log('onTimeOut:', employeeCode.value)
+    ui.outLoading = true
     try{
         const { data } = await axios.post(`/api/attendance/logout`, { code: employeeCode.value })
         if(data?.action=='am_out'){
             $q.notify({
                 message: `${data.employee.fullname} logging out for lunch break!`,
+                type: 'positive',
+            })
+        }else if(data?.action=='pm_out'){
+            let hrs = data.attendance.hours
+            $q.notify({
+                message: `${data.employee.fullname} logging out, total hours: ${hrs}`,
                 type: 'positive',
             })
         }else{
@@ -129,7 +138,8 @@ async function onTimeOut(){
             })
         }
     }catch(e){
-        if(e.response.data?.error){
+        console.log(e)
+        if(e.response?.data?.error){
             $q.notify({
                 message: e.response.data?.error,
                 type: 'negative',
@@ -141,6 +151,7 @@ async function onTimeOut(){
             })
         }
     }
+    ui.outLoading = false
 }
 </script>
 

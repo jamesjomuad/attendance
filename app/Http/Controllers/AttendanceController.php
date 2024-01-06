@@ -211,6 +211,10 @@ class AttendanceController extends Controller
                 'attendance' => $attendance,
                 'employee'   => $employee
             ]);
+        }else{
+            return response()->json([
+                'error' => 'Already logout!'
+            ], 500);
         }
 
     }
