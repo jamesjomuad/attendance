@@ -119,7 +119,7 @@ const table = reactive({
         },
         {
             label: 'Total Hours',
-            field: 'hours',
+            field: 'total_hours',
             sortable: false,
             align: 'left',
         },

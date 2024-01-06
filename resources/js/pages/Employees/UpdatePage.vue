@@ -206,9 +206,12 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar, date } from 'quasar'
+import { useQuasar, date, useMeta } from 'quasar'
 import _ from 'lodash'
 
+useMeta({
+    title: 'Update Employee',
+})
 
 const $route = useRoute()
 const $router = useRouter()

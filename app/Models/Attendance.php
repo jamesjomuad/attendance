@@ -27,6 +27,7 @@ class Attendance extends Model
         'fullname',
         'employee_code',
         'is_late',
+        'total_hours',
     ];
 
 
@@ -47,6 +48,17 @@ class Attendance extends Model
     public function getIsLateAttribute()
     {
         return $this->in_am->gt($this->employee->schedule_in);
+    }
+
+    public function getTotalHoursAttribute()
+    {
+        if( in_array(null, [$this->in_am,$this->out_am,$this->in_pm,$this->out_pm], true) ){
+            return 0;
+        }
+
+        $total_am = $this->in_am->diff($this->out_am)->h + ($this->in_am->diff($this->out_am)->i / 60);
+        $total_pm = $this->in_pm->diff($this->out_pm)->h + ($this->in_pm->diff($this->out_pm)->i / 60);
+        return  round($total_am + $total_pm, 2);
     }
 
 
