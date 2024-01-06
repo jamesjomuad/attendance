@@ -17,26 +17,6 @@
                 @request="onRequest"
             >
                 <template v-slot:top-right="props">
-                    <q-input
-                        outlined
-                        dense
-                        ref="search"
-                        debounce="300"
-                        v-model="table.filter"
-                        placeholder="Search"
-                        class="q-ma-xs"
-                    >
-                        <template v-slot:append>
-                            <q-icon name="search" />
-                        </template>
-                    </q-input>
-                    <q-btn
-                        size="md"
-                        color="primary"
-                        class="q-ml-sm"
-                        icon="add"
-                        to="/positions/create">
-                    </q-btn>
                     <q-btn
                         size="md"
                         color="secondary"

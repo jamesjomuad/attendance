@@ -6,7 +6,7 @@
                     <q-card-section>
                         <div class="flex justify-between">
                             <div>
-                                <h2 class="text-h4 q-ma-none">22</h2>
+                                <h2 class="text-h4 q-ma-none">{{ TotalEmployees }}</h2>
                                 <div class="text-subtitle2">Total Employees</div>
                             </div>
                             <div>
@@ -66,12 +66,25 @@
 </template>
 
 <script setup>
-// import store from '../../store'
-// const userRole = store.getters['auth/isCustomer'] ? 'customer' : 'admin'
+import { ref, onMounted } from 'vue'
 import { useMeta } from 'quasar'
 
 
 useMeta({
     title: 'Dashboard',
 })
+
+const TotalEmployees = ref()
+const OnTimePercentage = ref()
+const OnTimeToday = ref()
+const LateToday = ref()
+
+onMounted(async ()=>{
+    const { data } = await axios.get(`/api/statistics`)
+    TotalEmployees.value = data.TotalEmployees
+    OnTimePercentage.value = data.OnTimePercentage
+    OnTimeToday.value = data.OnTimeToday
+    LateToday.value = data.LateToday
+})
+
 </script>
