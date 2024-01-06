@@ -26,6 +26,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('login',  'AuthController@login');
     });
 
+    // Dashboard Statistics
+    $router->get('/statistics', 'StatisticController@index');
 
     // User
     $router->get('/users', 'UserController@index'); // Show all items

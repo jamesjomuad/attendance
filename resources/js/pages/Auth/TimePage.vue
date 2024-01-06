@@ -106,8 +106,27 @@ async function onTimeIn(){
     }
 }
 
-function onTimeOut(){
+async function onTimeOut(){
     console.log('onTimeOut:', employeeCode.value)
+    try{
+        const { data } = await axios.post(`/api/attendance/logout`, { code: employeeCode.value })
+        $q.notify({
+            message: `${data.employee.fullname} logging IN!`,
+            type: 'positive',
+        })
+    }catch(e){
+        if(e.response.data?.error){
+            $q.notify({
+                message: e.response.data?.error,
+                type: 'negative',
+            })
+        }else{
+            $q.notify({
+                message: `Error loggin Out`,
+                type: 'negative',
+            })
+        }
+    }
 }
 </script>
 

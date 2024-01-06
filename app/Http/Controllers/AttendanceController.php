@@ -111,7 +111,7 @@ class AttendanceController extends Controller
         ->whereDate('created_at', Carbon::today())
         ->get();
 
-        // Check employee if no login today
+        // AM Login: Check employee if no login today
         if( $today_attendances->isEmpty() ){
             $attendance = new Attendance;
 
@@ -124,6 +124,39 @@ class AttendanceController extends Controller
                 'action'   => 'in_am',
                 'employee' => $employee
             ]);
+        }else{
+            return response()->json([
+                'error' => 'Already login!'
+            ], 500);
+        }
+
+    }
+
+    public function logout(Request $request)
+    {
+        $employee = Employee::where('code', $request->input('code'))->first();
+
+        if( $employee===null ){
+            return response()->json([
+                'error' => 'Employee not found!'
+            ], 500);
+        }
+
+        $today_attendances = $employee->attendance()
+        ->whereDate('created_at', Carbon::today())
+        ->get();
+
+        $has_am_login = !$today_attendances->isEmpty() && $today_attendances->first()->in_am!=NULL;
+
+        dd(
+            $has_am_login
+        );
+
+        // AM logout
+        if( !$today_attendances->isEmpty() && $today_attendances->first()->out_am!=NULL){
+            dd(
+                $today_attendances->first()
+            );
         }
 
     }
