@@ -173,21 +173,37 @@ class AttendanceController extends Controller
             ], 500);
         }
 
-        $can_am_logout = $today_attendances->first()->in_am!=NULL && $today_attendances->first()->out_am==NULL;
+        $can_logout_in_am = $today_attendances->first()->in_am!=NULL && $today_attendances->first()->out_am==NULL;
 
         // AM logout
-        if( $can_am_logout ){
+        if( $can_logout_in_am ){
             $attendance->out_am = Carbon::now();
             return response()->json([
                 'status'   => $attendance->save(),
                 'action'   => 'am_out',
                 'employee' => $employee
             ]);
-        }else{
+        }elseif($attendance->in_pm==NULL){
             return response()->json([
                 'error' => 'You need to login for afternoon!'
             ], 500);
         }
+
+        $can_logout_in_pm = $attendance->in_am != NULL
+            && $attendance->out_am != NULL
+            && $attendance->in_pm != NULL
+            && $attendance->out_pm == NULL
+        ;
+
+        // PM logout
+        // Compute the total hours
+        if( $can_logout_in_pm ){
+            dd(
+                $attendance
+            );
+        }
+
+        // PM logout
 
     }
 

@@ -15,7 +15,6 @@
                 :filter="table.filter"
                 :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
                 @request="onRequest"
-                @row-click="onRow"
             >
                 <template v-slot:top-right="props">
                     <q-btn
@@ -40,36 +39,7 @@
                 <template #body-cell-action="props">
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
-                            <q-btn-dropdown
-                                flat
-                                rounded
-                                color="primary"
-                                dropdown-icon="more_vert"
-                                class="card-action"
-                            >
-                                <q-list>
-                                    <q-item clickable @click="onView(props)">
-                                        <q-item-section>
-                                            <q-item-label>View</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item v-if="!props.row.xero_invoice_id" clickable>
-                                        <q-item-section>
-                                            <q-item-label>Generate Invoice</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            <q-item-label>Resend Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable @click="mailTo(props.row)">
-                                        <q-item-section>
-                                            <q-item-label>Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                </q-list>
-                            </q-btn-dropdown>
+                            <q-btn round size="sm" color="primary" icon="edit" @click="onRow(props.row)"/>
                         </div>
                     </q-td>
                 </template>
@@ -148,6 +118,7 @@ const table = reactive({
         },
         {
             label: 'Action',
+            name: 'action',
             sortable: false,
             align: 'left',
         }
@@ -216,8 +187,8 @@ async function onRequest(props) {
     table.loading = false;
 }
 
-function onRow(evt, row, index){
-    $router.push(`/employees/${row.id}`)
+function onRow(row){
+    $router.push(`/attendance/${row.id}`)
 }
 
 function onRefresh(){
