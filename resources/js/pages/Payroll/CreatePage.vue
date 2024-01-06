@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-        <q-form class="row q-col-gutter-md" @submit="onUpdate">
+        <q-form class="row q-col-gutter-md" @submit="onCreate">
             <div class="col-md-12">
                 <q-card>
                     <!-- Fields -->
@@ -36,7 +36,7 @@
                         <q-btn
                             color="primary"
                             type="submit"
-                            label="Update"
+                            label="Save"
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
@@ -49,13 +49,10 @@
 
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, } from "vue";
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar, useMeta } from 'quasar'
+import { useQuasar } from 'quasar'
 
-useMeta({
-    title: 'Update Position',
-})
 
 const $route = useRoute()
 const $router = useRouter()
@@ -69,23 +66,13 @@ const $form = reactive({
 },);
 
 
-
-onMounted(async ()=>{
-    ui.loading = true
-    const { data } = await axios.get(`/api/positions/${$route.params.id}`)
-    $form.title = data.title
-    $form.description = data.description
-    ui.loading = false
-})
-
-
-async function onUpdate(){
+async function onCreate(){
     ui.loading = true
     try{
         const { data } = await axios.post(`/api/positions`, $form)
         $q.notify({
             type: 'positive',
-            message: `Updated successfully!`
+            message: `Created successfully!`
         })
         $router.push('/positions')
     }catch(error){

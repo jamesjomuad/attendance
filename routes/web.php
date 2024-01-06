@@ -59,6 +59,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('/attendances/{id}', 'AttendanceController@destroy'); // Delete an item
     $router->post('/attendance/login', 'AttendanceController@login');
     $router->post('/attendance/logout', 'AttendanceController@logout');
+
+    // Payroll
+    $router->get('/payroll', 'PayrollController@index'); // Show all items
+    $router->get('/payroll/{id}', 'PayrollController@show'); // Show a specific item
+    $router->post('/payroll', 'PayrollController@store'); // Create a new item
+    $router->put('/payroll/{id}', 'PayrollController@update'); // Update an item
+    $router->delete('/payroll/{id}', 'PayrollController@destroy'); // Delete an item
 });
 
 $router->get('/{any:.*}', function () use ($router) {

@@ -141,6 +141,36 @@ const routes = [
                 ]
             },
 
+            // Payroll
+            {
+                path: "/payroll",
+                children: [{
+                        path: "",
+                        component: () => import("../pages/Payroll/IndexPage.vue"),
+                        meta: {
+                            title: "Payroll",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Payroll/CreatePage.vue"),
+                        meta: {
+                            title: "New Position",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Payroll/UpdatePage.vue"),
+                        meta: {
+                            title: "Update Position",
+                            requiresAuth: true
+                        }
+                    },
+                ]
+            },
+
             // Users
             {
                 path: "/system/users",
