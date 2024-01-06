@@ -20,6 +20,13 @@ class Attendance extends Model
         'email',
     ];
 
+    protected $casts = [
+        'in_am' => 'datetime:H:i',        // 'datetime:H:i A',
+        'out_am' => 'datetime:H:i',
+        'in_pm' => 'datetime:H:i',
+        'out_pm' => 'datetime:H:i',
+    ];
+
 
     public function getFullnameAttribute()
     {

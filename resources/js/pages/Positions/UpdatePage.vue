@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-        <q-form class="row q-col-gutter-md" @submit="onCreate">
+        <q-form class="row q-col-gutter-md" @submit="onUpdate">
             <div class="col-md-12">
                 <q-card>
                     <!-- Fields -->
@@ -36,7 +36,7 @@
                         <q-btn
                             color="primary"
                             type="submit"
-                            label="Save"
+                            label="Update"
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
@@ -82,7 +82,7 @@ async function onUpdate(){
         const { data } = await axios.post(`/api/positions`, $form)
         $q.notify({
             type: 'positive',
-            message: `Created successfully!`
+            message: `Updated successfully!`
         })
         $router.push('/positions')
     }catch(error){

@@ -198,12 +198,20 @@ class AttendanceController extends Controller
         // PM logout
         // Compute the total hours
         if( $can_logout_in_pm ){
-            dd(
-                $attendance
-            );
-        }
+            $attendance->out_pm = Carbon::now();
 
-        // PM logout
+            $total_am = $attendance->in_am->diff($attendance->out_am)->h + ($attendance->in_am->diff($attendance->out_am)->i / 60);
+            $total_pm = $attendance->in_pm->diff($attendance->out_pm)->h + ($attendance->in_pm->diff($attendance->out_pm)->i / 60);
+
+            $attendance->hours = round($total_am + $total_pm, 2);
+
+            return response()->json([
+                'status'     => $attendance->save(),
+                'action'     => 'pm_out',
+                'attendance' => $attendance,
+                'employee'   => $employee
+            ]);
+        }
 
     }
 
