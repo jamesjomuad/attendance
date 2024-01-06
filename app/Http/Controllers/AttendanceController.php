@@ -141,6 +141,18 @@ class AttendanceController extends Controller
                 'action'   => 'in_pm',
                 'employee' => $employee
             ]);
+        }
+
+        $completed_today = $attendance->in_am !== null
+            && $attendance->out_am !== null
+            && $attendance->in_pm !== null
+            && $attendance->out_pm !== null
+        ;
+
+        if($completed_today){
+            return response()->json([
+                'error' => "Already completed today's shift!"
+            ], 500);
         }else{
             return response()->json([
                 'error' => 'Already login!'
