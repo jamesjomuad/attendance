@@ -3,7 +3,7 @@
         <!-- Top Bar -->
         <q-header class="text-white bg-grey-9">
             <q-toolbar>
-                <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+                <q-btn flat @click="miniState = !miniState" round dense icon="menu" />
                 <q-toolbar-title v-if="!$q.screen.xs">{{ $route.meta?.title }} </q-toolbar-title>
 
                 <q-space />
@@ -64,7 +64,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from "vuex"
 import { useRoute, useRouter } from 'vue-router'
-import { copyToClipboard, debounce } from 'quasar'
 import menuItem from "../components/MenuItem";
 
 

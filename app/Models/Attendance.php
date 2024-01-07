@@ -53,6 +53,16 @@ class Attendance extends Model
 
     public function getTotalHoursAttribute()
     {
+        if( $this->in_am!==null && $this->out_am === null ){
+            $total = $this->in_am->diff(Carbon::now())->h + ($this->in_am->diff(Carbon::now())->i / 60);
+            return round($total, 2);
+        }
+        elseif( $this->in_pm!==null && $this->out_pm === null )
+        {
+            $total = $this->in_pm->diff(Carbon::now())->h + ($this->in_pm->diff(Carbon::now())->i / 60);
+            return round($total, 2);
+        }
+
         if( in_array(null, [$this->in_am,$this->out_am,$this->in_pm,$this->out_pm], true) ){
             return 0;
         }

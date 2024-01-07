@@ -10,26 +10,19 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useRoute, useRouter } from 'vue-router'
 import { useQuasar, date } from 'quasar'
 import _ from 'lodash'
 
 
-const $route = useRoute()
-const $router = useRouter()
 const $q = useQuasar()
 const ui = reactive({
     loading: false,
-    updating: false,
-    resetting: false,
-    removing: false,
-    positions: [],
-    departments: [],
 })
 const $form = ref({
-    first_name: "",
-    last_name: "",
-    email: "",
+    in_am: "",
+    out_am: "",
+    in_pm: "",
+    out_pm: "",
 });
 
 
@@ -41,23 +34,8 @@ onMounted(async ()=>{
     $form.value.last_name = data?.user.last_name
     $form.value.schedule_in = date.formatDate($form.value.schedule_in, 'hh:mm A')
     $form.value.schedule_out = date.formatDate($form.value.schedule_out, 'hh:mm A')
-    await getPositions()
     ui.loading = false
 })
-
-async function getPositions(){
-    try {
-        const { data } = await axios.get(`/api/positions`)
-        ui.positions = _.map(data.data, function(v){
-            return {
-                label: v.title,
-                value: v.id,
-            }
-        })
-    } catch (e) {
-        console.log( e )
-    }
-}
 
 
 async function onUpdate(){
@@ -116,41 +94,5 @@ function onRemove(){
 
 }
 
-async function onResetPassword(){
-    $q.dialog({
-        title: 'Set new password',
-        prompt: {
-            model: '',
-            type: 'password',
-            outlined: true,
-            flat: true
-        },
-        cancel: true,
-        persistent: true
-    }).onOk(async(password) => {
-        ui.loading = true
-        ui.resetting = true
-        try{
-            const { data } = await axios.put(`/api/employees/${$route.params.id}`, {
-                ...$form.value,
-                password: password
-            })
-            if(data.status){
-                $q.notify({
-                    type: 'positive',
-                    message: `Password updated!`
-                })
-            }
-        }
-        catch(e){
-            $q.notify({
-                message: 'Error changing password',
-                color: 'negative'
-            })
-        }
-        ui.loading = false
-        ui.resetting = false
-    })
-}
 </script>
 
