@@ -87,6 +87,7 @@ function updateTime() {
 
 async function onTimeIn(){
     console.log('onTimeIn:', employeeCode.value)
+    ui.inLoading = true
     try{
         const { data } = await axios.post(`/api/attendance/login`, { code: employeeCode.value })
         if( data?.action=='in_pm' ){
@@ -113,6 +114,7 @@ async function onTimeIn(){
             })
         }
     }
+    ui.inLoading = false
 }
 
 async function onTimeOut(){

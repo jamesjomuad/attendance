@@ -13,13 +13,23 @@ class StatisticController extends Controller
     {
         $attendance = Attendance::whereDate('created_at', Carbon::now())
         ->whereNotNull('in_am')
-        ->count();
+        ->get();
+
+        $OnTimeToday = $attendance->filter(function ($item) {
+            return $item['is_late'] == false;
+        })->count();
+
+        $LateToday = $attendance->filter(function ($item) {
+            return $item['is_late'] == true;
+        })->count();
+
+        $OnTimePercentage = ($OnTimeToday / $attendance->count()) * 100;
 
         return response()->json([
             'TotalEmployees'    => Employee::all()->count(),
-            'OnTimePercentage'  => $attendance,
-            'OnTimeToday'       => '',
-            'LateToday'         => '',
+            'OnTimePercentage'  => $OnTimePercentage,
+            'OnTimeToday'       => $OnTimeToday,
+            'LateToday'         => $LateToday,
         ]);
     }
 

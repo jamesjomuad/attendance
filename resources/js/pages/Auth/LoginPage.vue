@@ -71,7 +71,7 @@ const ui = reactive({
 
 onMounted(()=>{
     if($store.getters['auth/isAuthenticated']){
-        $router.push(`/`)
+        $router.push(`/dashboard`)
     }
 })
 
