@@ -23,6 +23,8 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+// class_alias(Barryvdh\DomPDF\Facade::class, 'PDF');
+
 $app->withFacades();
 
 $app->withEloquent();
@@ -60,6 +62,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('dompdf');
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +97,7 @@ $app->configure('app');
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(\Barryvdh\DomPDF\ServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

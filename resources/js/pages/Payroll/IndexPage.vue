@@ -24,20 +24,20 @@
                         icon="refresh"
                         @click="onRefresh">
                     </q-btn>
-                    <q-btn
+                    <!-- <q-btn
                         size="md"
                         color="info"
                         class="q-ml-sm"
                         icon="print"
                         label="Payroll"
                         @click="onRefresh">
-                    </q-btn>
+                    </q-btn> -->
                     <q-btn
                         size="md"
                         color="info"
                         class="q-ml-sm"
                         icon="print"
-                        label="Payslip"
+                        label="Payslips"
                         @click="onRefresh">
                     </q-btn>
                     <q-btn
@@ -51,6 +51,23 @@
                     >
                         <q-tooltip>Toggle Fullscreen</q-tooltip>
                     </q-btn>
+                </template>
+                <template #body-cell-action="props">
+                    <q-td :props="props">
+                        <div class="row justify-end q-gutter-sm">
+                            <q-btn round size="sm" color="accent" icon="visibility" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=html'">
+                                <q-tooltip :offset="[10, 10]">
+                                    Preview
+                                </q-tooltip>
+                            </q-btn>
+                            <q-btn round size="sm" color="accent" icon="print" target="_blank" :href="'/api/payslips/'+props.row.id">
+                                <q-tooltip :offset="[10, 10]">
+                                    Payslip
+                                </q-tooltip>
+                            </q-btn>
+                            <q-btn round size="sm" color="primary" icon="edit"/>
+                        </div>
+                    </q-td>
                 </template>
                 <template v-slot:loading>
                     <q-inner-loading showing color="primary" />
@@ -123,6 +140,13 @@ const table = reactive({
             align: 'left',
             sortable: false,
             format: (v) => currency.format(v)
+        },
+        {
+            label: "Action",
+            name: "action",
+            field: "action",
+            align: 'right',
+            sortable: true,
         },
     ],
     pagination: {

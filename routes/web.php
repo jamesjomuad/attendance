@@ -66,6 +66,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/payroll', 'PayrollController@store'); // Create a new item
     $router->put('/payroll/{id}', 'PayrollController@update'); // Update an item
     $router->delete('/payroll/{id}', 'PayrollController@destroy'); // Delete an item
+
+    // Payslip
+    $router->get('/payslips', 'PayslipController@index');
+    $router->get('/payslips/{id}', 'PayslipController@show');
+
 });
 
 $router->get('/{any:.*}', function () use ($router) {
