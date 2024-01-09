@@ -65,7 +65,7 @@
                                     Payslip
                                 </q-tooltip>
                             </q-btn>
-                            <q-btn round size="sm" color="primary" icon="edit"/>
+                            <!-- <q-btn round size="sm" color="primary" icon="edit"/> -->
                         </div>
                     </q-td>
                 </template>
