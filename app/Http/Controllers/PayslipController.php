@@ -15,8 +15,22 @@ class PayslipController extends Controller
 
     public function index(Request $request)
     {
-        return Payroll::findOrFail();
+        $date = [
+            'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
+            'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
+        ];
+        $employees = Payroll::all();
+        $pdf = Pdf::loadView('payslips', compact('employees','date'));
+        if( $request->input('format')=='html' ){
+            return view('payslips', compact('employees','date'));
+        }else if( $request->input('format')=='download' ){
+            return $pdf->download("payslips - ".$date['from']." - ".$date['to'].".pdf");
+        }else{
+            // Display the PDF in the browser
+            return $pdf->stream();
+        }
     }
+
     public function show($id, Request $request)
     {
         $date = [

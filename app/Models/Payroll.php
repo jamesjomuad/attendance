@@ -51,12 +51,18 @@ class Payroll extends Employee
 
     public function getDeductionsAttribute()
     {
-        return 0;
+        return $this->currency(0);
     }
 
     public function getNetAttribute()
     {
-        return number_format((float)($this->hours * $this->rate), 2, '.', '');
+        return $this->currency((float)($this->hours * $this->rate));
+    }
+
+    private function currency($amount)
+    {
+        $numberFormatter = new \NumberFormatter( 'en_US', \NumberFormatter::CURRENCY );
+        return $numberFormatter->formatCurrency($amount, "PHP" ) ;
     }
 
 }

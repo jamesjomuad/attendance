@@ -18,8 +18,9 @@
             >
                 <template v-slot:top-right="props">
                     <q-btn
+                        flat
+                        round
                         size="md"
-                        color="secondary"
                         class="q-ml-sm"
                         icon="refresh"
                         @click="onRefresh">
@@ -33,12 +34,16 @@
                         @click="onRefresh">
                     </q-btn> -->
                     <q-btn
+                        flat
+                        round
                         size="md"
-                        color="info"
                         class="q-ml-sm"
                         icon="print"
-                        label="Payslips"
-                        @click="onRefresh">
+                        target="_blank"
+                        href="/api/payslips/">
+                        <q-tooltip :offset="[10, 10]">
+                            Print Payslips
+                        </q-tooltip>
                     </q-btn>
                     <q-btn
                         flat
@@ -63,6 +68,11 @@
                             <q-btn round size="sm" color="accent" icon="print" target="_blank" :href="'/api/payslips/'+props.row.id">
                                 <q-tooltip :offset="[10, 10]">
                                     Payslip
+                                </q-tooltip>
+                            </q-btn>
+                            <q-btn round size="sm" color="accent" icon="download" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=download'">
+                                <q-tooltip :offset="[10, 10]">
+                                    Download
                                 </q-tooltip>
                             </q-btn>
                             <!-- <q-btn round size="sm" color="primary" icon="edit"/> -->
@@ -123,23 +133,23 @@ const table = reactive({
             field: "rate",
             align: 'left',
             sortable: false,
-            format(v){
-                return currency.format(v)
-            }
+            // format(v){
+            //     return currency.format(v)
+            // }
         },
         {
             label: "Deductions",
             field: "deductions",
             align: 'left',
             sortable: false,
-            format: (v) => currency.format(v)
+            // format: (v) => currency.format(v)
         },
         {
             label: "Net Pay",
             field: "net",
             align: 'left',
             sortable: false,
-            format: (v) => currency.format(v)
+            // format: (v) => currency.format(v)
         },
         {
             label: "Action",

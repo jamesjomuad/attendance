@@ -73,6 +73,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 });
 
+$router->get('/test', function(){
+    $numberFormatter = new NumberFormatter( 'en_US', NumberFormatter::CURRENCY );
+    dd( $numberFormatter->formatCurrency(1234.56789, "PHP" ) );
+});
+
 $router->get('/{any:.*}', function () use ($router) {
     return view('errors.404');
 });
