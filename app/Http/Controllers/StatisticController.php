@@ -23,7 +23,7 @@ class StatisticController extends Controller
             return $item['is_late'] == true;
         })->count();
 
-        $OnTimePercentage = ($OnTimeToday / $attendance->count()) * 100;
+        $OnTimePercentage = $OnTimeToday>0 ? ($OnTimeToday / $attendance->count()) * 100 : 0;
 
         return response()->json([
             'TotalEmployees'    => Employee::all()->count(),
