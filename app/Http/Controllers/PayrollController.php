@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Exception;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Payroll;
@@ -44,7 +45,16 @@ class PayrollController extends Controller
 
     public function show($id)
     {
-        return Attendance::findOrFail($id);
+            // return Attendance::findOrFail($id);
+        try{
+            return Payroll::with([
+                'attendance' => function($q){
+                    $q->thisMonth();
+                }
+            ])->findOrFail($id);
+        }catch(Exception $e){
+            return response()->json(['error' => 'INVALID_ROUTE'], 404);
+        }
     }
 
     public function store(Request $request)

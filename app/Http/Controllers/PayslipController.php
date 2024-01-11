@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Models\Payroll;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 
 class PayslipController extends Controller
 {
@@ -38,18 +39,23 @@ class PayslipController extends Controller
             'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
         ];
 
-        $employee = Payroll::findOrFail($id);
+        try{
+            $employee = Payroll::findOrFail($id);
 
-        // Generate PDF view
-        $pdf = Pdf::loadView('payslip', compact('employee','date'));
+            // Generate PDF view
+            $pdf = Pdf::loadView('payslip', compact('employee','date'));
 
-        if( $request->input('format')=='html' ){
-            return view('payslip', compact('employee','date'));
-        }else if( $request->input('format')=='download' ){
-            return $pdf->download("payslip - $employee->fullname - ".$date['from']." - ".$date['to'].".pdf");
-        }else{
-            // Display the PDF in the browser
-            return $pdf->stream();
+            if( $request->input('format')=='html' ){
+                return view('payslip', compact('employee','date'));
+            }else if( $request->input('format')=='download' ){
+                return $pdf->download("payslip - $employee->fullname - ".$date['from']." - ".$date['to'].".pdf");
+            }else{
+                // Display the PDF in the browser
+                return $pdf->stream();
+            }
+        }catch(Exception $e){
+            return response()->json(['error' => 'INVALID_ROUTE'], 404);
         }
+
     }
 }

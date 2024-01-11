@@ -15,6 +15,9 @@
                 <q-btn round flat icon="account_circle">
                     <q-menu auto-close :offset="[110, 0]">
                         <q-list style="min-width: 150px">
+                            <q-item clickable :to="`/system/users/${user.id}`">
+                                <q-item-section>Account</q-item-section>
+                            </q-item>
                             <q-item clickable @click.prevent="onLogout">
                                 <q-item-section>Logout</q-item-section>
                             </q-item>
