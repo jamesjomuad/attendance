@@ -20,7 +20,7 @@ class PayslipController extends Controller
             'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
             'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
         ];
-        $employees = Payroll::all();
+        $employees = Payroll::with('position')->get();
         $pdf = Pdf::loadView('payslips', compact('employees','date'));
         if( $request->input('format')=='html' ){
             return view('payslips', compact('employees','date'));
@@ -39,8 +39,8 @@ class PayslipController extends Controller
             'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
         ];
 
-        try{
-            $employee = Payroll::findOrFail($id);
+        // try{
+            $employee = Payroll::with('position')->findOrFail($id);
 
             // Generate PDF view
             $pdf = Pdf::loadView('payslip', compact('employee','date'));
@@ -53,9 +53,9 @@ class PayslipController extends Controller
                 // Display the PDF in the browser
                 return $pdf->stream();
             }
-        }catch(Exception $e){
-            return response()->json(['error' => 'INVALID_ROUTE'], 404);
-        }
+        // }catch(Exception $e){
+        //     return response()->json(['error' => 'INVALID_ROUTE'], 404);
+        // }
 
     }
 }

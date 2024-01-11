@@ -33,6 +33,12 @@ class Payroll extends Employee
         return $this->hasMany(Attendance::class, 'employee_id');
     }
 
+    #   Relation: position
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position');
+    }
+
 
     #
     #   Attributes

@@ -37,12 +37,16 @@
                 <th>Amount</th>
             </tr>
             <tr>
+                <td>Employee ID</td>
+                <td>{{ $employee->code }}</td>
+            </tr>
+            <tr>
                 <td>Employee Name</td>
                 <td>{{ $employee->user->fullname }}</td>
             </tr>
             <tr>
-                <td>Employee ID</td>
-                <td>{{ $employee->code }}</td>
+                <td>Position</td>
+                <td>{{ $employee->toArray()['position']['title'] }}</td>
             </tr>
             <tr>
                 <td>Hourly Rate</td>

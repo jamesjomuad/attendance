@@ -38,6 +38,18 @@
                         round
                         size="md"
                         class="q-ml-sm"
+                        icon="visibility"
+                        target="_blank"
+                        href="/api/payslips?format=html">
+                        <q-tooltip :offset="[10, 10]">
+                            Peview Payslips
+                        </q-tooltip>
+                    </q-btn>
+                    <q-btn
+                        flat
+                        round
+                        size="md"
+                        class="q-ml-sm"
                         icon="print"
                         target="_blank"
                         href="/api/payslips/">
