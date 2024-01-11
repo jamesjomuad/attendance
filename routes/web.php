@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 | and give it the Closure to call when that URI is requested.
 |
 */
+
 
 $router->get('/', function () use ($router) {
     // return $router->app->version();
@@ -74,8 +76,25 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 });
 
 $router->get('/test', function(){
-    $numberFormatter = new NumberFormatter( 'en_US', NumberFormatter::CURRENCY );
-    dd( $numberFormatter->formatCurrency(1234.56789, "PHP" ) );
+
+    $today =Carbon::now()->addDays(6);
+
+    if( $today->day < 15 ){
+        $date = [
+            'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
+            'to' => Carbon::now()->startOfMonth()->addDays(14)->format('F d, Y'),
+        ];
+    } else {
+        $date = [
+            'from' => Carbon::now()->startOfMonth()->addDays(15)->format('F d, Y'),
+            'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
+        ];
+    }
+
+    dd(
+        $date
+        // Carbon::now()->day < 15
+    );
 });
 
 $router->get('/{any:.*}', function () use ($router) {

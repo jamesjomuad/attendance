@@ -16,46 +16,60 @@ class PayslipController extends Controller
 
     public function index(Request $request)
     {
-        $date = [
-            'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
-            'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
-        ];
+        $date = $this->dateInterval();
+
         $employees = Payroll::with('position')->get();
+
         $pdf = Pdf::loadView('payslips', compact('employees','date'));
+
         if( $request->input('format')=='html' ){
             return view('payslips', compact('employees','date'));
         }else if( $request->input('format')=='download' ){
             return $pdf->download("payslips - ".$date['from']." - ".$date['to'].".pdf");
+        }else if( $request->input('format')=='json' ){
+            return response()->json($employees);
+        }else{
+            return $pdf->stream();      // Display the PDF in the browser
+        }
+    }
+
+    public function show($id, Request $request)
+    {
+        $date = $this->dateInterval();
+
+        $employee = Payroll::with('position')->findOrFail($id);
+
+        // Generate PDF view
+        $pdf = Pdf::loadView('payslip', compact('employee','date'));
+
+        if( $request->input('format')=='html' ){
+            return view('payslip', compact('employee','date'));
+        }else if( $request->input('format')=='download' ){
+            return $pdf->download("payslip - $employee->fullname - ".$date['from']." - ".$date['to'].".pdf");
+        }else if( $request->input('format')=='json' ){
+            return response()->json($employee);
         }else{
             // Display the PDF in the browser
             return $pdf->stream();
         }
     }
 
-    public function show($id, Request $request)
+    private function dateInterval()
     {
-        $date = [
-            'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
-            'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
-        ];
+        $today =Carbon::now();
 
-        // try{
-            $employee = Payroll::with('position')->findOrFail($id);
+        if( $today->day < 15 ){
+            $date = [
+                'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
+                'to' => Carbon::now()->startOfMonth()->addDays(14)->format('F d, Y'),
+            ];
+        } else {
+            $date = [
+                'from' => Carbon::now()->startOfMonth()->addDays(15)->format('F d, Y'),
+                'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
+            ];
+        }
 
-            // Generate PDF view
-            $pdf = Pdf::loadView('payslip', compact('employee','date'));
-
-            if( $request->input('format')=='html' ){
-                return view('payslip', compact('employee','date'));
-            }else if( $request->input('format')=='download' ){
-                return $pdf->download("payslip - $employee->fullname - ".$date['from']." - ".$date['to'].".pdf");
-            }else{
-                // Display the PDF in the browser
-                return $pdf->stream();
-            }
-        // }catch(Exception $e){
-        //     return response()->json(['error' => 'INVALID_ROUTE'], 404);
-        // }
-
+        return $date;
     }
 }
