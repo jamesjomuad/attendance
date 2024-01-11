@@ -19,6 +19,7 @@
                                 label="Username"
                                 name="username"
                                 class="col-12"
+                                readonly
                             >
                                 <template v-slot:prepend>
                                     <q-icon name="account_circle" />
@@ -152,16 +153,22 @@ async function onUpdate(){
                 message: `Updated successfully!`
             })
         }
+    }catch(error){
+            console.log(error)
+            if(error.response?.data?.error){
+                $q.notify({
+                    type: 'negative',
+                    message: error.response?.data?.error
+                })
+            }else{
+                $q.notify({
+                    type: 'negative',
+                    message: "Error!"
+                })
+            }
+        }
+        ui.loading = false
     }
-catch(error){
-        console.log(error)
-        $q.notify({
-            type: 'negative',
-            message: "Error!"
-        })
-    }
-    ui.loading = false
-}
 
 function onRemove(){
     $q.dialog({

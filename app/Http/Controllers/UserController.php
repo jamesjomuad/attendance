@@ -71,11 +71,10 @@ class UserController extends Controller
     {
         $model = User::findOrFail($id);
 
+        // Password update
         if( $request->filled('password') ){
             $validator = Validator::make($request->all(), [
-                'first_name' => ['required', 'string', 'max:80'],
-                "last_name"  => ["required"],
-                "password"   => ["required","min:6"],
+                "password" => ["required","min:6"],
             ]);
 
             // Validator
@@ -86,10 +85,26 @@ class UserController extends Controller
                 ], 500);
             }
 
-            $model->password = Hash::make($request->password);
+            $model->password = Hash::make($request->input('password'));
+
             return response()->json([
                 'status' => $model->save()
             ]);
+        }
+
+        $validator = Validator::make($request->all(), [
+            // 'username' => ['required', 'string', 'max:80', 'unique:users'],
+            'first_name' => ['required', 'string', 'max:80'],
+            "last_name"  => ["required"],
+            // "password"   => ["required","min:6"],
+        ]);
+
+        // Validator
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'error' => $validator->errors()->first(),
+            ], 500);
         }
 
         return [
