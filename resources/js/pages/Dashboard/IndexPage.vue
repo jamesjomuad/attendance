@@ -1,8 +1,8 @@
 <template>
     <q-page padding class="bg-grey-1">
-        <div class="row q-gutter-md">
+        <div class="row q-col-gutter-md">
             <!-- Total Employees -->
-            <div class="col">
+            <div class="col-xs-12 col-sm-4 col-md-3">
                 <q-card flat class="bg-grey-13 q-pa-sm">
                     <q-card-section>
                         <div class="flex justify-between">
@@ -19,7 +19,7 @@
                 </q-card>
             </div>
             <!-- On Time Percentage -->
-            <div class="col">
+            <div class="col-xs-12 col-sm-4 col-md-3">
                 <q-card flat class="bg-orange-13 q-pa-sm">
                     <q-card-section>
                         <div class="flex justify-between">
@@ -36,7 +36,7 @@
                 </q-card>
             </div>
             <!-- On Time Today -->
-            <div class="col">
+            <div class="col-xs-12 col-sm-4 col-md-3">
                 <q-card flat class="bg-yellow-13 q-pa-sm">
                     <q-card-section>
                         <div class="flex justify-between">
@@ -53,7 +53,7 @@
                 </q-card>
             </div>
             <!-- Late Today -->
-            <div class="col">
+            <div class="col-xs-12 col-sm-4 col-md-3">
                 <q-card flat class="bg-red-13 q-pa-sm">
                     <q-card-section>
                         <div class="flex justify-between">

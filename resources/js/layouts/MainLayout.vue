@@ -64,9 +64,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useStore } from "vuex"
 import { useRoute, useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 import menuItem from "../components/MenuItem";
 
 
@@ -74,11 +75,23 @@ import menuItem from "../components/MenuItem";
 const $route = useRoute();
 const $router = useRouter();
 const $store = useStore();
+const $q = useQuasar()
 const drawer = ref(true)
 const miniState = ref(false)
 const user = computed(()=>$store.getters['auth/user'])
 const hasAdminAccess = ref(!$store.getters['auth/isCustomer'])
 
+onMounted(()=>{
+    if($q.screen.xs){
+        drawer.value = false
+    }
+})
+
+watch(miniState, (o,n)=>{
+    if($q.screen.xs){
+        drawer.value = true
+    }
+})
 
 function onLogout(){
     console.log('logout')
