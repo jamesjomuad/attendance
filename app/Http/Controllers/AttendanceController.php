@@ -19,20 +19,25 @@ class AttendanceController extends Controller
 
         $query = Attendance::with('employee');
 
+        //  Filter/Search
+        $query->when($request->get('filter'), function($q) use ($request) {
+            $filter = $request->get('filter');
+            $q->orWhereHas( 'employee', function($employee) use($filter) {
+                $employee->where( 'code', 'LIKE', "%$filter%" );
+            });
+            $q->orWhereHas( 'employee.user', function($user) use($filter) {
+                $user->where( 'first_name', 'LIKE', "%$filter%" );
+                $user->orWhere( 'last_name', 'LIKE', "%$filter%" );
+                $user->orWhere( 'email', 'LIKE', "%$filter%" );
+            });
+            return $q;
+        });
+
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
             $sortBy  = $request->get('sortBy');
             $orderBy = $request->get('orderBy');
             return $q->orderBy( $sortBy, $orderBy );
-        });
-
-        //  Filter/Search
-        $query->when($request->get('filter'), function($q) use ($request) {
-            $filter = $request->get('filter');
-            $q->where( 'first_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'last_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'email', 'LIKE', "%$filter%" );
-            return $q;
         });
 
         return response()->json($query->paginate($per_page));

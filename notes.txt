@@ -1,6 +1,6 @@
-- Bi Monthly payslip
+✓ Bi Monthly payslip
+✓ Search bar Attendance
 - Search bar Payroll
-- Search bar Attendance
 - Overtime computation
 - Leave credits
 - Deductions
