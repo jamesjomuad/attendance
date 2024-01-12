@@ -30,6 +30,7 @@ class Attendance extends Model
         'is_late',
         'total_hours',
         'overtime',
+        'undertime',
     ];
 
 
@@ -94,9 +95,24 @@ class Attendance extends Model
 
     public function getOvertimeAttribute()
     {
-        // dd(
-        //     $this->total_hours
-        // );
+        // Hours required Minus 1 hour break
+        $required_hours = $this->employee->schedule_out->subHours(1)->diffInHours($this->employee->schedule_in);
+        $overtime = round($this->total_hours - $required_hours, 2);
+        if( $overtime >0 ){
+            return $overtime;
+        }
+        return 0;
+    }
+
+    public function getUndertimeAttribute()
+    {
+        // Hours required Minus 1 hour break
+        $required_hours = $this->employee->schedule_out->subHours(1)->diffInHours($this->employee->schedule_in);
+        $overtime = round($this->total_hours - $required_hours, 2);
+        if( $overtime < 0 ){
+            return $overtime;
+        }
+        return 0;
     }
 
 
