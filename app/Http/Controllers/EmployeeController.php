@@ -18,6 +18,20 @@ class EmployeeController extends Controller
 
         $query = Employee::with(['user','position']);
 
+        //  Filter/Search
+        $query->when($request->get('filter'), function($q) use ($request) {
+            $filter = $request->get('filter');
+            $q->orWhereHas( 'user', function($user) use($filter) {
+                $user->where( 'first_name', 'LIKE', "%$filter%" );
+                $user->orWhere( 'last_name', 'LIKE', "%$filter%" );
+                $user->orWhere( 'email', 'LIKE', "%$filter%" );
+            });
+            $q->orWhereHas( 'position', function($position) use($filter) {
+                $position->where( 'title', 'LIKE', "%$filter%" );
+            });
+            return $q;
+        });
+
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
             $sortBy  = $request->get('sortBy');
@@ -25,14 +39,6 @@ class EmployeeController extends Controller
             return $q->orderBy( $sortBy, $orderBy );
         });
 
-        //  Filter/Search
-        $query->when($request->get('filter'), function($q) use ($request) {
-            $filter = $request->get('filter');
-            $q->where( 'first_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'last_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'email', 'LIKE', "%$filter%" );
-            return $q;
-        });
 
         return response()->json($query->paginate($per_page));
     }
