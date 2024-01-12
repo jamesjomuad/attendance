@@ -29,6 +29,7 @@ class Attendance extends Model
         'employee_code',
         'is_late',
         'total_hours',
+        'overtime',
     ];
 
 
@@ -89,6 +90,13 @@ class Attendance extends Model
         $total_am = $this->in_am->diff($this->out_am)->h + ($this->in_am->diff($this->out_am)->i / 60);
         $total_pm = $this->in_pm->diff($this->out_pm)->h + ($this->in_pm->diff($this->out_pm)->i / 60);
         return  round($total_am + $total_pm, 2);
+    }
+
+    public function getOvertimeAttribute()
+    {
+        // dd(
+        //     $this->total_hours
+        // );
     }
 
 

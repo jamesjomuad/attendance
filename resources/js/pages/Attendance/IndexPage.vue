@@ -138,6 +138,12 @@ const table = reactive({
             align: 'left',
         },
         {
+            label: 'Overtime',
+            field: 'overtime',
+            sortable: false,
+            align: 'left',
+        },
+        {
             label: 'Date',
             field: 'created_at',
             sortable: true,
