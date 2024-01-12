@@ -43,16 +43,17 @@
                     <q-separator />
 
                     <q-item-label header>Manage</q-item-label>
-                    <menu-item v-if="hasAdminAccess" label="Employees" icon="people" to="/employees"/>
-                    <menu-item v-if="hasAdminAccess" label="Positions" icon="badge" to="/positions"/>
-                    <!-- <menu-item v-if="hasAdminAccess" label="Departments" icon="work_outline" to="/departments"/> -->
-                    <menu-item v-if="hasAdminAccess" label="Attendance" icon="calendar_month" to="/attendance"/>
-                    <menu-item v-if="hasAdminAccess" label="Payroll" icon="credit_card" to="/payroll"/>
+                    <menu-item label="Employees" icon="people" to="/employees"/>
+                    <menu-item label="Positions" icon="badge" to="/positions"/>
+                    <!-- <menu-item label="Departments" icon="work_outline" to="/departments"/> -->
+                    <menu-item label="Attendance" icon="calendar_month" to="/attendance"/>
+                    <menu-item label="Payroll" icon="credit_card" to="/payroll"/>
+                    <menu-item label="Leaves" icon="spa" to="/leaves"/>
                     <q-separator />
 
-                    <q-item-label v-if="hasAdminAccess" header>System</q-item-label>
-                    <menu-item v-if="hasAdminAccess" label="Users" icon="people" to="/system/users"/>
-                    <!-- <menu-item v-if="hasAdminAccess" label="Settings" icon="settings" to="/system/settings"/> -->
+                    <q-item-label header>System</q-item-label>
+                    <menu-item label="Users" icon="people" to="/system/users"/>
+                    <!-- <menu-item label="Settings" icon="settings" to="/system/settings"/> -->
                 </q-list>
             </q-scroll-area>
         </q-drawer>
@@ -79,7 +80,6 @@ const $q = useQuasar()
 const drawer = ref(true)
 const miniState = ref(false)
 const user = computed(()=>$store.getters['auth/user'])
-const hasAdminAccess = ref(!$store.getters['auth/isCustomer'])
 
 onMounted(()=>{
     if($q.screen.xs){

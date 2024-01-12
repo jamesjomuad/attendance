@@ -35,17 +35,20 @@ class PayslipController extends Controller
 
     public function show($id, Request $request)
     {
-        $date = $this->dateInterval();
+        $dates = $this->dateInterval();
 
-        $employee = Payroll::with('position')->findOrFail($id);
+        $employee = Payroll::with(['position', 'attendance' => function($q) use($dates) {
+            $q->whereBetween('created_at', [ $dates['from'], $dates['to'] ]);
+        }])->findOrFail($id);
+
 
         // Generate PDF view
-        $pdf = Pdf::loadView('payslip', compact('employee','date'));
+        $pdf = Pdf::loadView('payslip', compact('employee','dates'));
 
         if( $request->input('format')=='html' ){
-            return view('payslip', compact('employee','date'));
+            return view('payslip', compact('employee','dates'));
         }else if( $request->input('format')=='download' ){
-            return $pdf->download("payslip - $employee->fullname - ".$date['from']." - ".$date['to'].".pdf");
+            return $pdf->download("payslip - $employee->fullname - ".$dates['from']." - ".$dates['to'].".pdf");
         }else if( $request->input('format')=='json' ){
             return response()->json($employee);
         }else{
@@ -56,17 +59,17 @@ class PayslipController extends Controller
 
     private function dateInterval()
     {
-        $today =Carbon::now();
+        $today = Carbon::now();
 
         if( $today->day < 15 ){
             $date = [
-                'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
-                'to' => Carbon::now()->startOfMonth()->addDays(14)->format('F d, Y'),
+                'from' => Carbon::now()->startOfMonth(),
+                'to'   => Carbon::now()->startOfMonth()->addDays(14)
             ];
         } else {
             $date = [
-                'from' => Carbon::now()->startOfMonth()->addDays(15)->format('F d, Y'),
-                'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
+                'from' => Carbon::now()->startOfMonth()->addDays(15),
+                'to'   => Carbon::now()->endOfMonth(),
             ];
         }
 

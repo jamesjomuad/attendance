@@ -20,6 +20,7 @@
                 <template v-slot:top-right="props">
                     <q-input
                         outlined
+                        rounded
                         dense
                         ref="search"
                         debounce="300"

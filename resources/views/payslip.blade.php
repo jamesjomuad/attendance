@@ -27,7 +27,7 @@
 
     <section style=" text-align: center; ">
         <h2 >Payslip </h2>
-        <h4> Payment slip from the month of {{ $date['from'] }} to {{ $date['to'] }}</h4>
+        <h4> Payment slip from the month of {{ $dates['from']->format('F d, Y') }} to {{ $dates['to']->format('F d, Y') }}</h4>
     </section>
 
     <table>

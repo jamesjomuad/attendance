@@ -1,0 +1,6 @@
+- Bi Monthly payslip
+- Search bar Payroll
+- Search bar Attendance
+- Overtime computation
+- Leave credits
+- Deductions

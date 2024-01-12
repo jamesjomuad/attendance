@@ -15,12 +15,12 @@
                 :filter="table.filter"
                 :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
                 @request="onRequest"
+                @row-click="onRow"
             >
                 <template v-slot:top-right="props">
                     <q-input
                         outlined
                         dense
-                        rounded
                         ref="search"
                         debounce="300"
                         v-model="table.filter"
@@ -32,36 +32,18 @@
                         </template>
                     </q-input>
                     <q-btn
-                        flat
-                        round
                         size="md"
+                        color="primary"
+                        class="q-ml-sm"
+                        icon="add"
+                        to="/positions/create">
+                    </q-btn>
+                    <q-btn
+                        size="md"
+                        color="secondary"
                         class="q-ml-sm"
                         icon="refresh"
                         @click="onRefresh">
-                    </q-btn>
-                    <q-btn
-                        flat
-                        round
-                        size="md"
-                        class="q-ml-sm"
-                        icon="visibility"
-                        target="_blank"
-                        href="/api/payslips?format=html">
-                        <q-tooltip :offset="[10, 10]">
-                            Peview Payslips
-                        </q-tooltip>
-                    </q-btn>
-                    <q-btn
-                        flat
-                        round
-                        size="md"
-                        class="q-ml-sm"
-                        icon="print"
-                        target="_blank"
-                        href="/api/payslips/">
-                        <q-tooltip :offset="[10, 10]">
-                            Print Payslips
-                        </q-tooltip>
                     </q-btn>
                     <q-btn
                         flat
@@ -74,28 +56,6 @@
                     >
                         <q-tooltip>Toggle Fullscreen</q-tooltip>
                     </q-btn>
-                </template>
-                <template #body-cell-action="props">
-                    <q-td :props="props">
-                        <div class="row justify-end q-gutter-sm">
-                            <q-btn round size="sm" color="accent" icon="visibility" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=html'">
-                                <q-tooltip :offset="[10, 10]">
-                                    Preview
-                                </q-tooltip>
-                            </q-btn>
-                            <q-btn round size="sm" color="accent" icon="print" target="_blank" :href="'/api/payslips/'+props.row.id">
-                                <q-tooltip :offset="[10, 10]">
-                                    Payslip
-                                </q-tooltip>
-                            </q-btn>
-                            <q-btn round size="sm" color="accent" icon="download" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=download'">
-                                <q-tooltip :offset="[10, 10]">
-                                    Download
-                                </q-tooltip>
-                            </q-btn>
-                            <!-- <q-btn round size="sm" color="primary" icon="edit"/> -->
-                        </div>
-                    </q-td>
                 </template>
                 <template v-slot:loading>
                     <q-inner-loading showing color="primary" />
@@ -113,67 +73,37 @@ import { useRouter } from 'vue-router'
 import _ from 'lodash'
 
 useMeta({
-    title: 'Payroll',
+    title: 'Positions',
 })
-
 
 const $router = useRouter();
 const $q = useQuasar()
-const currency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'PHP',
-});
 const table = reactive({
     loading: false,
     filter: '',
     rows: [],
     columns: [
         {
-            label: "Employee #",
-            field: "code",
+            label: "#",
+            name: "id",
+            field: "id",
+            sortable: true,
+        },
+        {
+            label: "Title",
+            name: "title",
+            field: "title",
             align: 'left',
             sortable: true,
         },
         {
-            label: "Name",
-            field: "fullname",
+            label: "Description",
+            name: "description",
+            field: "description",
             align: 'left',
-            sortable: false,
-        },
-        {
-            label: "Total Hours",
-            field: "hours",
-            align: 'left',
-            sortable: false,
-        },
-        {
-            label: "Rate",
-            field: "rate",
-            align: 'left',
-            sortable: false,
-            // format(v){
-            //     return currency.format(v)
-            // }
-        },
-        {
-            label: "Deductions",
-            field: "deductions",
-            align: 'left',
-            sortable: false,
-            // format: (v) => currency.format(v)
-        },
-        {
-            label: "Net Pay",
-            field: "net",
-            align: 'left',
-            sortable: false,
-            // format: (v) => currency.format(v)
-        },
-        {
-            label: "Action",
-            name: "action",
-            field: "action",
-            align: 'right',
+            format(v){
+                return _.truncate(v, { length: 130 })
+            },
             sortable: true,
         },
     ],
@@ -215,7 +145,7 @@ async function onRequest(props) {
     };
 
     try {
-        const { data } = await axios.get(`/api/payroll`, {params})
+        const { data } = await axios.get(`/api/positions`, {params})
 
         table.pagination.rowsNumber = data.total;
 

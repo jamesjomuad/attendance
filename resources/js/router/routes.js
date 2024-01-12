@@ -171,6 +171,36 @@ const routes = [
                 ]
             },
 
+            // Leaves
+            {
+                path: "/leaves",
+                children: [{
+                        path: "",
+                        component: () => import("../pages/Leaves/IndexPage.vue"),
+                        meta: {
+                            title: "Leaves",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Leaves/CreatePage.vue"),
+                        meta: {
+                            title: "New Position",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Leaves/UpdatePage.vue"),
+                        meta: {
+                            title: "Update Position",
+                            requiresAuth: true
+                        }
+                    },
+                ]
+            },
+
             // Users
             {
                 path: "/system/users",

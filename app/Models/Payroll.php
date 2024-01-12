@@ -71,4 +71,15 @@ class Payroll extends Employee
         return $numberFormatter->formatCurrency($amount, "PHP" ) ;
     }
 
+    #
+    #   Scopes
+    #
+
+    public function scopeBiMonth($query, $dates)
+    {
+        $query = $query->whereHas('attendance', function ($attendance) use($dates) {
+            return $attendance->whereBetween('created_at', [$dates['from'], $dates['to']]);
+        });
+        return $query;
+    }
 }

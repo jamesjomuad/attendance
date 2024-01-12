@@ -28,7 +28,7 @@
     @foreach ($employees as $employee)
         <section style=" text-align: center; ">
             <h2 >Payslip </h2>
-            <h4> Payment slip from the month of {{ $date['from'] }} to {{ $date['to'] }}</h4>
+            <h4> Payment slip from the month of {{ $date['from']->format('F d, Y') }} to {{ $date['to']->format('F d, Y') }}</h4>
         </section>
 
         <table>
