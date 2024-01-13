@@ -8,9 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Exception;
-use App\Models\User;
-use App\Models\Attendance;
-use App\Models\Payroll;
+use App\Models\Leave;
+use App\Models\Employee;
 
 class LeaveController extends Controller
 {
@@ -18,11 +17,7 @@ class LeaveController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Payroll::with([
-            'attendance' => function($q){
-                $q->thisMonth();
-            }
-        ]);
+        $query = Leave::with(['employee']);
 
         //  Filter/Search
         $query->when($request->get('filter'), function($q) use ($request) {
@@ -45,9 +40,8 @@ class LeaveController extends Controller
 
     public function show($id)
     {
-            // return Attendance::findOrFail($id);
         try{
-            return Payroll::with([
+            return Leave::with([
                 'attendance' => function($q){
                     $q->thisMonth();
                 }
@@ -60,10 +54,11 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username'  => ['required', 'string', 'max:80', 'unique:users'],
-            "last_name" => ["required"],
-            "position"  => ["required"],
-            "rate"      => ["required"],
+            "employee" => ["required"],
+            "type"     => ["required"],
+            "start"    => ["required"],
+            "end"      => ["required"],
+            "reason"   => ["required"],
         ]);
 
         // Validator
@@ -74,30 +69,13 @@ class LeaveController extends Controller
             ], 500);
         }
 
-        $user = User::create([
-            'username'   => $request->username,
-            'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
-            'email'      => $request->email,
-            'password'   => Hash::make($request->username)
-        ]);
+        $employee = Employee::find($request->input('employee'));
 
-        $user->employee()->create([
-            'position'     => $request->position,
-            'department'   => 0,
-            'type'         => 0,
-            'code'         => Carbon::now()->timestamp . Str::random(4),
-            'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
-            'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
-            'gender'       => $request->gender,
-            'rate'         => $request->rate,
-            'address'      => $request->address,
-            'phone'        => $request->phone,
-        ]);
+        $employee = $employee->leave()->create( $request->input() + ['request_id' => Str::random(12)] );
 
         return response()->json([
             'message' => 'Employee created successfully',
-            'data'    => $user
+            'data'    => $employee
         ], 201);
     }
 

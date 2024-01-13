@@ -98,6 +98,13 @@ const table = reactive({
             sortable: false
         },
         {
+            label: 'Name',
+            field: 'employee',
+            alignt: 'left',
+            sortable: false,
+            format: (v) => v?.fullname
+        },
+        {
             label: 'type',
             name: 'type',
             field: 'type',

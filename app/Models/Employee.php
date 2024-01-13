@@ -72,4 +72,10 @@ class Employee extends Model
     {
         return $this->belongsTo(Position::class, 'position');
     }
+
+    #   Relation: leave
+    public function leave()
+    {
+        return $this->hasMany(Leave::class);
+    }
 }

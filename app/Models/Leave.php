@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Leave extends Model
 {
 
+    protected $table = 'leave';
+
     protected $fillable = [
         'request_id',
         'type',
@@ -17,8 +19,8 @@ class Leave extends Model
     ];
 
 
-    public function employees()
+    public function employee()
     {
-        return $this->hasMany(Employee::class);
+        return $this->belongsTo(Employee::class);
     }
 }

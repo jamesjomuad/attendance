@@ -15,10 +15,11 @@ class CreateLeave extends Migration
     {
         Schema::create('leave', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employee_id');
             $table->string('request_id')->nullable();
             $table->string('type')->nullable();
-            $table->timestamp('start');
-            $table->timestamp('end');
+            $table->date('start');
+            $table->date('end');
             $table->text('reason');
             $table->boolean('status')->default(0);
             $table->timestamps();
