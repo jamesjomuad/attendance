@@ -37,9 +37,20 @@ class PayslipController extends Controller
     {
         $dates = $this->dateInterval();
 
-        $employee = Payroll::with(['position', 'attendance' => function($q) use($dates) {
-            $q->whereBetween('created_at', [ $dates['from'], $dates['to'] ]);
-        }])->findOrFail($id);
+        $employee = Payroll::with([
+            'position',
+            'leaves' => function($leaves) use($dates) {
+                $leaves->whereBetween('start', [ $dates['from'], $dates['to'] ]);
+                $leaves->whereBetween('end', [ $dates['from'], $dates['to'] ]);
+            },
+            'attendance' => function($q) use($dates) {
+                $q->whereBetween('created_at', [ $dates['from'], $dates['to'] ]);
+            }])
+        ->findOrFail($id);
+
+        dump(
+            $employee->toArray()
+        );
 
         // Generate PDF view
         $pdf = Pdf::loadView('payslip', compact('employee','dates'));

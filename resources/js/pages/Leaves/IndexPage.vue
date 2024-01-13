@@ -94,13 +94,13 @@ const table = reactive({
             label: 'request_id',
             name: 'request_id',
             field: 'request_id',
-            alignt: 'left',
+            align: 'left',
             sortable: false
         },
         {
             label: 'Name',
             field: 'employee',
-            alignt: 'left',
+            align: 'left',
             sortable: false,
             format: (v) => v?.fullname
         },
@@ -108,37 +108,37 @@ const table = reactive({
             label: 'type',
             name: 'type',
             field: 'type',
-            alignt: 'left',
+            align: 'left',
             sortable: false
         },
         {
             label: 'start',
             name: 'start',
             field: 'start',
-            alignt: 'left',
+            align: 'left',
             sortable: false
         },
         {
             label: 'end',
             name: 'end',
             field: 'end',
-            alignt: 'left',
+            align: 'left',
             sortable: false
         },
         {
             label: 'reason',
             name: 'reason',
             field: 'reason',
-            alignt: 'left',
+            align: 'left',
             sortable: false
         },
-        {
-            label: 'status',
-            name: 'status',
-            field: 'status',
-            alignt: 'left',
-            sortable: false
-        },
+        // {
+        //     label: 'status',
+        //     name: 'status',
+        //     field: 'status',
+        //     align: 'left',
+        //     sortable: false
+        // },
     ],
     pagination: {
         sortBy: "id",

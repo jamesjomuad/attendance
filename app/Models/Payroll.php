@@ -41,6 +41,12 @@ class Payroll extends Employee
         return $this->belongsTo(Position::class, 'position');
     }
 
+    #   Relation: user
+    public function leaves()
+    {
+    return $this->hasMany(Leave::class, 'employee_id');
+    }
+
 
     #
     #   Attributes
