@@ -41,11 +41,7 @@ class LeaveController extends Controller
     public function show($id)
     {
         try{
-            return Leave::with([
-                'attendance' => function($q){
-                    $q->thisMonth();
-                }
-            ])->findOrFail($id);
+            return Leave::with('employee')->findOrFail($id);
         }catch(Exception $e){
             return response()->json(['error' => 'INVALID_ROUTE'], 404);
         }
@@ -81,12 +77,35 @@ class LeaveController extends Controller
 
     public function update(Request $request, $id)
     {
+        $leave = Leave::find($id);
 
+        $validator = Validator::make($request->all(), [
+            "employee" => ["required"],
+            "type"     => ["required"],
+            "start"    => ["required"],
+            "end"      => ["required"],
+            "reason"   => ["required"],
+        ]);
+
+        // Validator
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'error' => $validator->errors()->first(),
+            ], 500);
+        }
+
+        $leave->update( $request->input() );
+
+        return response()->json([
+            'message' => 'Employee created successfully',
+            'data'    => $leave
+        ], 201);
     }
 
     public function destroy($id)
     {
-        return Attendance::findOrFail($id)->delete();
+        return Leave::findOrFail($id)->delete();
     }
 
 }

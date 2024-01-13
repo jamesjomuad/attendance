@@ -119,7 +119,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar, date } from 'quasar'
+import { useQuasar } from 'quasar'
 import axios from "axios";
 
 
@@ -145,7 +145,6 @@ const $form = reactive({
 
 
 onMounted(async ()=>{
-    console.log( date )
     try {
         const { data } = await axios.get(`/api/employees`)
         ui.employeeOptions = _.map(data.data, function(v){

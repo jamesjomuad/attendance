@@ -44,7 +44,7 @@ class Payroll extends Employee
     #   Relation: user
     public function leaves()
     {
-    return $this->hasMany(Leave::class, 'employee_id');
+        return $this->hasMany(Leave::class, 'employee_id');
     }
 
 

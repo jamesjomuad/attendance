@@ -113,15 +113,13 @@ const table = reactive({
         },
         {
             label: 'start',
-            name: 'start',
-            field: 'start',
+            field: 'startDate',
             align: 'left',
             sortable: false
         },
         {
             label: 'end',
-            name: 'end',
-            field: 'end',
+            field: 'endDate',
             align: 'left',
             sortable: false
         },
