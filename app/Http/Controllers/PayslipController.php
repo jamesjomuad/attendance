@@ -41,7 +41,6 @@ class PayslipController extends Controller
             $q->whereBetween('created_at', [ $dates['from'], $dates['to'] ]);
         }])->findOrFail($id);
 
-
         // Generate PDF view
         $pdf = Pdf::loadView('payslip', compact('employee','dates'));
 

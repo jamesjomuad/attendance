@@ -21,6 +21,7 @@
                     <q-input
                         outlined
                         dense
+                        rounded
                         ref="search"
                         debounce="300"
                         v-model="table.filter"
@@ -36,7 +37,7 @@
                         color="primary"
                         class="q-ml-sm"
                         icon="add"
-                        to="/positions/create">
+                        to="/leaves/create">
                     </q-btn>
                     <q-btn
                         size="md"
@@ -73,7 +74,7 @@ import { useRouter } from 'vue-router'
 import _ from 'lodash'
 
 useMeta({
-    title: 'Positions',
+    title: 'leaves',
 })
 
 const $router = useRouter();
@@ -90,21 +91,46 @@ const table = reactive({
             sortable: true,
         },
         {
-            label: "Title",
-            name: "title",
-            field: "title",
-            align: 'left',
-            sortable: true,
+            label: 'request_id',
+            name: 'request_id',
+            field: 'request_id',
+            alignt: 'left',
+            sortable: false
         },
         {
-            label: "Description",
-            name: "description",
-            field: "description",
-            align: 'left',
-            format(v){
-                return _.truncate(v, { length: 130 })
-            },
-            sortable: true,
+            label: 'type',
+            name: 'type',
+            field: 'type',
+            alignt: 'left',
+            sortable: false
+        },
+        {
+            label: 'start',
+            name: 'start',
+            field: 'start',
+            alignt: 'left',
+            sortable: false
+        },
+        {
+            label: 'end',
+            name: 'end',
+            field: 'end',
+            alignt: 'left',
+            sortable: false
+        },
+        {
+            label: 'reason',
+            name: 'reason',
+            field: 'reason',
+            alignt: 'left',
+            sortable: false
+        },
+        {
+            label: 'status',
+            name: 'status',
+            field: 'status',
+            alignt: 'left',
+            sortable: false
         },
     ],
     pagination: {
@@ -145,7 +171,7 @@ async function onRequest(props) {
     };
 
     try {
-        const { data } = await axios.get(`/api/positions`, {params})
+        const { data } = await axios.get(`/api/leaves`, {params})
 
         table.pagination.rowsNumber = data.total;
 
@@ -172,7 +198,7 @@ async function onRequest(props) {
 }
 
 function onRow(evt, row, index){
-    $router.push(`/positions/${row.id}`)
+    $router.push(`/leaves/${row.id}`)
 }
 
 function onRefresh(){

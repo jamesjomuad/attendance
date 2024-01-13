@@ -12,7 +12,9 @@ class Payroll extends Employee
 
     protected $appends = [
         'fullname',
+        'rateCurrency',
         'hours',
+        'overtime',
         'deductions',
         'net',
     ];
@@ -50,9 +52,19 @@ class Payroll extends Employee
         return $this->user->first_name . " " . $this->user->last_name;
     }
 
+    public function getRateCurrencyAttribute()
+    {
+        return $this->currency($this->rate);
+    }
+
     public function getHoursAttribute()
     {
         return $this->attendance->sum('total_hours');
+    }
+
+    public function getOvertimeAttribute()
+    {
+        return $this->attendance->sum('overtime');
     }
 
     public function getDeductionsAttribute()
@@ -62,24 +74,30 @@ class Payroll extends Employee
 
     public function getNetAttribute()
     {
-        return $this->currency((float)($this->hours * $this->rate));
+        $net = (float)($this->hours * $this->rate);
+        $overtime = (float)($this->hours * $this->overtime);
+        return $this->currency( $net + $overtime );
     }
 
-    private function currency($amount)
-    {
-        $numberFormatter = new \NumberFormatter( 'en_US', \NumberFormatter::CURRENCY );
-        return $numberFormatter->formatCurrency($amount, "PHP" ) ;
-    }
+
 
     #
     #   Scopes
     #
-
     public function scopeBiMonth($query, $dates)
     {
         $query = $query->whereHas('attendance', function ($attendance) use($dates) {
             return $attendance->whereBetween('created_at', [$dates['from'], $dates['to']]);
         });
         return $query;
+    }
+
+    #
+    #   Helper
+    #
+    private function currency($amount)
+    {
+        $numberFormatter = new \NumberFormatter( 'en_US', \NumberFormatter::CURRENCY );
+        return $numberFormatter->formatCurrency($amount, "PHP" ) ;
     }
 }

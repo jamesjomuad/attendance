@@ -48,7 +48,6 @@ class PayrollController extends Controller
 
     public function show($id)
     {
-            // return Attendance::findOrFail($id);
         try{
             return Payroll::with([
                 'attendance' => function($q){

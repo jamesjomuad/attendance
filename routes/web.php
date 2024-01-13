@@ -74,11 +74,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/payslips/{id}', 'PayslipController@show');
 
     // Leaves
-    $router->get('/leaves', 'LeavesController@index');
-    $router->get('/leaves/{id}', 'LeavesController@show');
-    $router->post('/leaves', 'LeavesController@store');
-    $router->put('/leaves/{id}', 'LeavesController@update');
-    $router->delete('/leaves/{id}', 'LeavesController@destroy');
+    $router->get('/leaves', 'LeaveController@index');
+    $router->get('/leaves/{id}', 'LeaveController@show');
+    $router->post('/leaves', 'LeaveController@store');
+    $router->put('/leaves/{id}', 'LeaveController@update');
+    $router->delete('/leaves/{id}', 'LeaveController@destroy');
 
 });
 

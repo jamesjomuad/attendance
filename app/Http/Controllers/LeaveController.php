@@ -12,7 +12,7 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Payroll;
 
-class PayrollController extends Controller
+class LeaveController extends Controller
 {
     public function index(Request $request)
     {

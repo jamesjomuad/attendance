@@ -141,19 +141,25 @@ const table = reactive({
             sortable: false,
         },
         {
+            label: "Hourly Rate",
+            field: "rateCurrency",
+            align: 'left',
+            sortable: false,
+            // format(v){
+            //     return currency.format(v)
+            // }
+        },
+        {
             label: "Total Hours",
             field: "hours",
             align: 'left',
             sortable: false,
         },
         {
-            label: "Rate",
-            field: "rate",
+            label: "Overtime",
+            field: "overtime",
             align: 'left',
             sortable: false,
-            // format(v){
-            //     return currency.format(v)
-            // }
         },
         {
             label: "Deductions",

@@ -56,6 +56,10 @@
             <td>{{ $employee->hours }}</td>
         </tr>
         <tr>
+            <td>Total Overtime Hours</td>
+            <td>{{ $employee->overtime }}</td>
+        </tr>
+        <tr>
             <td>Deductions</td>
             <td>-0.00</td>
         </tr>
