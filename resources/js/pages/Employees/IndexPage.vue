@@ -60,6 +60,7 @@
                 <template #body-cell-action="props">
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
+                            <q-btn round size="sm" color="secondary" icon="qr_code" @click="onShowQR(props.row)"/>
                             <q-btn round size="sm" color="primary" icon="edit" @click="onRow(props.row)"/>
                         </div>
                     </q-td>
@@ -69,6 +70,23 @@
                 </template>
             </q-table>
         </div>
+
+        <q-dialog ref="dialogQR">
+            <q-card class="q-dialog-plugin">
+                <q-card-section class="column items-center">
+                    <div class="col">
+                        <vue-qrcode :value="dialogQRCode.code" tag="img" :options="{width:200}"></vue-qrcode>
+                    </div>
+                    <div class="col">
+                        <h6 class="q-ma-none">{{ dialogQRCode.name }}</h6>
+                    </div>
+                </q-card-section>
+                <q-separator />
+                <q-card-actions align="right">
+                    <q-btn color="primary" label="Close" @click="dialogQR.hide()" />
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
     </q-page>
 </template>
 
@@ -81,6 +99,7 @@ import { useRouter } from 'vue-router'
 
 const $router = useRouter();
 const $q = useQuasar()
+const dialogQR = ref()
 const table = reactive({
     loading: false,
     filter: '',
@@ -159,6 +178,10 @@ const table = reactive({
         rowsNumber: 10,
     }
 })
+const dialogQRCode = reactive({
+    code: null,
+    name: null
+})
 
 
 useMeta({
@@ -228,5 +251,12 @@ function onRefresh(){
         pagination: table.pagination,
         filter: null,
     });
+}
+
+function onShowQR(row){
+    console.log( row )
+    dialogQRCode.code = row.code
+    dialogQRCode.name = row.fullname
+    dialogQR.value.show()
 }
 </script>

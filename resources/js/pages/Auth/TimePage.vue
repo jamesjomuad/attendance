@@ -43,6 +43,16 @@
                     />
                 </div>
             </div>
+
+            <div class="row justify-center">
+                <div class="col-auto">
+                    <qrcode-stream
+                        style="width: 250px;"
+                        @detect="onDetect"
+                        @error="onError"
+                    />
+                </div>
+            </div>
         </div>
     </q-page>
 </template>
@@ -51,6 +61,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { useQuasar, date } from "quasar";
 import { useLink, useRouter } from "vue-router";
+import { QrcodeStream } from 'vue-qrcode-reader'
 
 
 
@@ -154,6 +165,15 @@ async function onTimeOut(){
         }
     }
     ui.outLoading = false
+}
+
+function onDetect(data){
+    console.log(data)
+    employeeCode.value = data[0].rawValue
+}
+
+function onError(data){
+    console.log(data)
 }
 </script>
 

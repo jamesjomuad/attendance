@@ -3,7 +3,7 @@
     <q-page padding>
         <q-form class="row q-col-gutter-md" @submit="onUpdate">
             <div class="col-2">
-                <vue-qrcode :value="$form.code" :options="{width:200}"></vue-qrcode>
+                <vue-qrcode :value="$form.code" tag="img" :options="{width:200}"></vue-qrcode>
             </div>
             <div class="col-md-10">
                 <q-card>
