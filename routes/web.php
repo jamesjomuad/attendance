@@ -85,23 +85,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 $router->get('/test', function(){
 
-    $today =Carbon::now()->addDays(6);
-
-    if( $today->day < 15 ){
-        $date = [
-            'from' => Carbon::now()->startOfMonth()->format('F d, Y'),
-            'to' => Carbon::now()->startOfMonth()->addDays(14)->format('F d, Y'),
-        ];
-    } else {
-        $date = [
-            'from' => Carbon::now()->startOfMonth()->addDays(15)->format('F d, Y'),
-            'to' => Carbon::now()->endOfMonth()->format('F d, Y'),
-        ];
-    }
+    $today =Carbon::now();
 
     dd(
-        $date
-        // Carbon::now()->day < 15
+        $today
     );
 });
 

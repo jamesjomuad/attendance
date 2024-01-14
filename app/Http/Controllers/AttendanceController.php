@@ -269,22 +269,37 @@ class AttendanceController extends Controller
 
         if( $attendance->in_am!=null && $attendance->out_am==null )
         {
+            $attendance->out_am = Carbon::now();
+
             return response()->json([
-                'message'   => 'Lunch break',
+                'status'   => $attendance->save(),
+                'message'  => $employee->fullname .', Lunch break',
                 'employee' => $employee
             ]);
         }
         elseif( $attendance->out_am!=null && $attendance->in_pm==null )
         {
+            $attendance->in_pm = Carbon::now();
 
+            return response()->json([
+                'status'   => $attendance->save(),
+                'message'  => $employee->fullname . ', logging in for the afternoon.',
+                'employee' => $employee
+            ]);
         }
         elseif( $attendance->in_pm!=null && $attendance->out_pm==null )
         {
+            $attendance->out_pm = Carbon::now();
 
+            return response()->json([
+                'status'   => $attendance->save(),
+                'message'  => $employee->fullname . ', logging out for the afternoon.',
+                'employee' => $employee
+            ]);
         }
 
         return response()->json([
-            'message'   => 'More actions',
+            'message'   => "That's all for today!",
             'employee' => $employee
         ]);
     }
