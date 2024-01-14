@@ -55,10 +55,10 @@
             <td>Total Hours</td>
             <td>{{ $employee->hours }}</td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td>Total Overtime Hours</td>
             <td>{{ $employee->overtime }}</td>
-        </tr>
+        </tr> --}}
         <tr>
             <td>Deductions</td>
             <td>-0.00</td>

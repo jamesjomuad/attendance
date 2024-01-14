@@ -5,11 +5,15 @@ import { Quasar, LoadingBar, Loading, Notify, Dialog, LocalStorage, SessionStora
 import store from './store'
 import router from "./router";
 import App from "./App.vue";
+import VueQrcode from '@chenfengyuan/vue-qrcode';
+
 
 // Initilize Vue 3
 const app = createApp({
     ...App
 });
+
+app.component(VueQrcode.name, VueQrcode);
 
 app.use(store)
 

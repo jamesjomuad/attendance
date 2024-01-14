@@ -103,6 +103,14 @@
                 <div class="row justify-end q-mt-md">
                     <div class="col-auto">
                         <q-btn
+                            color="negative"
+                            label="Remove"
+                            class="q-mr-md"
+                            :disable="ui.removing"
+                            :loading="ui.removing"
+                            @click="onRemove"
+                        />
+                        <q-btn
                             color="primary"
                             type="submit"
                             label="Update"
@@ -218,6 +226,39 @@ function filterFn(val, update) {
             }
         })
     })
+}
+
+function onRemove(){
+    $q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to procceed?',
+        cancel: true,
+        persistent: true
+    }).onOk(async () => {
+        ui.loading = true
+        ui.removing = true
+        try{
+            const { data } = await axios.post(`/api/leaves/${$route.params.id}`, {
+                _method: 'delete'
+            })
+            if(data){
+                $router.push('/leaves')
+                $q.notify({
+                    type: 'positive',
+                    message: `Remove successfully!`
+                })
+            }
+        } catch(error){
+            console.log(error)
+            $q.notify({
+                type: 'negative',
+                message: "Error!"
+            })
+        }
+        ui.loading = false
+        ui.removing = false
+    })
+
 }
 
 </script>

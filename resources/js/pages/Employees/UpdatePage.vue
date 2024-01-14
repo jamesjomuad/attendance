@@ -2,7 +2,10 @@
 <template>
     <q-page padding>
         <q-form class="row q-col-gutter-md" @submit="onUpdate">
-            <div class="col-md-12">
+            <div class="col-2">
+                <vue-qrcode :value="$form.code" :options="{width:200}"></vue-qrcode>
+            </div>
+            <div class="col-md-10">
                 <q-card>
                     <!-- Fields -->
                     <q-card-section>
@@ -209,6 +212,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useQuasar, date, useMeta } from 'quasar'
 import _ from 'lodash'
 
+
 useMeta({
     title: 'Update Employee',
 })
@@ -229,6 +233,8 @@ const $form = ref({
     last_name: "",
     email: "",
 });
+
+
 
 
 onMounted(async ()=>{
@@ -256,7 +262,6 @@ async function getPositions(){
         console.log( e )
     }
 }
-
 
 async function onUpdate(){
     ui.loading = true
