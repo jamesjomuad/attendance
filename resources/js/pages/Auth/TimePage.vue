@@ -11,8 +11,11 @@
                         outlined
                         rounded
                         dark
+                        :bg-color="employeeCodeBg"
                         label="Employee #"
                         v-model="employeeCode"
+                        class="animate__animated"
+                        :class="employeeCodeClass"
                         :rules="[ val => val && val.length > 0 || 'Please type something']"
                     >
                         <template v-slot:prepend>
@@ -59,7 +62,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useQuasar, date } from "quasar";
+import { useQuasar, date, debounce } from "quasar";
 import { useLink, useRouter } from "vue-router";
 import { QrcodeStream } from 'vue-qrcode-reader'
 
@@ -76,6 +79,8 @@ const ui = reactive({
     outLoading: false,
 })
 const employeeCode = ref()
+const employeeCodeClass = ref()
+const employeeCodeBg = ref()
 
 onMounted(()=>{
     ui.timerID = setInterval(updateTime, 1000);
@@ -168,7 +173,14 @@ async function onTimeOut(){
 }
 
 function onDetect(data){
-    console.log(data)
+    employeeCodeClass.value = ''
+    debounce(function(){
+        employeeCodeClass.value = 'animate__bounceIn'
+        employeeCodeBg.value = 'accent'
+    },200)()
+    debounce(function(){
+        employeeCodeBg.value = ''
+    },1000)()
     employeeCode.value = data[0].rawValue
 }
 
