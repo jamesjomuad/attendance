@@ -172,7 +172,7 @@ async function onTimeOut(){
     ui.outLoading = false
 }
 
-function onDetect(data){
+async function onDetect(data){
     employeeCodeClass.value = ''
     debounce(function(){
         employeeCodeClass.value = 'animate__bounceIn'
@@ -182,6 +182,27 @@ function onDetect(data){
         employeeCodeBg.value = ''
     },1000)()
     employeeCode.value = data[0].rawValue
+    try{
+        const { data } = await axios.post(`/api/attendance/qrcode`, { code: employeeCode.value })
+        if( data?.message ){
+            $q.notify({
+                message: `${data.message}`,
+                type: 'positive',
+            })
+        }
+    }catch(e){
+        if(e.response.data?.error){
+            $q.notify({
+                message: e.response.data?.error,
+                type: 'negative',
+            })
+        }else{
+            $q.notify({
+                message: `Error loggin In`,
+                type: 'negative',
+            })
+        }
+    }
 }
 
 function onError(data){

@@ -236,4 +236,56 @@ class AttendanceController extends Controller
 
     }
 
+    public function qrcode(Request $request)
+    {
+        $employee = Employee::where('code', $request->input('code'))->first();
+
+        if( $employee===null ){
+            return response()->json([
+                'error' => 'Employee not found!'
+            ], 500);
+        }
+
+        $attendances = $employee->attendance()
+        ->whereDate('created_at', Carbon::today())
+        ->get();
+
+        $attendance = $attendances->first();
+
+        // AM Login
+        if( $attendances->isEmpty() ){
+            $attendance = new Attendance;
+
+            $attendance->employee()->associate($employee);
+
+            $attendance->in_am = Carbon::now();
+
+            return response()->json([
+                'status'   => $attendance->save(),
+                'message'   => 'Goodmorning '.$employee->fullname,
+                'employee' => $employee
+            ]);
+        }
+
+        if( $attendance->in_am!=null && $attendance->out_am==null )
+        {
+            return response()->json([
+                'message'   => 'Lunch break',
+                'employee' => $employee
+            ]);
+        }
+        elseif( $attendance->out_am!=null && $attendance->in_pm==null )
+        {
+
+        }
+        elseif( $attendance->in_pm!=null && $attendance->out_pm==null )
+        {
+
+        }
+
+        return response()->json([
+            'message'   => 'More actions',
+            'employee' => $employee
+        ]);
+    }
 }

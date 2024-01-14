@@ -61,6 +61,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('/attendances/{id}', 'AttendanceController@destroy'); // Delete an item
     $router->post('/attendance/login', 'AttendanceController@login');
     $router->post('/attendance/logout', 'AttendanceController@logout');
+    $router->post('/attendance/qrcode', 'AttendanceController@qrcode');
 
     // Payroll
     $router->get('/payroll', 'PayrollController@index'); // Show all items
