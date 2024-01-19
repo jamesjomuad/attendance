@@ -252,13 +252,17 @@ class AttendanceController extends Controller
 
         $attendance = $attendances->first();
 
-        // AM Login
+        // Init Attendance
         if( $attendances->isEmpty() ){
             $attendance = new Attendance;
 
             $attendance->employee()->associate($employee);
 
-            $attendance->in_am = Carbon::now();
+            if( Carbon::now()->format('H') < 12 ){
+                $attendance->in_am = Carbon::now();
+            }else{
+                $attendance->in_pm = Carbon::now();
+            }
 
             return response()->json([
                 'status'   => $attendance->save(),

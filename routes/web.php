@@ -83,12 +83,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 });
 
+
+$router->get('/login', function(){
+    return redirect("/#login");
+});
+
+
 $router->get('/test', function(){
 
-    $today =Carbon::now();
+    $today = Carbon::now();
 
     dd(
-        $today
+        $today->format('H') < 12
     );
 });
 
