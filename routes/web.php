@@ -88,6 +88,10 @@ $router->get('/login', function(){
     return redirect("/#login");
 });
 
+$router->get('/dashboard', function(){
+    return redirect("/#dashboard");
+});
+
 
 $router->get('/test', function(){
 

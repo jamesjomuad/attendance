@@ -157,6 +157,12 @@ const table = reactive({
             format: (val, row) => {
                 return moment(val).format("YYYY-MM-DD");
             },
+        },
+        {
+            label: 'Action',
+            name: 'action',
+            sortable: false,
+            align: 'left',
         }
     ],
     pagination: {
@@ -227,6 +233,7 @@ async function onRequest(props) {
 }
 
 function onRow(row){
+    console.log(row)
     $router.push(`/attendance/${row.id}`)
 }
 
