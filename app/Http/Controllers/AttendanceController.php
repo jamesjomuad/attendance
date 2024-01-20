@@ -13,6 +13,24 @@ use App\Models\Employee;
 
 class AttendanceController extends Controller
 {
+    private function registerVaidation()
+    {
+        Validator::extend('is_am', function ($attribute, $value, $parameters) {
+            if( $value ){
+                $time = Carbon::today()->setTimeFromTimeString( $value );
+                return $time->format('A') == 'AM';
+            }
+        });
+
+        Validator::extend('is_pm', function ($attribute, $value, $parameters) {
+            if( $value ){
+                $time = Carbon::today()->setTimeFromTimeString( $value );
+                return $time->format('A') == 'PM';
+            }
+        });
+        return $this;
+    }
+
     public function index(Request $request)
     {
         $per_page = $request->get('per_page') ? : 50;
@@ -50,51 +68,48 @@ class AttendanceController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username'  => ['required', 'string', 'max:80', 'unique:users'],
-            "last_name" => ["required"],
-            "position"  => ["required"],
-            "rate"      => ["required"],
-        ]);
 
-        // Validator
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'error' => $validator->errors()->first(),
-            ], 500);
-        }
-
-        $user = User::create([
-            'username'   => $request->username,
-            'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
-            'email'      => $request->email,
-            'password'   => Hash::make($request->username)
-        ]);
-
-        $user->employee()->create([
-            'position'     => $request->position,
-            'department'   => 0,
-            'type'         => 0,
-            'code'         => Carbon::now()->timestamp . Str::random(4),
-            'schedule_in'  => date('Y-m-d H:i:s', strtotime($request->schedule_in)),
-            'schedule_out' => date('Y-m-d H:i:s', strtotime($request->schedule_out)),
-            'gender'       => $request->gender,
-            'rate'         => $request->rate,
-            'address'      => $request->address,
-            'phone'        => $request->phone,
-        ]);
-
-        return response()->json([
-            'message' => 'Employee created successfully',
-            'data'    => $user
-        ], 201);
     }
 
     public function update(Request $request, $id)
     {
+        // $this->registerVaidation();
 
+        // $validator = Validator::make($request->input(), [
+        //     'in_am'  => ['is_am'],
+        //     'out_am' => ['is_am'],
+        //     'in_pm'  => ['is_pm'],
+        //     'out_pm' => ['is_pm'],
+        // ],[
+        //     'is_am' => 'Time must be in morning',
+        //     'is_pm' => 'Time must be in afternoon',
+        // ]);
+
+        // // Validator
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'error' => $validator->errors()->first(),
+        //     ], 500);
+        // }
+
+        $attendance = Attendance::findOrFail($id);
+
+        if( $request->filled('in_am') )
+        $attendance->in_am  = Carbon::today()->setTimeFromTimeString( $request->input('in_am') );
+        if( $request->filled('out_am') )
+        $attendance->out_am = Carbon::today()->setTimeFromTimeString( $request->input('out_am') );
+        if( $request->filled('in_pm') )
+        $attendance->in_pm  = Carbon::today()->setTimeFromTimeString( $request->input('in_pm') );
+        if( $request->filled('out_pm') )
+        $attendance->out_pm = Carbon::today()->setTimeFromTimeString( $request->input('out_pm') );
+
+        $attendance->save();
+
+        return response()->json([
+            'message' => 'Attendace updated successfully',
+            'data'    => $attendance
+        ], 201);
     }
 
     public function destroy($id)

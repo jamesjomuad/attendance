@@ -10,6 +10,7 @@
                             <q-input
                                 dense
                                 outlined
+                                readonly
                                 label="Time In AM"
                                 class="col-6"
                                 v-model="$form.in_am">
@@ -29,6 +30,7 @@
                             <q-input
                                 dense
                                 outlined
+                                readonly
                                 label="Time Out AM"
                                 class="col-6"
                                 v-model="$form.out_am">
@@ -48,6 +50,7 @@
                             <q-input
                                 dense
                                 outlined
+                                readonly
                                 label="Time In PM"
                                 class="col-6"
                                 v-model="$form.in_pm">
@@ -67,6 +70,7 @@
                             <q-input
                                 dense
                                 outlined
+                                readonly
                                 label="Time Out PM"
                                 class="col-6"
                                 v-model="$form.out_pm">
@@ -149,7 +153,7 @@ async function onUpdate(){
     ui.loading = true
     ui.updating = true
     try{
-        const { data } = await axios.put(`/api/employees/${$route.params.id}`, $form.value)
+        const { data } = await axios.put(`/api/attendances/${$route.params.id}`, $form)
         if(data.message){
             $q.notify({
                 type: 'positive',
@@ -159,10 +163,17 @@ async function onUpdate(){
     }
     catch(error){
         console.log(error)
-        $q.notify({
-            type: 'negative',
-            message: "Error!"
-        })
+        if(error.response.data?.error){
+            $q.notify({
+                type: 'negative',
+                message: error.response.data?.error
+            })
+        }else{
+            $q.notify({
+                type: 'negative',
+                message: "Error!"
+            })
+        }
     }
     ui.loading = false
     ui.updating = false
