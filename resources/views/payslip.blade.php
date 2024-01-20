@@ -64,6 +64,16 @@
             <td>-0.00</td>
         </tr>
         <tr>
+            <td>Leaves</td>
+            <td>
+                <ul>
+                    @foreach ( $employee->leaves as $leave )
+                        <li>{{ $leave->start->format('M d, Y') }} to {{ $leave->end->format('M d, Y') }}</li>
+                    @endforeach
+                </ul>
+            </td>
+        </tr>
+        <tr>
             <td><strong>Total Amount</strong></td>
             <td><strong>{{ $employee->net }}</strong></td>
         </tr>

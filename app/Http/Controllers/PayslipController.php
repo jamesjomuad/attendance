@@ -13,7 +13,6 @@ use Exception;
 
 class PayslipController extends Controller
 {
-
     public function index(Request $request)
     {
         $date = $this->dateInterval();
