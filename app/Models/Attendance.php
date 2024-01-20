@@ -98,7 +98,7 @@ class Attendance extends Model
     public function getOvertimeAttribute()
     {
         if( !isset($this->employee->schedule_in) ){
-            return;
+            return 0;
         }
 
         // Hours required Minus 1 hour break
@@ -113,7 +113,7 @@ class Attendance extends Model
     public function getUndertimeAttribute()
     {
         if( !isset($this->employee->schedule_in) ){
-            return;
+            return 0;
         }
 
         // Hours required Minus 1 hour break
