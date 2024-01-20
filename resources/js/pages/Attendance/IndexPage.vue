@@ -33,6 +33,13 @@
                     </q-input>
                     <q-btn
                         size="md"
+                        color="primary"
+                        class="q-ml-sm"
+                        icon="add"
+                        to="/attendance/create">
+                    </q-btn>
+                    <q-btn
+                        size="md"
                         color="secondary"
                         class="q-ml-sm"
                         icon="refresh"

@@ -68,6 +68,25 @@ class AttendanceController extends Controller
 
     public function store(Request $request)
     {
+        $employee = Employee::findOrFail($request->input('employee'));
+
+        $attendance = new Attendance();
+
+        if( $request->filled('in_am') )
+        $attendance->in_am  = Carbon::today()->setTimeFromTimeString( $request->input('in_am') );
+        if( $request->filled('out_am') )
+        $attendance->out_am = Carbon::today()->setTimeFromTimeString( $request->input('out_am') );
+        if( $request->filled('in_pm') )
+        $attendance->in_pm  = Carbon::today()->setTimeFromTimeString( $request->input('in_pm') );
+        if( $request->filled('out_pm') )
+        $attendance->out_pm = Carbon::today()->setTimeFromTimeString( $request->input('out_pm') );
+
+        $employee->attendance()->save($attendance);
+
+        return response()->json([
+            'message' => 'Attendace added successfully',
+            'data'    => $attendance
+        ], 201);
 
     }
 

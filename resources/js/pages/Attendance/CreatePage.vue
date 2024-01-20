@@ -2,140 +2,45 @@
     <q-page padding>
         <q-form class="row q-col-gutter-md" @submit="onCreate">
             <div class="col-md-12">
-                <q-card>
-                    <!-- Fields -->
-                    <q-card-section>
-                        <div class="row q-col-gutter-md">
-                            <q-input
-                                v-model="$form.first_name"
-                                dense
-                                outlined
-                                label="First Name"
-                                name="first_name"
-                                class="col-6"
-                                :rules="[ val => val && val.length > 0 || 'Please type something']"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="account_circle" />
-                                </template>
-                            </q-input>
-
-                            <q-input
-                                v-model="$form.last_name"
-                                dense
-                                outlined
-                                label="Last Name"
-                                name="last_name"
-                                lazy-rules
-                                class="col-6"
-                                :rules="[ val => val && val.length > 0 || 'Please type something']"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="account_circle" />
-                                </template>
-                            </q-input>
-
-                            <q-input
-                                v-model="$form.email"
-                                dense
-                                outlined
-                                label="Email"
-                                lazy-rules
-                                class="col-6"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="email" />
-                                </template>
-                            </q-input>
-
-                            <q-input
-                                v-model="$form.phone"
-                                dense
-                                outlined
-                                label="Phone"
-                                lazy-rules
-                                class="col-6"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="phone" />
-                                </template>
-                            </q-input>
-
-                            <q-select
-                                dense
-                                outlined
-                                class="col-6"
-                                label="Gender"
-                                v-model="$form.gender"
-                                :color="ui.typeBg"
-                                :options="['Male', 'Female']"
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="info" />
-                                </template>
-                            </q-select>
-
-                            <q-input
-                                v-model="$form.address"
-                                dense
-                                outlined
-                                label="Address"
-                                lazy-rules
-                                class="col-6"
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="home" />
-                                </template>
-                            </q-input>
-                        </div>
-                    </q-card-section>
-                </q-card>
-
-                <!-- Work Details -->
                 <q-card class="q-mt-md">
                     <q-card-section>
                         <div class="row q-col-gutter-md">
-                            <!-- Position -->
+                            <!-- Employee -->
                             <q-select
                                 dense
                                 outlined
-                                class="col-6"
-                                label="Position"
-                                v-model="$form.position"
-                                :color="ui.typeBg"
-                                :options="ui.positions"
+                                use-input
                                 emit-value
                                 map-options
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="info" />
+                                class="col-12"
+                                label="Employee"
+                                v-model="$form.employee"
+                                input-debounce="600"
+                                :options="ui.employees"
+                                @filter="filterFn"
+                                :rules="[val => !!val || 'Field is required']"
+                                >
+                                <template v-slot:no-option>
+                                    <q-item>
+                                    <q-item-section class="text-grey">
+                                        No results
+                                    </q-item-section>
+                                    </q-item>
                                 </template>
                             </q-select>
-                            <!-- Rate -->
-                            <q-input
-                                v-model="$form.rate"
-                                dense
-                                outlined
-                                label="Rate"
-                                lazy-rules
-                                class="col-6"
-                                name="rate"
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="paid" />
-                                </template>
-                            </q-input>
-                            <!-- Schedule In -->
+
+                            <!-- In  AM-->
                             <q-input
                                 dense
                                 outlined
-                                label="Schedule In"
+                                readonly
+                                label="Time In AM"
                                 class="col-6"
-                                v-model="$form.schedule_in">
+                                v-model="$form.in_am">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-time v-model="$form.schedule_in" mask="hh:mm A">
+                                    <q-time v-model="$form.in_am">
                                         <div class="row items-center justify-end">
                                         <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -144,17 +49,58 @@
                                 </q-icon>
                                 </template>
                             </q-input>
-                            <!-- Schedule Out -->
+                            <!-- Out AM -->
                             <q-input
                                 dense
                                 outlined
-                                label="Schedule Out"
+                                readonly
+                                label="Time Out AM"
                                 class="col-6"
-                                v-model="$form.schedule_out">
+                                v-model="$form.out_am">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-time v-model="$form.schedule_out" mask="hh:mm A">
+                                    <q-time v-model="$form.out_am">
+                                        <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-time>
+                                    </q-popup-proxy>
+                                </q-icon>
+                                </template>
+                            </q-input>
+                            <!-- In  PM-->
+                            <q-input
+                                dense
+                                outlined
+                                readonly
+                                label="Time In PM"
+                                class="col-6"
+                                v-model="$form.in_pm">
+                                <template v-slot:append>
+                                <q-icon name="access_time" class="cursor-pointer">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-time v-model="$form.in_pm">
+                                        <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-time>
+                                    </q-popup-proxy>
+                                </q-icon>
+                                </template>
+                            </q-input>
+                            <!-- Out PM -->
+                            <q-input
+                                dense
+                                outlined
+                                readonly
+                                label="Time Out PM"
+                                class="col-6"
+                                v-model="$form.out_pm">
+                                <template v-slot:append>
+                                <q-icon name="access_time" class="cursor-pointer">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-time v-model="$form.out_pm">
                                         <div class="row items-center justify-end">
                                         <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -166,12 +112,15 @@
                         </div>
                     </q-card-section>
                 </q-card>
+
+                <!-- Action -->
                 <div class="row justify-end q-mt-md">
                     <div class="col-auto">
                         <q-btn
                             color="primary"
                             type="submit"
-                            label="Save"
+                            label="Create"
+                            class="q-ml-md"
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
@@ -195,51 +144,47 @@ const $router = useRouter()
 const $q = useQuasar()
 const ui = reactive({
     loading: false,
-    isPwd: true,
-    positions: [],
-    departments: [],
+    employees: [],
+    employeeOptions: [],
 })
 const $form = reactive({
-    username: "",
-    first_name: "",
-    last_name: "",
-    email: "",
-    address: "",
-    phone: "",
-    schedule_in: "8:00 AM",
-    schedule_out: "5:00 PM",
-},);
+    in_am: "",
+    out_am: "",
+    in_pm: "",
+    out_pm: "",
+});
 
 
 onMounted(async ()=>{
-    getPositions()
-})
-
-async function getPositions(){
     try {
-        const { data } = await axios.get(`/api/positions`)
-        ui.positions = _.map(data.data, function(v){
+        const { data } = await axios.get(`/api/employees`)
+        ui.employeeOptions = _.map(data.data, function(v){
             return {
-                label: v.title,
+                label: v.fullname,
                 value: v.id,
             }
         })
-    } catch (e) {
-        console.log( e )
+    } catch (error) {
+        $q.notify({
+            color: 'negative',
+            message: error.response?.statusText,
+            icon: 'report_problem',
+            position: 'bottom-right'
+        })
     }
-}
+    ui.loading = false
+})
 
 
 async function onCreate(){
     ui.loading = true
     try{
-        $form.username = `${$form.first_name}.${$form.last_name}`
-        const { data } = await axios.post(`/api/employees`, $form)
+        const { data } = await axios.post(`/api/attendances`, $form)
         $q.notify({
             type: 'positive',
-            message: `${data.data.first_name} ${data.data.last_name} created successfully!`
+            message: `Created successfully!`
         })
-        $router.push('/employees')
+        $router.push('/attendance')
     }catch(error){
         if(error.response?.data?.error){
             $q.notify({
@@ -254,6 +199,26 @@ async function onCreate(){
         }
     }
     ui.loading = false
+}
+
+function filterFn(val, update) {
+    if (val === '') {
+        update(() => {
+            ui.employees = ui.employeeOptions
+        })
+        return
+    }
+
+    update(async () => {
+        const keyword = val.toLowerCase()
+        const { data } = await axios.get(`/api/employees?filter=${keyword}&limit=10&sortBy=id&orderBy=desc&page=1&per_page=10`)
+        ui.employees = _.map(data.data, function(v){
+            return {
+                label: v.fullname,
+                value: v.id,
+            }
+        })
+    })
 }
 
 </script>
