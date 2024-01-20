@@ -97,6 +97,10 @@ class Attendance extends Model
 
     public function getOvertimeAttribute()
     {
+        if( !isset($this->employee->schedule_in) ){
+            return;
+        }
+
         // Hours required Minus 1 hour break
         $required_hours = $this->employee->schedule_out->subHours(1)->diffInHours($this->employee->schedule_in);
         $overtime = round($this->total_hours - $required_hours, 2);
@@ -108,6 +112,10 @@ class Attendance extends Model
 
     public function getUndertimeAttribute()
     {
+        if( !isset($this->employee->schedule_in) ){
+            return;
+        }
+
         // Hours required Minus 1 hour break
         $required_hours = $this->employee->schedule_out->subHours(1)->diffInHours($this->employee->schedule_in);
         $overtime = round($this->total_hours - $required_hours, 2);
