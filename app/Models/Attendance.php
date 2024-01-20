@@ -50,7 +50,7 @@ class Attendance extends Model
 
     public function getIsLateAttribute()
     {
-        if($this->in_am){
+        if( $this->in_am && isset($this->employee->schedule_in) ){
             return $this->in_am->gt($this->employee->schedule_in);
         }
     }
