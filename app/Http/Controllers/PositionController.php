@@ -81,7 +81,7 @@ class PositionController extends Controller
 
     public function destroy($id)
     {
-        return User::findOrFail($id)->delete();
+        return Position::findOrFail($id)->delete();
     }
 
 }

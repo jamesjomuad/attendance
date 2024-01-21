@@ -34,9 +34,17 @@
                 <div class="row justify-end q-mt-md">
                     <div class="col-auto">
                         <q-btn
+                            color="negative"
+                            label="Remove"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                            @click="onRemove"
+                        />
+                        <q-btn
                             color="primary"
                             type="submit"
                             label="Update"
+                            class="q-ml-md"
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
@@ -96,6 +104,39 @@ async function onUpdate(){
         })
     }
     ui.loading = false
+}
+
+function onRemove(){
+    $q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to procceed?',
+        cancel: true,
+        persistent: true
+    }).onOk(async () => {
+        ui.loading = true
+        ui.removing = true
+        try{
+            const { data } = await axios.post(`/api/positions/${$route.params.id}`, {
+                _method: 'delete'
+            })
+            if(data){
+                $router.push('/positions')
+                $q.notify({
+                    type: 'positive',
+                    message: `Remove successfully!`
+                })
+            }
+        } catch(error){
+            console.log(error)
+            $q.notify({
+                type: 'negative',
+                message: "Error!"
+            })
+        }
+        ui.loading = false
+        ui.removing = false
+    })
+
 }
 
 </script>
