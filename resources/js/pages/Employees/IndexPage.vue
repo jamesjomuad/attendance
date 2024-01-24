@@ -131,7 +131,7 @@ const table = reactive({
             field: "position",
             align: 'left',
             sortable: false,
-            format: (v) => v.title
+            format: (v) => v?.title
         },
         {
             label: "Schedule",
