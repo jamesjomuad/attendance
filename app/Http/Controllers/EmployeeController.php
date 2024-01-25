@@ -47,6 +47,8 @@ class EmployeeController extends Controller
     {
         $employee = Employee::with(['attendance'])->findOrFail($id);
 
+        $employee->dtr();
+
         $employee->attendance->each(function ($attendance) {
             $attendance->makeHidden(['employee']);
         });

@@ -31,6 +31,7 @@ class Attendance extends Model
         'total_hours',
         'overtime',
         'undertime',
+        'day'
     ];
 
 
@@ -123,6 +124,13 @@ class Attendance extends Model
             return $overtime;
         }
         return 0;
+    }
+
+    public function getDayAttribute()
+    {
+        if($this->created_at){
+            return $this->created_at->format('d');
+        }
     }
 
 

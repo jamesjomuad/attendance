@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <q-card>
                     <!-- Fields -->
-                    <q-card-section>
+                    <q-card-section v-if="!ui.loading">
                         <table style="width: 100%; max-width: 800px; margin: 0px auto;">
                             <thead>
                                 <tr>
@@ -13,7 +13,7 @@
                                 </tr>
                                 <tr>
                                     <th>For the Month of:</th>
-                                    <th colspan="6">January</th>
+                                    <th colspan="6">{{ $form.dtr.month }}</th>
                                 </tr>
                                 <tr>
                                     <th>Name:</th>
@@ -24,12 +24,9 @@
                                 </tr>
                                 <tr>
                                     <th></th>
-                                    <th>AM</th>
-                                    <th></th>
-                                    <th>PM</th>
-                                    <th></th>
-                                    <th>Undertime</th>
-                                    <th></th>
+                                    <th colspan="2">AM</th>
+                                    <th colspan="2">PM</th>
+                                    <th colspan="2">Undertime</th>
                                 </tr>
                                 <tr>
                                     <th colspan="7"></th>
@@ -46,12 +43,12 @@
                             </thead>
                             <tbody>
                                 <!-- Example records -->
-                                <tr v-for="(attendance, key) in $form.attendance" :key="key">
-                                    <td></td>
-                                    <td>2024-01-24</td>
-                                    <td>09:00 AM</td>
-                                    <td>05:00 PM</td>
-                                    <td>8.0</td>
+                                <tr v-for="(attendance, key) in $form.dtr?.days" :key="key">
+                                    <td>{{ key }}</td>
+                                    <td>{{ to12hr(attendance.in_am) }}</td>
+                                    <td>{{ to12hr(attendance.out_am) }}</td>
+                                    <td>{{ to12hr(attendance.in_pm) }}</td>
+                                    <td>{{ to12hr(attendance?.out_pm) }}</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -80,7 +77,7 @@ const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
 const ui = reactive({
-    loading: false,
+    loading: true,
 })
 const $form = ref({
     first_name: "",
@@ -93,9 +90,25 @@ onMounted(async ()=>{
     ui.loading = true
     const { data } = await axios.get(`/api/employees/${$route.params.id}`)
     $form.value = {...$form.value, ...data}
-    console.log( $form.value )
     ui.loading = false
 })
+
+function to12hr(time24hr) {
+    if( typeof time24hr !== 'string' )
+    return ''
+
+    const [hour, minute] = time24hr.split(':');
+    const parsedHour = parseInt(hour, 10);
+
+    // Use the Date object to format the time
+    const formattedTime = new Date(2000, 0, 1, parsedHour, minute);
+
+    // Use Intl.DateTimeFormat to get the time in 12-hour format
+    const time12hr = formattedTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+    return time12hr;
+}
+
 </script>
 
 <style scoped>

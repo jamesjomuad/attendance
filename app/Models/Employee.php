@@ -34,7 +34,7 @@ class Employee extends Model
     protected $appends = [
         'fullname',
         'email',
-        'dtr'
+        // 'dtr'
     ];
 
 
@@ -83,19 +83,41 @@ class Employee extends Model
 
     public function getDtrAttribute()
     {
+        $attendances = $this->attendance->mapWithKeys(function($attendance){
+            return [(string)$attendance->created_at->format('j') => $attendance];
+        });
+
         $startDate  = Carbon::now()->startOfMonth();
 
         // Get the number of days in the month
         $numberOfDaysInMonth = Carbon::now()->daysInMonth;
 
         // Create an array to store the days
-        $daysArray = [];
+        $daysArray = collect([]);
 
         // Loop through each day and add it to the array
         for ($i = 0; $i < $numberOfDaysInMonth; $i++) {
-            $daysArray[] = $startDate ->copy()->addDays($i)->format('d');
+            $daysArray->push( $startDate ->copy()->addDays($i)->format('j') );
         }
 
-        return $daysArray;
+        $timesheet = $daysArray->mapWithKeys(function($item) use($attendances) {
+            if( $attendances->has($item) )
+                return ["$item" => $attendances->get($item)];
+            else
+                return ["$item" => ""];
+        })->sortBy('day')->toArray();
+
+        return [
+            'month' => Carbon::now()->format('F'),
+            'days'  => $timesheet
+        ];
+    }
+
+    #
+    #   Scopes
+    #
+    public function scopeDtr()
+    {
+        $this->appends[] = 'dtr';
     }
 }
