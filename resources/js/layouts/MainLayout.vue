@@ -1,7 +1,7 @@
 <template>
     <q-layout view="hHh Lpr fFf" :class="{'bg-dark':$q.dark.isActive,'bg-light':!$q.dark.isActive}">
         <!-- Top Bar -->
-        <q-header class="text-white bg-grey-9">
+        <q-header class="text-white bg-dark">
             <q-toolbar>
                 <q-btn flat @click="miniState = !miniState" round dense icon="menu" />
                 <q-toolbar-title v-if="!$q.screen.xs">{{ $route.meta?.title }} </q-toolbar-title>

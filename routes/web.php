@@ -98,7 +98,7 @@ $router->get('/test', function(){
     $today = Carbon::now();
 
     dd(
-        $today->format('H') < 12
+        $today->daysInMonth
     );
 });
 

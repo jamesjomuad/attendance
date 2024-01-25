@@ -61,6 +61,11 @@
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
                             <q-btn round size="sm" color="secondary" icon="qr_code" @click="onShowQR(props.row)"/>
+                            <q-btn round size="sm" color="primary" icon="pending_actions" @click="onTimeCard(props.row)">
+                                <q-tooltip :offset="[10, 10]">
+                                    Time Cards
+                                </q-tooltip>
+                            </q-btn>
                             <q-btn round size="sm" color="primary" icon="edit" @click="onRow(props.row)"/>
                         </div>
                     </q-td>
@@ -240,6 +245,10 @@ async function onRequest(props) {
 
     // ...and turn of loading indicator
     table.loading = false;
+}
+
+function onTimeCard(row){
+    $router.push(`/employees/${row.id}/time-cards`)
 }
 
 function onRow(row){

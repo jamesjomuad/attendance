@@ -78,17 +78,17 @@
                 <template #body-cell-action="props">
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
-                            <q-btn round size="sm" color="accent" icon="visibility" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=html'">
+                            <q-btn round size="sm" color="primary" icon="visibility" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=html'">
                                 <q-tooltip :offset="[10, 10]">
                                     Preview
                                 </q-tooltip>
                             </q-btn>
-                            <q-btn round size="sm" color="accent" icon="print" target="_blank" :href="'/api/payslips/'+props.row.id">
+                            <q-btn round size="sm" color="primary" icon="print" target="_blank" :href="'/api/payslips/'+props.row.id">
                                 <q-tooltip :offset="[10, 10]">
                                     Payslip
                                 </q-tooltip>
                             </q-btn>
-                            <q-btn round size="sm" color="accent" icon="download" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=download'">
+                            <q-btn round size="sm" color="primary" icon="download" target="_blank" :href="'/api/payslips/'+props.row.id+'?format=download'">
                                 <q-tooltip :offset="[10, 10]">
                                     Download
                                 </q-tooltip>

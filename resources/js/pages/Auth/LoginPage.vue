@@ -35,7 +35,7 @@
                         <div class="col">
                             <q-btn
                                 unelevated
-                                color="accent"
+                                color="primary"
                                 class="full-width q-mb-md"
                                 label="Login"
                                 type="submit"

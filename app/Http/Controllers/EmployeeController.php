@@ -45,7 +45,13 @@ class EmployeeController extends Controller
 
     public function show($id)
     {
-        return Employee::findOrFail($id);
+        $employee = Employee::with(['attendance'])->findOrFail($id);
+
+        $employee->attendance->each(function ($attendance) {
+            $attendance->makeHidden(['employee']);
+        });
+
+        return $employee;
     }
 
     public function store(Request $request)

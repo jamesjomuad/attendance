@@ -78,6 +78,14 @@ const routes = [
                             requiresAuth: true
                         }
                     },
+                    {
+                        path: ":id/time-cards",
+                        component: () => import("../pages/Employees/TimeCardsPage.vue"),
+                        meta: {
+                            title: "Employee Time Cards",
+                            requiresAuth: true
+                        }
+                    },
                 ]
             },
 

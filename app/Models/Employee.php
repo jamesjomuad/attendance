@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
@@ -33,6 +34,7 @@ class Employee extends Model
     protected $appends = [
         'fullname',
         'email',
+        'dtr'
     ];
 
 
@@ -77,5 +79,23 @@ class Employee extends Model
     public function leave()
     {
         return $this->hasMany(Leave::class);
+    }
+
+    public function getDtrAttribute()
+    {
+        $startDate  = Carbon::now()->startOfMonth();
+
+        // Get the number of days in the month
+        $numberOfDaysInMonth = Carbon::now()->daysInMonth;
+
+        // Create an array to store the days
+        $daysArray = [];
+
+        // Loop through each day and add it to the array
+        for ($i = 0; $i < $numberOfDaysInMonth; $i++) {
+            $daysArray[] = $startDate ->copy()->addDays($i)->format('d');
+        }
+
+        return $daysArray;
     }
 }
