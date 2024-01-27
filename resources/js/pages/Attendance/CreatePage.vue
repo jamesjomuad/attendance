@@ -1,8 +1,11 @@
 <template>
     <q-page padding>
         <q-form class="row q-col-gutter-md" @submit="onCreate">
-            <div class="col-md-12">
-                <q-card class="q-mt-md">
+            <div class="col-md-3">
+                <q-date v-model="$form.date" />
+            </div>
+            <div class="col-md-9">
+                <q-card>
                     <q-card-section>
                         <div class="row q-col-gutter-md">
                             <!-- Employee -->
@@ -148,6 +151,7 @@ const ui = reactive({
     employeeOptions: [],
 })
 const $form = reactive({
+    date: new Date,
     in_am: "",
     out_am: "",
     in_pm: "",

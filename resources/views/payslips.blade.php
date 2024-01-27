@@ -46,7 +46,7 @@
             </tr>
             <tr>
                 <td>Position</td>
-                <td>{{ $employee->toArray()['position']['title'] }}</td>
+                <td>{{ @$employee->toArray()['position']['title'] }}</td>
             </tr>
             <tr>
                 <td>Hourly Rate</td>
