@@ -57,12 +57,26 @@
                 <td>{{ $employee->hours }}</td>
             </tr>
             <tr>
-                <td>Deductions</td>
-                <td>-0.00</td>
+                <td><strong>Net</strong></td>
+                <td><strong>{{ $employee->net }}</strong></td>
+            </tr>
+            <tr>
+                <td>Tax Deductions 5%</td>
+                <td>-{{ $employee->deductions }}</td>
+            </tr>
+            <tr>
+                <td>Leaves</td>
+                <td>
+                    <ul>
+                        @foreach ( $employee->leaves as $leave )
+                            <li>{{ $leave->start->format('M d, Y') }} to {{ $leave->end->format('M d, Y') }}</li>
+                        @endforeach
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <td><strong>Total Amount</strong></td>
-                <td><strong>{{ $employee->net }}</strong></td>
+                <td><strong>{{ $employee->net_total }}</strong></td>
             </tr>
         </table>
 
