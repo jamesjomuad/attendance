@@ -66,12 +66,12 @@ class Payroll extends Employee
 
     public function getHoursAttribute()
     {
-        return $this->attendance->sum('total_hours');
+        return number_format((float)$this->attendance->sum('total_hours'), 2, '.', '');
     }
 
     public function getOvertimeAttribute()
     {
-        return $this->attendance->sum('overtime');
+        return number_format($this->attendance->sum('overtime'), 2, '.', '');
     }
 
     public function getDeductionsAttribute()
@@ -88,7 +88,7 @@ class Payroll extends Employee
         $net = (float)($this->hours * $this->rate);
         $overtime = (float)($this->hours * $this->overtime);
         $netTotal = $net + $overtime;
-        return $netTotal;
+        return number_format((float)$netTotal, 2, '.', '');
     }
 
     public function getNetTotalAttribute()

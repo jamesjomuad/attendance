@@ -162,6 +162,13 @@ const table = reactive({
             sortable: false,
         },
         {
+            label: "Net",
+            field: "net",
+            align: 'left',
+            sortable: false,
+            // format: (v) => currency.format(v)
+        },
+        {
             label: "Deductions",
             field: "deductions",
             align: 'left',
@@ -169,8 +176,8 @@ const table = reactive({
             // format: (v) => currency.format(v)
         },
         {
-            label: "Net Pay",
-            field: "net",
+            label: "Net Total",
+            field: "net_total",
             align: 'left',
             sortable: false,
             // format: (v) => currency.format(v)
