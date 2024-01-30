@@ -2,7 +2,19 @@
 <template>
     <q-page padding>
         <q-form class="row q-col-gutter-md">
-            <div class="col-md-12">
+            <div class="col-md-3">
+                <q-select
+                    dense
+                    outlined
+                    v-model="ui.selectedMonth"
+                    :options="ui.monthOptions"
+                    label="Select a Month"
+                    class="q-mb-md"
+                    emit-value
+                    map-options
+                />
+            </div>
+            <div class="col-md-9">
                 <q-card>
                     <!-- Fields -->
                     <q-card-section v-if="!ui.loading">
@@ -78,6 +90,10 @@ const $router = useRouter()
 const $q = useQuasar()
 const ui = reactive({
     loading: true,
+    selectedMonth: null,
+    monthOptions: [
+        'January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'
+    ]
 })
 const $form = ref({
     first_name: "",
@@ -108,6 +124,19 @@ function to12hr(time24hr) {
 
     return time12hr;
 }
+
+// function goToPreviousMonth() {
+//     ui.selectedDate = this.previousMonth(ui.selectedDate);
+// }
+// function goToNextMonth() {
+//     ui.selectedDate = this.nextMonth(ui.selectedDate);
+// }
+// function previousMonth(date) {
+//     // Your logic to calculate the previous month
+// }
+// function nextMonth(date) {
+//     // Your logic to calculate the next month
+// }
 
 </script>
 

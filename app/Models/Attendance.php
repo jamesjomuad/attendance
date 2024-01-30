@@ -22,6 +22,7 @@ class Attendance extends Model
         'out_pm',
         'status',
         'hours',
+        'created_at'
     ];
 
     protected $appends = [

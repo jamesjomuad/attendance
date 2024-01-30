@@ -72,6 +72,8 @@ class AttendanceController extends Controller
 
         $attendance = new Attendance();
 
+        if( $request->filled('date') )
+        $attendance->created_at = $request->input('date');
         if( $request->filled('in_am') )
         $attendance->in_am  = Carbon::today()->setTimeFromTimeString( $request->input('in_am') );
         if( $request->filled('out_am') )
