@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
+use PhpParser\Node\Expr\FuncCall;
 
 class Payroll extends Employee
 {
@@ -17,6 +17,7 @@ class Payroll extends Employee
         'overtime',
         'deductions',
         'net',
+        'net_total',
     ];
 
     #
@@ -75,14 +76,29 @@ class Payroll extends Employee
 
     public function getDeductionsAttribute()
     {
-        return $this->currency(0);
+        $net = (float)($this->hours * $this->rate);
+        $overtime = (float)($this->hours * $this->overtime);
+        $netTotal = $net + $overtime;
+        $tax_deduction = ($this->tax * $netTotal) / 100;
+        return  number_format((float)$tax_deduction, 2, '.', '');
     }
 
     public function getNetAttribute()
     {
         $net = (float)($this->hours * $this->rate);
         $overtime = (float)($this->hours * $this->overtime);
-        return $this->currency( $net + $overtime );
+        $netTotal = $net + $overtime;
+        return $netTotal;
+    }
+
+    public function getNetTotalAttribute()
+    {
+        return $this->currency( $this->net - $this->deductions );
+    }
+
+    public function getTaxAttribute($value)
+    {
+        return 5;       // unit in percent
     }
 
 

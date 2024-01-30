@@ -47,6 +47,10 @@ class PayslipController extends Controller
             }])
         ->findOrFail($id);
 
+        // dump(
+        //     $employee->toArray()
+        // );
+
         // Generate PDF view
         $pdf = Pdf::loadView('payslip', compact('employee','dates'));
 
