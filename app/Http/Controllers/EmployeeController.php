@@ -43,11 +43,11 @@ class EmployeeController extends Controller
         return response()->json($query->paginate($per_page));
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $employee = Employee::with(['attendance'])->findOrFail($id);
 
-        $employee->dtr();
+        $employee->dtr = $employee->dtr($request);
 
         $employee->attendance->each(function ($attendance) {
             $attendance->makeHidden(['employee']);

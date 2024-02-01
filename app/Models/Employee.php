@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Employee extends Model
 {
@@ -81,16 +82,34 @@ class Employee extends Model
         return $this->hasMany(Leave::class);
     }
 
-    public function getDtrAttribute()
+    #
+    #   Scopes
+    #
+    public function scopeDtr($query, $request)
     {
-        $attendances = $this->attendance->mapWithKeys(function($attendance){
-            return [(string)$attendance->created_at->format('j') => $attendance];
-        });
-
-        $startDate  = Carbon::now()->startOfMonth();
-
         // Get the number of days in the month
-        $numberOfDaysInMonth = Carbon::now()->daysInMonth;
+        if( $request->filled('month') ){
+            $year  = $request->input('year');
+            $month = $request->input('month');
+            $firstDay = Carbon::createFromFormat('F Y', $month.' '.$year)->firstOfMonth();
+            $lastDay  = Carbon::createFromFormat('F Y', $month.' '.$year)->lastOfMonth();
+            $startDate = Carbon::createFromFormat('F Y', $month.' '.$year)->startOfMonth();
+            $numberOfDaysInMonth = Carbon::createFromFormat('F Y', $month.' '.$year)->daysInMonth;
+            $attendances = $this
+                ->attendance()
+                ->whereBetween('created_at', [$firstDay, $lastDay])
+                ->get()
+                ->mapWithKeys(function($attendance){
+                    return [(string)$attendance->created_at->format('j') => $attendance];
+                })
+            ;
+        }else{
+            $numberOfDaysInMonth = Carbon::now()->daysInMonth;
+            $startDate  = Carbon::now()->startOfMonth();
+            $attendances = $this->attendance->mapWithKeys(function($attendance){
+                return [(string)$attendance->created_at->format('j') => $attendance];
+            });
+        }
 
         // Create an array to store the days
         $daysArray = collect([]);
@@ -108,16 +127,10 @@ class Employee extends Model
         })->sortBy('day')->toArray();
 
         return [
-            'month' => Carbon::now()->format('F'),
+            'month' =>$request->has('month')
+                ? Carbon::createFromFormat('F', $request->input('month'))->format('F')
+                : Carbon::now()->format('F'),
             'days'  => $timesheet
         ];
-    }
-
-    #
-    #   Scopes
-    #
-    public function scopeDtr()
-    {
-        $this->appends[] = 'dtr';
     }
 }
