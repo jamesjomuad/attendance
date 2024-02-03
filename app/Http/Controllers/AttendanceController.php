@@ -116,6 +116,8 @@ class AttendanceController extends Controller
 
         $attendance = Attendance::findOrFail($id);
 
+        if( $request->filled('date') )
+        $attendance->created_at = $request->input('date');
         if( $request->filled('in_am') )
         $attendance->in_am  = Carbon::today()->setTimeFromTimeString( $request->input('in_am') );
         if( $request->filled('out_am') )
@@ -135,7 +137,9 @@ class AttendanceController extends Controller
 
     public function destroy($id)
     {
-        return Attendance::findOrFail($id)->delete();
+        return response()->json([
+            'status' => Attendance::findOrFail($id)->delete()
+        ], 201);
     }
 
     public function login(Request $request)

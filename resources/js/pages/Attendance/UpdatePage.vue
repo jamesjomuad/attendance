@@ -2,7 +2,13 @@
 <template>
     <q-page padding>
         <q-form class="row q-col-gutter-md" @submit="onUpdate">
-            <div class="col-md-12">
+            <div class="col-md-3">
+                <q-date
+                    v-model="$form.date"
+                    mask="YYYY-MM-DD"
+                />
+            </div>
+            <div class="col-md-9">
                 <q-card class="q-mt-md">
                     <q-card-section>
                         <div class="row q-col-gutter-md">
@@ -117,18 +123,20 @@
 
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, onBeforeMount } from "vue";
 import { useQuasar, date } from 'quasar'
 import _ from 'lodash'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 
-const $route = useRoute();
+const $route = useRoute()
+const $router = useRouter()
 const $q = useQuasar()
 const ui = reactive({
     loading: false,
 })
 const $form = reactive({
+    date: null,
     in_am: "",
     out_am: "",
     in_pm: "",
@@ -136,16 +144,16 @@ const $form = reactive({
 });
 
 
-onMounted(async ()=>{
+onBeforeMount(async ()=>{
     ui.loading = true
     const { data } = await axios.get(`/api/attendances/${$route.params.id}`)
     $form.in_am = data.in_am
     $form.out_am = data.out_am
     $form.in_pm = data.in_pm
     $form.out_pm = data.out_pm
+    $form.date = date.formatDate(new Date(data.created_at), 'YYYY-MM-DD')
     ui.loading = false
-
-    console.log($form)
+    console.log( $form )
 })
 
 
@@ -189,14 +197,15 @@ function onRemove(){
         ui.loading = true
         ui.removing = true
         try{
-            const { data } = await axios.post(`/api/employees/${$route.params.id}`, {
+            const { data } = await axios.post(`/api/attendances/${$route.params.id}`, {
                 _method: 'delete'
             })
-            if(data){
-                $router.push('/employees')
+            console.log( data.status )
+            if(data.status){
+                $router.push('/attendance')
                 $q.notify({
                     type: 'positive',
-                    message: `${$form.value.first_name} ${$form.value.last_name} remove successfully!`
+                    message: `Remove successfully!`
                 })
             }
         } catch(error){

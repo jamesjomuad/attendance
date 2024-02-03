@@ -87,14 +87,14 @@ class Attendance extends Model
             return round($total + $am_total, 2);
         }
 
-
         if( in_array(null, [$this->in_am,$this->out_am,$this->in_pm,$this->out_pm], true) ){
             return 0;
         }
 
         $total_am = $this->in_am->diff($this->out_am)->h + ($this->in_am->diff($this->out_am)->i / 60);
         $total_pm = $this->in_pm->diff($this->out_pm)->h + ($this->in_pm->diff($this->out_pm)->i / 60);
-        return  round($total_am + $total_pm, 2);
+        $total = round($total_am + $total_pm, 2);
+        return $total;
     }
 
     public function getOvertimeAttribute()
