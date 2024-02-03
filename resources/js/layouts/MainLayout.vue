@@ -51,6 +51,9 @@
                     <!-- <menu-item label="Departments" icon="work_outline" to="/departments"/> -->
                     <menu-item label="Attendance" icon="calendar_month" to="/attendance"/>
                     <menu-item label="Payroll" icon="credit_card" to="/payroll"/>
+
+                    <q-separator />
+                    <q-item-label header>Requests</q-item-label>
                     <menu-item label="Leaves" icon="spa" to="/leaves"/>
                     <q-separator />
 
