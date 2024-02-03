@@ -59,6 +59,7 @@ class Attendance extends Model
 
     public function getTotalHoursAttribute()
     {
+        $required_hours = $this->employee->schedule_in->diffInHours($this->employee->schedule_out) - 1; // -1 for lunch break
         $in_am  = $this->in_am!==null;
         $out_am = $this->out_am!==null;
         $in_pm  = $this->in_pm!==null;
@@ -67,7 +68,7 @@ class Attendance extends Model
         if( $in_am && !$out_am && !$in_pm && !$out_pm )
         {
             $total = $this->in_am->diff(Carbon::now())->h + ($this->in_am->diff(Carbon::now())->i / 60);    // Hour + Minutes
-            return round($total, 2);
+            return 0;
         }
         else if( $in_am && $out_am && !$in_pm && !$out_pm )
         {
@@ -83,9 +84,15 @@ class Attendance extends Model
         else if( $in_am && $out_am && $in_pm && $out_pm )
         {
             $am_total = $this->in_am->diff($this->out_am)->h + ($this->in_am->diff($this->out_am)->i / 60);    // Hour + Minutes
-            $total = $this->in_pm->diff($this->out_pm)->h + ($this->in_pm->diff($this->out_pm)->i / 60);    // Hour + Minutes
-            return round($total + $am_total, 2);
+            $pm_total = $this->in_pm->diff($this->out_pm)->h + ($this->in_pm->diff($this->out_pm)->i / 60);    // Hour + Minutes
+
+            if( $am_total >= $required_hours/2 && $pm_total >= $required_hours/2 ){
+                return 8;
+            }else{
+                return round($pm_total + $am_total, 2);
+            }
         }
+
 
         if( in_array(null, [$this->in_am,$this->out_am,$this->in_pm,$this->out_pm], true) ){
             return 0;
@@ -94,6 +101,8 @@ class Attendance extends Model
         $total_am = $this->in_am->diff($this->out_am)->h + ($this->in_am->diff($this->out_am)->i / 60);
         $total_pm = $this->in_pm->diff($this->out_pm)->h + ($this->in_pm->diff($this->out_pm)->i / 60);
         $total = round($total_am + $total_pm, 2);
+
+
         return $total;
     }
 
