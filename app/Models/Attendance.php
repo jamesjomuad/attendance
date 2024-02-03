@@ -59,10 +59,7 @@ class Attendance extends Model
 
     public function getTotalHoursAttribute()
     {
-        $required_hours = 8;
-        if( $this->employee->schedule_in ){
-            $required_hours = $this->employee->schedule_in->diffInHours($this->employee->schedule_out) - 1; // -1 for lunch break
-        }
+        $required_hours = $this->employee ? $this->employee->schedule_in->diffInHours($this->employee->schedule_out) - 1 : 8; // -1 for lunch break
         $in_am  = $this->in_am!==null;
         $out_am = $this->out_am!==null;
         $in_pm  = $this->in_pm!==null;
