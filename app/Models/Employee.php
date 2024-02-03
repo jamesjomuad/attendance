@@ -105,10 +105,16 @@ class Employee extends Model
             ;
         }else{
             $numberOfDaysInMonth = Carbon::now()->daysInMonth;
+            $firstDay = Carbon::now()->firstOfMonth();
+            $lastDay  = Carbon::now()->lastOfMonth();
             $startDate  = Carbon::now()->startOfMonth();
-            $attendances = $this->attendance->mapWithKeys(function($attendance){
-                return [(string)$attendance->created_at->format('j') => $attendance];
-            });
+            $attendances = $this
+                ->attendance
+                ->whereBetween('created_at', [$firstDay, $lastDay])
+                ->mapWithKeys(function($attendance){
+                    return [(string)$attendance->created_at->format('j') => $attendance];
+                })
+            ;
         }
 
         // Create an array to store the days
