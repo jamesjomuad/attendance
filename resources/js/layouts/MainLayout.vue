@@ -6,7 +6,7 @@
                 <q-btn flat @click="miniState = !miniState" round dense icon="menu" />
                 <q-toolbar-title v-if="!$q.screen.xs">{{ $route.meta?.title }} </q-toolbar-title>
 
-                <q-space />
+                <q-space/>
 
                 <q-toolbar-title shrink>
                     <span class="text-subtitle2">Hello, {{ user?.fullname }}</span>
@@ -15,6 +15,9 @@
                 <q-btn round flat icon="account_circle">
                     <q-menu auto-close :offset="[110, 0]">
                         <q-list style="min-width: 150px">
+                            <q-item clickable :to="`/`" target="_blank">
+                                <q-item-section>Home</q-item-section>
+                            </q-item>
                             <q-item clickable :to="`/system/users/${user.id}`">
                                 <q-item-section>Account</q-item-section>
                             </q-item>

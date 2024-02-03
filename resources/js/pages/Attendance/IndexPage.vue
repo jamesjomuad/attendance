@@ -150,12 +150,12 @@ const table = reactive({
             sortable: false,
             align: 'left',
         },
-        {
-            label: 'Undertime',
-            field: 'undertime',
-            sortable: false,
-            align: 'left',
-        },
+        // {
+        //     label: 'Undertime',
+        //     field: 'undertime',
+        //     sortable: false,
+        //     align: 'left',
+        // },
         {
             label: 'Date',
             field: 'created_at',

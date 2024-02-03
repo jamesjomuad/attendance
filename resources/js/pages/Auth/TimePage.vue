@@ -1,5 +1,5 @@
 <template>
-    <q-page class="flex flex-center bg-dark">
+    <q-page class="flex flex-center gradient">
         <div id="clock" class="column">
             <p class="col date">{{ ui.date }}</p>
             <p class="col time">{{ ui.time }}</p>
@@ -235,6 +235,23 @@ function onError(data){
             letter-spacing: 0.1em;
             font-size: 12px;
             padding: 20px 0 0;
+        }
+    }
+    .gradient{
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        height: 100vh;
+    }
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
         }
     }
 </style>

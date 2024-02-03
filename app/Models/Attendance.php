@@ -106,7 +106,7 @@ class Attendance extends Model
         // Hours required Minus 1 hour break
         $required_hours = $this->employee->schedule_out->subHours(1)->diffInHours($this->employee->schedule_in);
         $overtime = round($this->total_hours - $required_hours, 2);
-        if( $overtime >0 ){
+        if( $overtime >= 1 ){
             return $overtime;
         }
         return 0;
