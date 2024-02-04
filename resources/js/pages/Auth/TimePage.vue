@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col">
                     <q-btn
-                        color="primary"
+                        class="bg-white text-grey-8"
                         size="lg"
                         icon="login"
                         label="Time In"
@@ -37,7 +37,7 @@
                 </div>
                 <div class="col">
                     <q-btn
-                        color="secondary"
+                        class="bg-grey-9 text-white"
                         size="lg"
                         icon-right="logout"
                         label="Time Out"
