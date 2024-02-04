@@ -114,7 +114,7 @@ const ui = reactive({
 })
 const dpKey = ref()
 const $form = ref({
-    year: null,
+    year: (new Date()).getFullYear(),
     month: null,
     first_name: "",
     last_name: "",
@@ -149,15 +149,24 @@ async function onMonth(){
     dpKey.value = Date.now()
     ui.loading = true
     $q.loading.show()
-    let params = {
-        year: $form.value.year,
-        month: $form.value.month
+    try{
+        let params = {
+            year: $form.value.year,
+            month: $form.value.month
+        }
+        const { data } = await axios.get(`/api/employees/${$route.params.id}`, { params: params } )
+        console.log( data )
+        $form.value = {...$form.value, ...data}
+    }catch(e){
+        $q.notify({
+            type: 'negative',
+            message: "Error!"
+        })
+    //    throw e
     }
-    const { data } = await axios.get(`/api/employees/${$route.params.id}`, { params: params } )
-    console.log( data )
-    $form.value = {...$form.value, ...data}
     ui.loading = false
     $q.loading.hide()
+
 }
 </script>
 
