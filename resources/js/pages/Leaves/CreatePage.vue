@@ -52,7 +52,8 @@
                                 label="Date Start"
                                 class="col-6"
                                 v-model="$form.start"
-                                mask="date">
+                                mask="date"
+                                readonly>
                                 <template v-slot:append>
                                     <q-icon name="event" class="cursor-pointer">
                                         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -73,7 +74,8 @@
                                 label="Date End"
                                 class="col-6"
                                 v-model="$form.end"
-                                mask="date">
+                                mask="date"
+                                readonly>
                                 <template v-slot:append>
                                     <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -86,6 +88,7 @@
                                     </q-icon>
                                 </template>
                             </q-input>
+
                             <!-- Reason -->
                             <q-input
                                 v-model="$form.reason"

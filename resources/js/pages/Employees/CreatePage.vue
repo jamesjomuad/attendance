@@ -14,6 +14,7 @@
                                 name="first_name"
                                 class="col-6"
                                 :rules="[ val => val && val.length > 0 || 'Please type something']"
+                                @change="$form.first_name=capitalize($form.first_name)"
                             >
                                 <template v-slot:prepend>
                                 <q-icon name="account_circle" />
@@ -29,6 +30,7 @@
                                 lazy-rules
                                 class="col-6"
                                 :rules="[ val => val && val.length > 0 || 'Please type something']"
+                                @change="$form.last_name=capitalize($form.last_name)"
                             >
                                 <template v-slot:prepend>
                                 <q-icon name="account_circle" />
@@ -229,7 +231,6 @@ async function getPositions(){
     }
 }
 
-
 async function onCreate(){
     ui.loading = true
     try{
@@ -254,6 +255,10 @@ async function onCreate(){
         }
     }
     ui.loading = false
+}
+
+function capitalize(model){
+    return  model.charAt(0).toUpperCase() + model.slice(1);
 }
 
 </script>

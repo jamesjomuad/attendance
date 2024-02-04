@@ -221,7 +221,7 @@ const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
 const ui = reactive({
-    loading: false,
+    loading: true,
     updating: false,
     resetting: false,
     removing: false,
@@ -239,6 +239,7 @@ const $form = ref({
 
 onMounted(async ()=>{
     ui.loading = true
+    $q.loading.show()
     const { data } = await axios.get(`/api/employees/${$route.params.id}`)
     $form.value = {...$form.value, ...data}
     $form.value.first_name = data?.user.first_name
@@ -247,6 +248,7 @@ onMounted(async ()=>{
     $form.value.schedule_out = date.formatDate($form.value.schedule_out, 'hh:mm A')
     await getPositions()
     ui.loading = false
+    $q.loading.hide()
 })
 
 async function getPositions(){
