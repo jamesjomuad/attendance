@@ -179,8 +179,8 @@ const table = reactive({
         sortBy: "id",
         descending: true,
         page: 1,
-        rowsPerPage: 10,
-        rowsNumber: 10,
+        rowsPerPage: 20,
+        rowsNumber: 20,
     }
 })
 const dialogQRCode = reactive({

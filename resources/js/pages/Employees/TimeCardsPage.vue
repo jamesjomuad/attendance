@@ -2,23 +2,26 @@
 <template>
     <q-page padding>
         <q-form class="row q-col-gutter-md">
-            <div class="col-md-3">
-                <q-select
-                    dense
-                    outlined
+            <div class="col-md-3 q-gutter-md">
+                <q-date
+                    minimal
+                    emit-immediately
+                    default-view="Years"
                     v-model="$form.year"
-                    :options="ui.yearOptions"
-                    label="Select Year"
-                    class="q-mb-md"
-                />
-                <q-select
-                    dense
-                    outlined
-                    v-model="$form.month"
-                    :options="ui.monthOptions"
-                    label="Select a Month"
-                    class="q-mb-md"
                     @update:model-value="onMonth"
+                    mask="YYYY"
+                    class="col"
+                    :key="dpKey"
+                />
+                <q-date
+                    minimal
+                    emit-immediately
+                    default-view="Months"
+                    v-model="$form.month"
+                    @update:model-value="onMonth"
+                    mask="MMMM"
+                    class="col"
+                    :key="dpKey"
                 />
             </div>
             <div class="col-md-9">
@@ -28,7 +31,7 @@
                         <table style="width: 100%; max-width: 800px; margin: 0px auto;">
                             <thead>
                                 <tr>
-                                    <th colspan="7">Daily Time Record</th>
+                                    <th colspan="7"><strong style="font-size: 20px;">Daily Time Record</strong></th>
                                 </tr>
                                 <tr>
                                     <th>For the Month of:</th>
@@ -109,6 +112,7 @@ const ui = reactive({
         'January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'
     ]
 })
+const dpKey = ref()
 const $form = ref({
     year: null,
     month: null,
@@ -142,7 +146,9 @@ function to12hr(time24hr) {
 }
 
 async function onMonth(){
+    dpKey.value = Date.now()
     ui.loading = true
+    $q.loading.show()
     let params = {
         year: $form.value.year,
         month: $form.value.month
@@ -151,6 +157,7 @@ async function onMonth(){
     console.log( data )
     $form.value = {...$form.value, ...data}
     ui.loading = false
+    $q.loading.hide()
 }
 </script>
 
