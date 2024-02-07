@@ -81,6 +81,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('/leaves/{id}', 'LeaveController@update');
     $router->delete('/leaves/{id}', 'LeaveController@destroy');
 
+    // Overtime
+    $router->get('/overtime', 'OvertimeController@index');
+    $router->get('/overtime/{id}', 'OvertimeController@show');
+    $router->post('/overtime', 'OvertimeController@store');
+    $router->put('/overtime/{id}', 'OvertimeController@update');
+    $router->delete('/overtime/{id}', 'OvertimeController@destroy');
+
 });
 
 

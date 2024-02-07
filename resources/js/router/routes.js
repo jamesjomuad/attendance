@@ -209,6 +209,36 @@ const routes = [
                 ]
             },
 
+            // Overtime
+            {
+                path: "/overtime",
+                children: [{
+                        path: "",
+                        component: () => import("../pages/Overtime/IndexPage.vue"),
+                        meta: {
+                            title: "Overtime",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Overtime/CreatePage.vue"),
+                        meta: {
+                            title: "New Position",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Overtime/UpdatePage.vue"),
+                        meta: {
+                            title: "Update Position",
+                            requiresAuth: true
+                        }
+                    },
+                ]
+            },
+
             // Users
             {
                 path: "/system/users",

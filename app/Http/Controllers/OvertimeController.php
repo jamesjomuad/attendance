@@ -8,16 +8,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Exception;
-use App\Models\Leave;
+use App\Models\Overtime;
 use App\Models\Employee;
 
-class LeaveController extends Controller
+class OvertimeController extends Controller
 {
     public function index(Request $request)
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Leave::with(['employee']);
+        $query = Overtime::with(['employee']);
 
         //  Filter/Search
         $query->when($request->get('filter'), function($q) use ($request) {
@@ -41,7 +41,7 @@ class LeaveController extends Controller
     public function show($id)
     {
         try{
-            return Leave::with('employee')->findOrFail($id);
+            return Overtime::with('employee')->findOrFail($id);
         }catch(Exception $e){
             return response()->json(['error' => 'INVALID_ROUTE'], 404);
         }
@@ -51,7 +51,6 @@ class LeaveController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "employee" => ["required"],
-            "type"     => ["required"],
             "start"    => ["required"],
             "end"      => ["required"],
             "reason"   => ["required"],
@@ -67,17 +66,17 @@ class LeaveController extends Controller
 
         $employee = Employee::find($request->input('employee'));
 
-        $employee = $employee->leave()->create( $request->input() + ['request_id' => Str::random(12)] );
+        $employee = $employee->overtime()->create( $request->input() + ['request_id' => Str::random(12)] );
 
         return response()->json([
-            'message' => 'Leave created successfully',
+            'message' => 'Overtime created successfully',
             'data'    => $employee
         ], 201);
     }
 
     public function update(Request $request, $id)
     {
-        $leave = Leave::find($id);
+        $overtime = Overtime::find($id);
 
         $validator = Validator::make($request->all(), [
             "employee" => ["required"],
@@ -95,17 +94,17 @@ class LeaveController extends Controller
             ], 500);
         }
 
-        $leave->update( $request->input() );
+        $overtime->update( $request->input() );
 
         return response()->json([
             'message' => 'Employee created successfully',
-            'data'    => $leave
+            'data'    => $overtime
         ], 201);
     }
 
     public function destroy($id)
     {
-        return Leave::findOrFail($id)->delete();
+        return Overtime::findOrFail($id)->delete();
     }
 
 }

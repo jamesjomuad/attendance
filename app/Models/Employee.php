@@ -82,6 +82,12 @@ class Employee extends Model
         return $this->hasMany(Leave::class);
     }
 
+    #   Relation: overtime
+    public function overtime()
+    {
+        return $this->hasMany(Overtime::class);
+    }
+
     #
     #   Scopes
     #
