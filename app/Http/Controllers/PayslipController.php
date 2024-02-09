@@ -42,6 +42,10 @@ class PayslipController extends Controller
                 $leaves->whereBetween('start', [ $dates['from'], $dates['to'] ]);
                 $leaves->whereBetween('end', [ $dates['from'], $dates['to'] ]);
             },
+            'overtime' => function($overtime) use($dates) {
+                $overtime->whereBetween('start', [ $dates['from'], $dates['to'] ]);
+                $overtime->whereBetween('end', [ $dates['from'], $dates['to'] ]);
+            },
             'attendance' => function($q) use($dates) {
                 $q->whereBetween('created_at', [ $dates['from'], $dates['to'] ]);
             }])

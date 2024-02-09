@@ -10,7 +10,6 @@
                     v-model="$form.year"
                     @update:model-value="onMonth"
                     mask="YYYY"
-                    class="col"
                     :key="dpKey"
                 />
                 <q-date
@@ -20,15 +19,14 @@
                     v-model="$form.month"
                     @update:model-value="onMonth"
                     mask="MMMM"
-                    class="col"
                     :key="dpKey"
                 />
             </div>
             <div class="col-md-9">
                 <q-card>
                     <!-- Fields -->
-                    <q-card-section v-if="!ui.loading">
-                        <table style="width: 100%; max-width: 800px; margin: 0px auto;">
+                    <q-card-section ref="tableSection" v-if="!ui.loading">
+                        <table style="width:100%;max-width:408px;margin:0px auto;">
                             <thead>
                                 <tr>
                                     <th colspan="7"><strong style="font-size: 20px;">Daily Time Record</strong></th>
@@ -64,12 +62,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Example records -->
+                                <!-- Records -->
                                 <tr v-for="(attendance, key) in $form.dtr?.days" :key="key">
                                     <td>{{ key }}</td>
-                                    <td>{{ to12hr(attendance.in_am) }}</td>
-                                    <td>{{ to12hr(attendance.out_am) }}</td>
-                                    <td>{{ to12hr(attendance.in_pm) }}</td>
+                                    <td>{{ to12hr(attendance?.in_am) }}</td>
+                                    <td>{{ to12hr(attendance?.out_am) }}</td>
+                                    <td>{{ to12hr(attendance?.in_pm) }}</td>
                                     <td>{{ to12hr(attendance?.out_pm) }}</td>
                                     <td></td>
                                     <td></td>
@@ -78,6 +76,17 @@
                         </table>
                     </q-card-section>
                 </q-card>
+                <div class="row justify-end q-mt-md">
+                    <div class="col-auto">
+                        <q-btn
+                            color="primary"
+                            label="Print"
+                            @click="onPrint"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                        />
+                    </div>
+                </div>
             </div>
         </q-form>
     </q-page>
@@ -120,6 +129,7 @@ const $form = ref({
     last_name: "",
     email: "",
 });
+const tableSection = ref()
 
 
 onMounted(async ()=>{
@@ -142,7 +152,7 @@ function to12hr(time24hr) {
     // Use Intl.DateTimeFormat to get the time in 12-hour format
     const time12hr = formattedTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
-    return time12hr;
+    return time12hr.replace(' AM','').replace(' PM','');
 }
 
 async function onMonth(){
@@ -168,6 +178,35 @@ async function onMonth(){
     $q.loading.hide()
 
 }
+
+function onPrint(){
+    // Create a new window
+    const printWindow = window.open('', '_blank');
+
+    // Copy the content of the specific div into the new window
+    const contentToPrint = tableSection.value.$el.innerHTML;
+    printWindow.document.open();
+    printWindow.document.write(`
+    <html>
+        <head>
+        <!-- Add any necessary styles or links here -->
+        <style>
+            table, th, td { border: 1px solid black; border-collapse: collapse;}
+        </style>
+        </head>
+        <body>
+        ${contentToPrint}
+        </body>
+    </html>
+    `);
+    printWindow.document.close();
+
+    // Print the new window
+    printWindow.print();
+    printWindow.onafterprint = function () {
+    printWindow.close();
+    };
+}
 </script>
 
 <style scoped>
@@ -175,4 +214,4 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-</style>
+</>

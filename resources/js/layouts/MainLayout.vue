@@ -55,7 +55,7 @@
                     <q-separator />
                     <q-item-label header>Requests</q-item-label>
                     <menu-item label="Leaves" icon="spa" to="/leaves"/>
-                    <menu-item label="Overtime" icon="work_history" to="/overtime"/>
+                    <!-- <menu-item label="Overtime" icon="work_history" to="/overtime"/> -->
                     <q-separator />
 
                     <q-item-label header>System</q-item-label>

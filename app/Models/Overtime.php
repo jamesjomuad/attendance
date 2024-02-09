@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+
 
 class Overtime extends Model
 {
@@ -10,14 +12,20 @@ class Overtime extends Model
     protected $table = 'overtime';
 
     protected $casts = [
-        'start' => 'date',
-        'end' => 'date',
+        'date' => 'date',
+        'start' => 'dateTime',
+        'end' => 'dateTime',
     ];
 
     protected $fillable = [
         'start',
         'end',
         'reason',
+    ];
+
+    protected $appends = [
+        'startTime',
+        'endTime',
     ];
 
 
@@ -27,4 +35,13 @@ class Overtime extends Model
         return $this->belongsTo(Employee::class);
     }
 
+    public function getStartTimeAttribute($value)
+    {
+        return $this->start->format('h:i A');
+    }
+
+    public function getEndTimeAttribute($value)
+    {
+        return $this->end->format('h:i A');
+    }
 }

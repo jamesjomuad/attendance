@@ -18,6 +18,7 @@ class CreateOvertime extends Migration
             $table->foreignId('employee_id');
             $table->time('start')->nullable();
             $table->time('end')->nullable();
+            $table->date('date')->nullable();
             $table->text('reason');
             $table->timestamps();
         });

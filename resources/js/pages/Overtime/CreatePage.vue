@@ -13,7 +13,7 @@
                                 use-input
                                 emit-value
                                 map-options
-                                class="col-12"
+                                class="col-6"
                                 label="Employee"
                                 v-model="$form.employee"
                                 input-debounce="600"
@@ -29,6 +29,28 @@
                                     </q-item>
                                 </template>
                             </q-select>
+
+                            <!-- Date -->
+                            <q-input
+                                dense
+                                outlined
+                                label="Date"
+                                class="col-6"
+                                v-model="$form.date"
+                                mask="date"
+                                readonly>
+                                <template v-slot:append>
+                                    <q-icon name="event" class="cursor-pointer">
+                                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                            <q-date v-model="$form.date">
+                                                <div class="row items-center justify-end">
+                                                    <q-btn v-close-popup label="Close" color="primary" flat />
+                                                </div>
+                                            </q-date>
+                                        </q-popup-proxy>
+                                    </q-icon>
+                                </template>
+                            </q-input>
 
                             <!-- Start -->
                             <q-input
@@ -123,6 +145,7 @@ const ui = reactive({
 })
 const $form = reactive({
     employee: null,
+    date: null,
     start: "",
     end: "",
     reason: null,

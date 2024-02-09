@@ -67,7 +67,7 @@ class LeaveController extends Controller
 
         $employee = Employee::find($request->input('employee'));
 
-        $employee = $employee->leave()->create( $request->input() + ['request_id' => Str::random(12)] );
+        $employee = $employee->leave()->create( $request->input() );
 
         return response()->json([
             'message' => 'Leave created successfully',

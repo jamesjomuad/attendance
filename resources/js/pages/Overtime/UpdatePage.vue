@@ -19,7 +19,6 @@
                                 input-debounce="600"
                                 :options="ui.employees"
                                 @filter="filterFn"
-                                readonly
                                 :rules="[val => !!val || 'Field is required']"
                                 >
                                 <template v-slot:no-option>
@@ -31,33 +30,19 @@
                                 </template>
                             </q-select>
 
-                            <!-- Type -->
-                            <q-select
-                                dense
-                                outlined
-                                class="col-6"
-                                label="Type"
-                                v-model="$form.type"
-                                :options="ui.types"
-                                :rules="[val => !!val || 'Field is required']"
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="info" />
-                                </template>
-                            </q-select>
-
-                            <!-- Date Start -->
+                            <!-- Date -->
                             <q-input
                                 dense
                                 outlined
-                                label="Date Start"
+                                label="Date"
                                 class="col-6"
-                                v-model="$form.start"
-                                mask="date">
+                                v-model="$form.date"
+                                mask="date"
+                                readonly>
                                 <template v-slot:append>
                                     <q-icon name="event" class="cursor-pointer">
                                         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                            <q-date v-model="$form.start">
+                                            <q-date v-model="$form.date">
                                                 <div class="row items-center justify-end">
                                                     <q-btn v-close-popup label="Close" color="primary" flat />
                                                 </div>
@@ -67,26 +52,48 @@
                                 </template>
                             </q-input>
 
-                            <!-- Date End -->
+                            <!-- Start -->
                             <q-input
                                 dense
                                 outlined
-                                label="Date End"
+                                readonly
+                                label="Start Time"
                                 class="col-6"
-                                v-model="$form.end"
-                                mask="date">
+                                v-model="$form.start">
                                 <template v-slot:append>
-                                    <q-icon name="event" class="cursor-pointer">
+                                <q-icon name="access_time" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="$form.end">
+                                    <q-time v-model="$form.start" mask="hh:mm A">
                                         <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
-                                        </q-date>
+                                    </q-time>
                                     </q-popup-proxy>
-                                    </q-icon>
+                                </q-icon>
                                 </template>
                             </q-input>
+
+                            <!-- End -->
+                            <q-input
+                                dense
+                                outlined
+                                readonly
+                                label="End Time"
+                                class="col-6"
+                                v-model="$form.end">
+                                <template v-slot:append>
+                                <q-icon name="access_time" class="cursor-pointer">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-time v-model="$form.end" mask="hh:mm A">
+                                        <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-time>
+                                    </q-popup-proxy>
+                                </q-icon>
+                                </template>
+                            </q-input>
+
                             <!-- Reason -->
                             <q-input
                                 v-model="$form.reason"
@@ -178,12 +185,11 @@ onMounted(async ()=>{
 })
 
 onMounted(async()=>{
-    const { data } = await axios.get(`/api/leaves/${$route.params.id}`)
-    // $form.employee = {label: data.employee.fullname, value: data.employee_id}
+    const { data } = await axios.get(`/api/overtime/${$route.params.id}`)
     $form.employee = data.employee_id
-    $form.type = data.type
-    $form.start = data.start
-    $form.end = data.end
+    $form.date = data.date
+    $form.start = data.startTime
+    $form.end = data.endTime
     $form.reason = data.reason
     ui.loading = false
 })
@@ -192,12 +198,12 @@ onMounted(async()=>{
 async function onUpdate(){
     ui.loading = true
     try{
-        const { data } = await axios.put(`/api/leaves/${$route.params.id}`, $form)
+        const { data } = await axios.put(`/api/overtime/${$route.params.id}`, $form)
         $q.notify({
             type: 'positive',
             message: `Updated successfully!`
         })
-        $router.push('/leaves')
+        $router.push('/overtime')
     }catch(error){
         console.log(error)
         $q.notify({
@@ -238,11 +244,11 @@ function onRemove(){
         ui.loading = true
         ui.removing = true
         try{
-            const { data } = await axios.post(`/api/leaves/${$route.params.id}`, {
+            const { data } = await axios.post(`/api/overtime/${$route.params.id}`, {
                 _method: 'delete'
             })
             if(data){
-                $router.push('/leaves')
+                $router.push('/overtime')
                 $q.notify({
                     type: 'positive',
                     message: `Remove successfully!`

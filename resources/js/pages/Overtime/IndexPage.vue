@@ -99,13 +99,13 @@ const table = reactive({
         },
         {
             label: 'start',
-            field: 'start',
+            field: 'startTime',
             align: 'left',
             sortable: false
         },
         {
             label: 'end',
-            field: 'end',
+            field: 'endTime',
             align: 'left',
             sortable: false
         },

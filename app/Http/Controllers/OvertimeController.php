@@ -51,6 +51,7 @@ class OvertimeController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "employee" => ["required"],
+            "date"     => ["required"],
             "start"    => ["required"],
             "end"      => ["required"],
             "reason"   => ["required"],
@@ -66,7 +67,9 @@ class OvertimeController extends Controller
 
         $employee = Employee::find($request->input('employee'));
 
-        $employee = $employee->overtime()->create( $request->input() + ['request_id' => Str::random(12)] );
+        $employee = $employee->overtime()->create(
+            $request->input()
+        );
 
         return response()->json([
             'message' => 'Overtime created successfully',
