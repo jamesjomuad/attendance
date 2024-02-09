@@ -192,6 +192,7 @@ function onPrint(){
         <!-- Add any necessary styles or links here -->
         <style>
             table, th, td { border: 1px solid black; border-collapse: collapse;}
+            table{ max-width: 408px; }
         </style>
         </head>
         <body>
@@ -214,4 +215,4 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-</>
+</style>
