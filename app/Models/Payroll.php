@@ -14,10 +14,11 @@ class Payroll extends Employee
         'fullname',
         'rateCurrency',
         'hours',
-        'overtime',
+        // 'overtime',
         'deductions',
         'net',
         'net_total',
+        // 'overtime_total_hours',
     ];
 
     #
@@ -91,9 +92,13 @@ class Payroll extends Employee
 
     public function getNetAttribute()
     {
+        dd(
+            $this->overtime
+        );
+
         $net = (float)($this->hours * $this->rate);
-        $overtime = (float)($this->hours * $this->overtime);
-        $netTotal = $net + $overtime;
+        // $overtime = (float)($this->hours * $this->overtime);
+        $netTotal = $net;
         return number_format((float)$netTotal, 2, '.', '');
     }
 
@@ -105,6 +110,13 @@ class Payroll extends Employee
     public function getTaxAttribute($value)
     {
         return 5;       // unit in percent
+    }
+
+    public function getOvertimeTotalHoursAttribute()
+    {
+        if( !isset($this->overtime) ){
+            return null;
+        }
     }
 
 

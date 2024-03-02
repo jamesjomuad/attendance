@@ -27,6 +27,7 @@ class Overtime extends Model
     protected $appends = [
         'startTime',
         'endTime',
+        'totalHours',
     ];
 
 
@@ -36,6 +37,7 @@ class Overtime extends Model
         return $this->belongsTo(Employee::class);
     }
 
+    // Attributes
     public function getStartTimeAttribute($value)
     {
         return $this->start->format('h:i A');
@@ -44,5 +46,13 @@ class Overtime extends Model
     public function getEndTimeAttribute($value)
     {
         return $this->end->format('h:i A');
+    }
+
+    public function getTotalHoursAttribute()
+    {
+        $minutesDifference = $this->start->diffInMinutes( $this->end );
+
+        // Convert the minutes difference to decimal
+        return round($minutesDifference / 60, 2);
     }
 }

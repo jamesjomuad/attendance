@@ -43,17 +43,17 @@ class PayslipController extends Controller
                 $leaves->whereBetween('end', [ $dates['from'], $dates['to'] ]);
             },
             'overtime' => function($overtime) use($dates) {
-                $overtime->whereBetween('start', [ $dates['from'], $dates['to'] ]);
-                $overtime->whereBetween('end', [ $dates['from'], $dates['to'] ]);
+                $overtime->whereBetween('date', [ $dates['from'], $dates['to'] ]);
             },
             'attendance' => function($q) use($dates) {
                 $q->whereBetween('created_at', [ $dates['from'], $dates['to'] ]);
             }])
         ->findOrFail($id);
 
-        // dump(
-        //     $employee->toArray()
-        // );
+        dd(
+            $employee
+            ->toArray()
+        );
 
         // Generate PDF view
         $pdf = Pdf::loadView('payslip', compact('employee','dates'));
