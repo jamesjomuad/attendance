@@ -144,12 +144,12 @@ const table = reactive({
             sortable: false,
             align: 'left',
         },
-        {
-            label: 'Overtime',
-            field: 'overtime',
-            sortable: false,
-            align: 'left',
-        },
+        // {
+        //     label: 'Overtime',
+        //     field: 'overtime',
+        //     sortable: false,
+        //     align: 'left',
+        // },
         // {
         //     label: 'Undertime',
         //     field: 'undertime',
