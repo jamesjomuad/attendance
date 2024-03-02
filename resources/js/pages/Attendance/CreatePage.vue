@@ -39,10 +39,11 @@
                                 readonly
                                 label="Time In AM"
                                 class="col-6"
-                                v-model="$form.in_am">
+                                v-model="$form.in_am"
+                                @click="$inAm.show()">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-popup-proxy ref="$inAm" cover transition-show="scale" transition-hide="scale">
                                     <q-time v-model="$form.in_am">
                                         <div class="row items-center justify-end">
                                         <q-btn v-close-popup label="Close" color="primary" flat />
@@ -59,10 +60,11 @@
                                 readonly
                                 label="Time Out AM"
                                 class="col-6"
-                                v-model="$form.out_am">
+                                v-model="$form.out_am"
+                                @click="$outAm.show()">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-popup-proxy ref="$outAm" cover transition-show="scale" transition-hide="scale">
                                     <q-time v-model="$form.out_am">
                                         <div class="row items-center justify-end">
                                         <q-btn v-close-popup label="Close" color="primary" flat />
@@ -79,10 +81,11 @@
                                 readonly
                                 label="Time In PM"
                                 class="col-6"
-                                v-model="$form.in_pm">
+                                v-model="$form.in_pm"
+                                @click="$inPm.show()">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-popup-proxy ref="$inPm" cover transition-show="scale" transition-hide="scale">
                                     <q-time v-model="$form.in_pm">
                                         <div class="row items-center justify-end">
                                         <q-btn v-close-popup label="Close" color="primary" flat />
@@ -99,10 +102,11 @@
                                 readonly
                                 label="Time Out PM"
                                 class="col-6"
-                                v-model="$form.out_pm">
+                                v-model="$form.out_pm"
+                                @click="$outPm.show()">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-popup-proxy ref="$outPm" cover transition-show="scale" transition-hide="scale">
                                     <q-time v-model="$form.out_pm">
                                         <div class="row items-center justify-end">
                                         <q-btn v-close-popup label="Close" color="primary" flat />
@@ -157,6 +161,10 @@ const $form = reactive({
     in_pm: "",
     out_pm: "",
 });
+const $inAm = ref()
+const $outAm = ref()
+const $inPm = ref()
+const $outPm = ref()
 
 
 onMounted(async ()=>{
