@@ -14,11 +14,11 @@ class Payroll extends Employee
         'fullname',
         'rateCurrency',
         'hours',
-        // 'overtime',
         'deductions',
         'net',
         'net_total',
-        // 'overtime_total_hours',
+        'overtime_hours',
+        'overtime_net',
     ];
 
     #
@@ -76,35 +76,26 @@ class Payroll extends Employee
         return number_format((float)$this->attendance->sum('total_hours'), 2, '.', '');
     }
 
-    public function getOvertimeAttribute()
-    {
-        return number_format($this->attendance->sum('overtime'), 2, '.', '');
-    }
-
     public function getDeductionsAttribute()
     {
         $net = (float)($this->hours * $this->rate);
-        $overtime = (float)($this->hours * $this->overtime);
-        $netTotal = $net + $overtime;
-        $tax_deduction = ($this->tax * $netTotal) / 100;
+        $tax_deduction = ($this->tax * $net) / 100;
         return  number_format((float)$tax_deduction, 2, '.', '');
     }
 
     public function getNetAttribute()
     {
-        dd(
-            $this->overtime
-        );
-
         $net = (float)($this->hours * $this->rate);
-        // $overtime = (float)($this->hours * $this->overtime);
-        $netTotal = $net;
-        return number_format((float)$netTotal, 2, '.', '');
+        return number_format((float)$net, 2, '.', '');
     }
 
     public function getNetTotalAttribute()
     {
-        return $this->currency( $this->net - $this->deductions );
+        $net_deductions = $this->net - $this->deductions;
+
+        $total = $net_deductions + $this->overtime_net;
+
+        return $this->currency( $total );
     }
 
     public function getTaxAttribute($value)
@@ -112,12 +103,16 @@ class Payroll extends Employee
         return 5;       // unit in percent
     }
 
-    public function getOvertimeTotalHoursAttribute()
+    public function getOvertimeHoursAttribute()
     {
-        if( !isset($this->overtime) ){
-            return null;
-        }
+        return (float)$this->overtime->sum('totalHours');
     }
+
+    public function getOvertimeNetAttribute()
+    {
+        return (float)($this->rate * $this->overtime->sum('totalHours'));
+    }
+
 
 
 
