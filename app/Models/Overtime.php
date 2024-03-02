@@ -18,6 +18,7 @@ class Overtime extends Model
     ];
 
     protected $fillable = [
+        'date',
         'start',
         'end',
         'reason',
