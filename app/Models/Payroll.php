@@ -14,7 +14,7 @@ class Payroll extends Employee
         'fullname',
         'rateCurrency',
         'hours',
-        'deductions',
+        'tax_deductions',
         'net',
         'net_total',
         'overtime_hours',
@@ -76,7 +76,7 @@ class Payroll extends Employee
         return number_format((float)$this->attendance->sum('total_hours'), 2, '.', '');
     }
 
-    public function getDeductionsAttribute()
+    public function getTaxDeductionsAttribute()
     {
         $net = (float)($this->hours * $this->rate);
         $tax_deduction = ($this->tax * $net) / 100;
@@ -91,7 +91,7 @@ class Payroll extends Employee
 
     public function getNetTotalAttribute()
     {
-        $net_deductions = $this->net - $this->deductions;
+        $net_deductions = $this->net - $this->tax_deductions;
 
         $total = $net_deductions + $this->overtime_net;
 

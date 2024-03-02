@@ -61,7 +61,11 @@
         </tr>
         <tr>
             <td>Tax Deductions 5%</td>
-            <td>-{{ $employee->deductions }}</td>
+            <td>-{{ $employee->tax_deductions }}</td>
+        </tr>
+        <tr>
+            <td>Overtime</td>
+            <td>{{ $employee->overtime_net }} ({{ $employee->overtime_hours }}hrs)</td>
         </tr>
         <tr>
             <td>Leaves</td>

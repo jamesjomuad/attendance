@@ -50,7 +50,7 @@ class PayslipController extends Controller
             }])
         ->findOrFail($id);
 
-        dd(
+        dump(
             $employee
             ->toArray()
         );
