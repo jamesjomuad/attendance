@@ -15,16 +15,29 @@ class PayslipController extends Controller
 {
     public function index(Request $request)
     {
-        $date = $this->dateInterval();
+        $dates = $this->dateInterval();
 
-        $employees = Payroll::with('position')->get();
+        $employees = Payroll::with([
+            'position',
+            'leaves' => function($leaves) use($dates) {
+                $leaves->whereBetween('start', [ $dates['from'], $dates['to'] ]);
+                $leaves->whereBetween('end', [ $dates['from'], $dates['to'] ]);
+            },
+            'overtime' => function($overtime) use($dates) {
+                $overtime->whereBetween('date', [ $dates['from'], $dates['to'] ]);
+            },
+            'attendance' => function($q) use($dates) {
+                $q->whereBetween('created_at', [ $dates['from'], $dates['to'] ]);
+            }])
+            ->get()
+        ;
 
-        $pdf = Pdf::loadView('payslips', compact('employees','date'));
+        $pdf = Pdf::loadView('payslips', compact('employees','dates'));
 
         if( $request->input('format')=='html' ){
-            return view('payslips', compact('employees','date'));
+            return view('payslips', compact('employees','dates'));
         }else if( $request->input('format')=='download' ){
-            return $pdf->download("payslips - ".$date['from']." - ".$date['to'].".pdf");
+            return $pdf->download("payslips - ".$dates['from']." - ".$dates['to'].".pdf");
         }else if( $request->input('format')=='json' ){
             return response()->json($employees);
         }else{
