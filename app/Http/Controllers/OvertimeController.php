@@ -67,9 +67,7 @@ class OvertimeController extends Controller
 
         $employee = Employee::find($request->input('employee'));
 
-        $employee = $employee->overtime()->create(
-            $request->input()
-        );
+        $employee = $employee->overtime()->create( $request->input() );
 
         return response()->json([
             'message' => 'Overtime created successfully',

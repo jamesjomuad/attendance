@@ -38,10 +38,11 @@
                                 class="col-6"
                                 v-model="$form.date"
                                 mask="date"
-                                readonly>
+                                readonly
+                                @click="datePicker.show()">
                                 <template v-slot:append>
                                     <q-icon name="event" class="cursor-pointer">
-                                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                        <q-popup-proxy ref="datePicker" cover transition-show="scale" transition-hide="scale">
                                             <q-date v-model="$form.date">
                                                 <div class="row items-center justify-end">
                                                     <q-btn v-close-popup label="Close" color="primary" flat />
@@ -59,15 +60,16 @@
                                 readonly
                                 label="Start Time"
                                 class="col-6"
-                                v-model="$form.start">
+                                v-model="$form.start"
+                                @click="timePickerStart.show()">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-time v-model="$form.start" mask="hh:mm A">
-                                        <div class="row items-center justify-end">
-                                        <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                    </q-time>
+                                    <q-popup-proxy ref="timePickerStart" cover transition-show="scale" transition-hide="scale">
+                                        <q-time v-model="$form.start" mask="hh:mm A">
+                                            <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                            </div>
+                                        </q-time>
                                     </q-popup-proxy>
                                 </q-icon>
                                 </template>
@@ -80,15 +82,16 @@
                                 readonly
                                 label="End Time"
                                 class="col-6"
-                                v-model="$form.end">
+                                v-model="$form.end"
+                                @click="timePickerEnd.show()">
                                 <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-time v-model="$form.end" mask="hh:mm A">
-                                        <div class="row items-center justify-end">
-                                        <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                    </q-time>
+                                    <q-popup-proxy ref="timePickerEnd" cover transition-show="scale" transition-hide="scale">
+                                        <q-time v-model="$form.end" mask="hh:mm A">
+                                            <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                            </div>
+                                        </q-time>
                                     </q-popup-proxy>
                                 </q-icon>
                                 </template>
@@ -126,7 +129,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import axios from "axios";
 
@@ -150,6 +153,9 @@ const $form = reactive({
     end: "",
     reason: null,
 },);
+const datePicker = ref()
+const timePickerStart = ref()
+const timePickerEnd = ref()
 
 
 onMounted(async ()=>{
@@ -201,7 +207,7 @@ async function onCreate(){
             type: 'positive',
             message: `Created successfully!`
         })
-        $router.push('/overtime')
+        // $router.push('/overtime')
     }catch(error){
         if(error.response?.data?.error){
             $q.notify({

@@ -13,8 +13,8 @@ class Overtime extends Model
 
     protected $casts = [
         'date' => 'date',
-        'start' => 'dateTime',
-        'end' => 'dateTime',
+        'start' => 'datetime',
+        'end' => 'datetime',
     ];
 
     protected $fillable = [
