@@ -81,7 +81,6 @@ class OvertimeController extends Controller
 
         $validator = Validator::make($request->all(), [
             "employee" => ["required"],
-            "type"     => ["required"],
             "start"    => ["required"],
             "end"      => ["required"],
             "reason"   => ["required"],
