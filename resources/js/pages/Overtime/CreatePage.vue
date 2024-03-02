@@ -207,7 +207,7 @@ async function onCreate(){
             type: 'positive',
             message: `Created successfully!`
         })
-        // $router.push('/overtime')
+        $router.push('/overtime')
     }catch(error){
         if(error.response?.data?.error){
             $q.notify({
