@@ -160,6 +160,9 @@ const table = reactive({
             field: "overtime",
             align: 'left',
             sortable: false,
+            format: (v, row) => {
+                return `${currency.format(row?.overtime_net)} (${row?.overtime_hours} hrs)`
+            }
         },
         {
             label: "Net",
